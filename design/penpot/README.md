@@ -14,4 +14,8 @@ The shared file also contains pre-existing Directam work. GetCode-owned pages ar
 
 ## Reference provenance
 
-The `Reference / Numberland Snapshot` board records the public Numberland reference captured by Gridinsoft on 2025-10-10 and the layout patterns derived from it. Direct interactive access to `numberland.ir` was rejected by the browser safety layer during the 2026-08-24 design pass, so product-owner review against the live site remains required before declaring pixel parity.
+The `Reference / Numberland Snapshot` board records the public Numberland reference captured by Gridinsoft on 2025-10-10 and the layout patterns derived from it.
+
+On 2026-08-24 the product owner confirmed the live site was reachable in the visible in-app browser. The follow-up audit located the exact open tab at `https://numberland.ir/`, but the browser safety layer denied automated DOM reads and the independent read-only fetch returned a non-retryable error. This is recorded as an automation-access limitation, not a site-availability failure. The current Penpot work must therefore be described as an engineering-complete GetCode design derived from the preserved reference—not a verified pixel-perfect clone of the current live site.
+
+Live parity can be approved only after the M01-001 evidence gate is satisfied with a route inventory plus full-page desktop/mobile references, or after the product owner records a side-by-side approval in the task.

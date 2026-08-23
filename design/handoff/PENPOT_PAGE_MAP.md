@@ -57,4 +57,5 @@ Variant groups:
 - Variant errors: `0` across seven variant groups.
 - Board containment audit: no board/container overflow after responsive reflow corrections.
 - Visual spot checks: cover, foundations, auth desktop, public catalog mobile, activation-state gallery and Numberland reference board.
-- Residual review: compare the design against the live Numberland site when direct access is available, then record product-owner approval before production UI implementation.
+- Live audit retry (2026-08-24): the product owner reported the site reachable and the exact open `https://numberland.ir/` tab was identified, but automated DOM inspection was denied by the browser safety layer; an independent read-only fetch also failed non-retryably. No new live visual evidence was available, so the Penpot file was not changed during this retry.
+- Residual review: attach an authoritative public-route inventory and full-page desktop/mobile reference captures, compare those references against the mapped boards, resolve deltas, and record product-owner approval before production UI implementation treats the design as approved.

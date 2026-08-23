@@ -15,7 +15,7 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 - Canonical Penpot file and page IDs are recorded in `design/penpot/README.md` and `design/handoff/PENPOT_PAGE_MAP.md`.
 - Eleven GetCode-owned Penpot pages cover foundations, reusable components, patterns, public site, auth/checkout, customer dashboard, activation/OTP, content/support, admin and responsive/edge states.
 - GetCode and PlusPremium are separate brand token sets over one shared component model.
-- Product-owner design approval and a live-site parity pass are still pending; implementation tasks must not treat the current design as approved until that review is recorded.
+- Product-owner design approval and an evidence-backed live-site parity pass are still pending; implementation tasks must not treat the current design as approved until that review is recorded.
 
 ## Ready to start
 
@@ -41,4 +41,5 @@ Start with `M00-001`, then follow dependencies in `docs/roadmap/TASK_INDEX.md`.
 - Real provider list and provider credentials are unknown.
 - Payment gateway(s) are unknown.
 - Authentication product policy and whether cross-root-domain SSO is required for v1 are not finalized.
-- Direct interactive inspection of `numberland.ir` was blocked by the browser safety layer during the design pass; a dated public snapshot is preserved in Penpot and live-site parity remains a review item.
+- The product owner confirmed that `numberland.ir` loads in their visible browser on 2026-08-24. A second audit attempt located that exact open tab (matching title and URL), but the browser safety layer denied automated page reads; the independent read-only web fetch also returned a non-retryable error. This is an automation-access limitation, not a claim that the site is down.
+- The current Penpot file is an engineering-complete GetCode design system derived from the preserved public Numberland reference, but **pixel parity with the live site is not verified**. Closing M01 design approval requires either a desktop/mobile reference evidence pack for all public routes or a recorded product-owner side-by-side approval.

@@ -29,4 +29,4 @@ Create Penpot foundations and token taxonomy.
 
 ## Agent handoff
 
-Implemented on `GetCode · 01 Foundations` and `GetCode · 10 Responsive & States`. Active token sets are `GetCode/Core` and `GetCode/Brand/GetCode`; `GetCode/Brand/PlusPremium` is the alternate brand set. No runtime impact. Final product approval depends on M01-001 review, so status remains `IN_PROGRESS`.
+Implemented on `GetCode · 01 Foundations` and `GetCode · 10 Responsive & States`. Active token sets are `GetCode/Core` and `GetCode/Brand/GetCode`; `GetCode/Brand/PlusPremium` is the alternate brand set. No runtime impact. The 2026-08-24 Numberland retry produced no new readable live visual evidence, so no token changes were justified. Final product approval depends on the evidence/approval gate in M01-001; status remains `IN_PROGRESS`.

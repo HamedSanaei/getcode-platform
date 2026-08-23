@@ -18,6 +18,9 @@ Define UX sitemap and critical user flows in Penpot.
 ## Required verification
 
 - [ ] design review checklist
+- [ ] live-reference public route inventory
+- [ ] desktop/mobile reference evidence for every parity-scoped public route
+- [ ] product-owner side-by-side approval, including documented intentional GetCode differences
 
 ## Engineering constraints
 
@@ -28,4 +31,11 @@ Define UX sitemap and critical user flows in Penpot.
 
 ## Agent handoff
 
-Implemented in Penpot file `c269caa0-e456-818c-8008-85a77340be64`. The canonical page/board/flow map is `design/handoff/PENPOT_PAGE_MAP.md`. No migration, environment-variable or runtime impact. Residual: product-owner design review and live Numberland parity check are pending, so the task remains `IN_PROGRESS`.
+Implemented in Penpot file `c269caa0-e456-818c-8008-85a77340be64`. The canonical page/board/flow map is `design/handoff/PENPOT_PAGE_MAP.md`. No migration, environment-variable or runtime impact.
+
+### Live-reference audit log
+
+- 2026-08-24 initial pass: automated direct inspection was denied; the preserved dated public screenshot was used only as a reference source.
+- 2026-08-24 retry: the product owner confirmed the live site loaded. The exact open tab was found with the Numberland page title and `https://numberland.ir/`, but automated DOM reading was denied by the browser safety layer; a separate read-only fetch also failed non-retryably.
+- Interpretation: the site is not recorded as down. The blocker is automated evidence capture, so current boards cannot honestly be certified as pixel-parity with the live site.
+- Closure path: attach a public-route inventory and full-page desktop/mobile captures, or record product-owner side-by-side approval with all intentional differences. Until then this task remains `IN_PROGRESS`.
