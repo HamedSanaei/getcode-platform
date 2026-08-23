@@ -56,20 +56,48 @@ scripts/          developer, log-maintenance and GitHub bootstrap helpers
 ## Local prerequisites
 
 - .NET 10 SDK (the repository uses `global.json` with roll-forward inside .NET 10)
-- Node.js 22 LTS or newer supported version
+- Node.js 24 LTS with the bundled npm 11 (baseline recorded in `docs/architecture/TOOLCHAIN.md`)
 - Docker/Compose for PostgreSQL and Redis
 - Git
 
-## Quick local infrastructure
+## Local development environment (PostgreSQL + Redis)
+
+Copy `.env.example` to `.env` first; all credentials are local-only placeholders and must
+never be set to production values inside this repository.
 
 ```bash
+# start only the databases
 cp .env.example .env
 docker compose up -d postgres redis
+
+# check status / health
+docker compose ps
+docker compose logs -f postgres redis
+
+# stop (keeps data volumes)
+docker compose stop postgres redis
+
+# resume later
+docker compose start postgres redis
+
+# full reset — DESTROYS local database/cache data
+docker compose down -v && docker compose up -d postgres redis
 ```
+
+Both services define compose health checks (`pg_isready`, `redis-cli ping`) and durable
+named volumes (`getcode-postgres`, `getcode-redis`). PostgreSQL data lives under
+`/var/lib/postgresql` inside the container (PostgreSQL 18+ image layout). Application
+containers additionally wait for `service_healthy`, so `docker compose --profile app up`
+cannot race an uninitialized database.
 
 Backend and frontend bootstrap commands are documented in their respective READMEs.
 
-> Security note (2026-08-24): Next.js announced a scheduled security release for 2026-08-26. Before first dependency lock or any deployment, M00-001 requires selecting the latest patched supported Next.js 16.x release and committing a lockfile. Do not deploy the placeholder dependency range without that gate.
+## Dependency baseline note
+
+M00-001 locked the toolchain: Next.js 16.3.2 via the committed `frontend/package-lock.json`
+(`npm ci` everywhere), .NET SDK pinned by `global.json`. See
+[`docs/architecture/TOOLCHAIN.md`](docs/architecture/TOOLCHAIN.md) before bumping any
+version.
 
 ## Status
 

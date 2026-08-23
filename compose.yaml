@@ -10,7 +10,9 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - getcode-postgres:/var/lib/postgresql/data
+      # PostgreSQL 18+ images store data under major-version-specific
+      # subdirectories of /var/lib/postgresql; mounting deeper breaks startup.
+      - getcode-postgres:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-getcode} -d ${POSTGRES_DB:-getcode}"]
       interval: 5s
