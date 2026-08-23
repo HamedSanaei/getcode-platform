@@ -1,0 +1,41 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+*.secrets.json
+
+# .NET
+**/bin/
+**/obj/
+*.userosscache
+TestResults/
+coverage/
+
+# Node / Next
+**/node_modules/
+frontend/.next/
+frontend/out/
+frontend/coverage/
+frontend/playwright-report/
+frontend/test-results/
+*.tsbuildinfo
+
+# IDE / OS
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Runtime data
+.data/
+logs/
+*.log
+
+# Generated
+artifacts/
+dist/

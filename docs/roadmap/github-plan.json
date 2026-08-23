@@ -1,0 +1,786 @@
+{
+  "repository": "HamedSanaei/getcode-platform",
+  "generatedAt": "2026-08-24",
+  "milestones": [
+    {
+      "id": "M00",
+      "title": "Engineering Foundation",
+      "description": "Lock versions, build/test/CI, persistence baseline, security and observability contracts."
+    },
+    {
+      "id": "M01",
+      "title": "Penpot Design System & Web Foundation",
+      "description": "Design UX in Penpot, token bridge, shared components, host-aware shell and visual test harness."
+    },
+    {
+      "id": "M02",
+      "title": "Identity & Multi-Domain Sessions",
+      "description": "Identity, permissions, secure host-scoped sessions, CSRF/CORS and multi-domain URL/SEO behavior."
+    },
+    {
+      "id": "M03",
+      "title": "Catalog & Canonical Provider Model",
+      "description": "Canonical countries/services/products/SKUs and provider mappings independent from vendor IDs."
+    },
+    {
+      "id": "M04",
+      "title": "Provider Integration & Routing",
+      "description": "Provider contract suite, first adapters, health, quote normalization, routing, failover and reconciliation."
+    },
+    {
+      "id": "M05",
+      "title": "Pricing, Quotes & Wallet Ledger",
+      "description": "Authoritative pricing, quote snapshots, ledger wallet and duplicate-safe financial operations."
+    },
+    {
+      "id": "M06",
+      "title": "Orders & Payments",
+      "description": "Order state machine, checkout, payment adapter/callback verification, idempotency and outbox."
+    },
+    {
+      "id": "M07",
+      "title": "Fulfillment & Activations",
+      "description": "Durable worker orchestration for reserve/poll/cancel/expire/refund/reconciliation."
+    },
+    {
+      "id": "M08",
+      "title": "Customer Experience",
+      "description": "Approved public catalog, checkout, dashboard, activation flow, wallet/order UX and SEO."
+    },
+    {
+      "id": "M09",
+      "title": "Admin & Operations",
+      "description": "Operational admin, provider health, manual review, audits, pricing/mapping controls and safe support tools."
+    },
+    {
+      "id": "M10",
+      "title": "Production Hardening & Release",
+      "description": "E2E/load/security/backup/restore/observability/release readiness."
+    },
+    {
+      "id": "M11",
+      "title": "Scale & Product Expansion",
+      "description": "Measured scaling: broker if justified, multi-worker coordination, new fulfillment types/reseller API/optional SSO."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "M00-001",
+      "title": "Lock supported toolchain and dependency baselines",
+      "milestone": "M00",
+      "priority": "P0",
+      "dependsOn": [],
+      "bodyPath": "docs/tasks/M00-001-lock-supported-toolchain-and-dependency-baselines.md"
+    },
+    {
+      "id": "M00-002",
+      "title": "Enforce clean dependency and module boundaries",
+      "milestone": "M00",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-001"
+      ],
+      "bodyPath": "docs/tasks/M00-002-enforce-clean-dependency-and-module-boundaries.md"
+    },
+    {
+      "id": "M00-003",
+      "title": "Establish local PostgreSQL/Redis development environment",
+      "milestone": "M00",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-001"
+      ],
+      "bodyPath": "docs/tasks/M00-003-establish-local-postgresql-redis-development-environment.md"
+    },
+    {
+      "id": "M00-004",
+      "title": "Harden CI quality gates",
+      "milestone": "M00",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-001",
+        "M00-002"
+      ],
+      "bodyPath": "docs/tasks/M00-004-harden-ci-quality-gates.md"
+    },
+    {
+      "id": "M00-005",
+      "title": "Build integration-test infrastructure",
+      "milestone": "M00",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-003"
+      ],
+      "bodyPath": "docs/tasks/M00-005-build-integration-test-infrastructure.md"
+    },
+    {
+      "id": "M00-006",
+      "title": "Define durable identifiers and database migration policy",
+      "milestone": "M00",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-005"
+      ],
+      "bodyPath": "docs/tasks/M00-006-define-durable-identifiers-and-database-migration-policy.md"
+    },
+    {
+      "id": "M00-007",
+      "title": "Complete structured logging and archive verification",
+      "milestone": "M00",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-001"
+      ],
+      "bodyPath": "docs/tasks/M00-007-complete-structured-logging-and-archive-verification.md"
+    },
+    {
+      "id": "M00-008",
+      "title": "Add tracing/metrics foundation",
+      "milestone": "M00",
+      "priority": "P1",
+      "dependsOn": [
+        "M00-007"
+      ],
+      "bodyPath": "docs/tasks/M00-008-add-tracing-metrics-foundation.md"
+    },
+    {
+      "id": "M00-009",
+      "title": "Agent handoff and repository governance gate",
+      "milestone": "M00",
+      "priority": "P1",
+      "dependsOn": [
+        "M00-004"
+      ],
+      "bodyPath": "docs/tasks/M00-009-agent-handoff-and-repository-governance-gate.md"
+    },
+    {
+      "id": "M01-001",
+      "title": "Define UX sitemap and critical user flows in Penpot",
+      "milestone": "M01",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-009"
+      ],
+      "bodyPath": "docs/tasks/M01-001-define-ux-sitemap-and-critical-user-flows-in-penpot.md"
+    },
+    {
+      "id": "M01-002",
+      "title": "Create Penpot foundations and token taxonomy",
+      "milestone": "M01",
+      "priority": "P0",
+      "dependsOn": [
+        "M01-001"
+      ],
+      "bodyPath": "docs/tasks/M01-002-create-penpot-foundations-and-token-taxonomy.md"
+    },
+    {
+      "id": "M01-003",
+      "title": "Create reusable Penpot component library",
+      "milestone": "M01",
+      "priority": "P0",
+      "dependsOn": [
+        "M01-002"
+      ],
+      "bodyPath": "docs/tasks/M01-003-create-reusable-penpot-component-library.md"
+    },
+    {
+      "id": "M01-004",
+      "title": "Implement Penpot-to-code design token bridge",
+      "milestone": "M01",
+      "priority": "P0",
+      "dependsOn": [
+        "M01-002",
+        "M00-001"
+      ],
+      "bodyPath": "docs/tasks/M01-004-implement-penpot-to-code-design-token-bridge.md"
+    },
+    {
+      "id": "M01-005",
+      "title": "Implement shared Next.js UI primitives",
+      "milestone": "M01",
+      "priority": "P0",
+      "dependsOn": [
+        "M01-003",
+        "M01-004"
+      ],
+      "bodyPath": "docs/tasks/M01-005-implement-shared-next-js-ui-primitives.md"
+    },
+    {
+      "id": "M01-006",
+      "title": "Implement host-aware application shell and canonical metadata",
+      "milestone": "M01",
+      "priority": "P0",
+      "dependsOn": [
+        "M01-004"
+      ],
+      "bodyPath": "docs/tasks/M01-006-implement-host-aware-application-shell-and-canonical-metadata.md"
+    },
+    {
+      "id": "M01-007",
+      "title": "Establish visual regression harness",
+      "milestone": "M01",
+      "priority": "P1",
+      "dependsOn": [
+        "M01-005",
+        "M01-006"
+      ],
+      "bodyPath": "docs/tasks/M01-007-establish-visual-regression-harness.md"
+    },
+    {
+      "id": "M02-001",
+      "title": "Implement identity model and authentication service",
+      "milestone": "M02",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-006"
+      ],
+      "bodyPath": "docs/tasks/M02-001-implement-identity-model-and-authentication-service.md"
+    },
+    {
+      "id": "M02-002",
+      "title": "Implement secure host-scoped session/token strategy",
+      "milestone": "M02",
+      "priority": "P0",
+      "dependsOn": [
+        "M02-001",
+        "M01-006"
+      ],
+      "bodyPath": "docs/tasks/M02-002-implement-secure-host-scoped-session-token-strategy.md"
+    },
+    {
+      "id": "M02-003",
+      "title": "Implement CSRF, CORS and trusted redirect policy",
+      "milestone": "M02",
+      "priority": "P0",
+      "dependsOn": [
+        "M02-002"
+      ],
+      "bodyPath": "docs/tasks/M02-003-implement-csrf-cors-and-trusted-redirect-policy.md"
+    },
+    {
+      "id": "M02-004",
+      "title": "Implement roles/permissions and admin authorization",
+      "milestone": "M02",
+      "priority": "P0",
+      "dependsOn": [
+        "M02-001"
+      ],
+      "bodyPath": "docs/tasks/M02-004-implement-roles-permissions-and-admin-authorization.md"
+    },
+    {
+      "id": "M02-005",
+      "title": "Decide and document cross-domain SSO v1 scope",
+      "milestone": "M02",
+      "priority": "P1",
+      "dependsOn": [
+        "M02-002"
+      ],
+      "bodyPath": "docs/tasks/M02-005-decide-and-document-cross-domain-sso-v1-scope.md"
+    },
+    {
+      "id": "M03-001",
+      "title": "Implement canonical Country and Service catalog",
+      "milestone": "M03",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-006"
+      ],
+      "bodyPath": "docs/tasks/M03-001-implement-canonical-country-and-service-catalog.md"
+    },
+    {
+      "id": "M03-002",
+      "title": "Implement Product/SKU model for virtual-number offerings",
+      "milestone": "M03",
+      "priority": "P0",
+      "dependsOn": [
+        "M03-001"
+      ],
+      "bodyPath": "docs/tasks/M03-002-implement-product-sku-model-for-virtual-number-offerings.md"
+    },
+    {
+      "id": "M03-003",
+      "title": "Implement provider registry and canonical mappings",
+      "milestone": "M03",
+      "priority": "P0",
+      "dependsOn": [
+        "M03-001"
+      ],
+      "bodyPath": "docs/tasks/M03-003-implement-provider-registry-and-canonical-mappings.md"
+    },
+    {
+      "id": "M03-004",
+      "title": "Implement catalog/query read models",
+      "milestone": "M03",
+      "priority": "P1",
+      "dependsOn": [
+        "M03-002",
+        "M03-003"
+      ],
+      "bodyPath": "docs/tasks/M03-004-implement-catalog-query-read-models.md"
+    },
+    {
+      "id": "M04-001",
+      "title": "Define common provider behavioral contract suite",
+      "milestone": "M04",
+      "priority": "P0",
+      "dependsOn": [
+        "M03-003",
+        "M00-005"
+      ],
+      "bodyPath": "docs/tasks/M04-001-define-common-provider-behavioral-contract-suite.md"
+    },
+    {
+      "id": "M04-002",
+      "title": "Implement first real provider adapter",
+      "milestone": "M04",
+      "priority": "P0",
+      "dependsOn": [
+        "M04-001"
+      ],
+      "bodyPath": "docs/tasks/M04-002-implement-first-real-provider-adapter.md"
+    },
+    {
+      "id": "M04-003",
+      "title": "Implement provider health and balance observation",
+      "milestone": "M04",
+      "priority": "P1",
+      "dependsOn": [
+        "M04-002"
+      ],
+      "bodyPath": "docs/tasks/M04-003-implement-provider-health-and-balance-observation.md"
+    },
+    {
+      "id": "M04-004",
+      "title": "Implement offer normalization and short-lived availability cache",
+      "milestone": "M04",
+      "priority": "P0",
+      "dependsOn": [
+        "M04-002",
+        "M03-004"
+      ],
+      "bodyPath": "docs/tasks/M04-004-implement-offer-normalization-and-short-lived-availability-cache.md"
+    },
+    {
+      "id": "M04-005",
+      "title": "Implement provider routing policy v1",
+      "milestone": "M04",
+      "priority": "P0",
+      "dependsOn": [
+        "M04-003",
+        "M04-004"
+      ],
+      "bodyPath": "docs/tasks/M04-005-implement-provider-routing-policy-v1.md"
+    },
+    {
+      "id": "M04-006",
+      "title": "Implement safe failover and ambiguous-outcome reconciliation",
+      "milestone": "M04",
+      "priority": "P0",
+      "dependsOn": [
+        "M04-005"
+      ],
+      "bodyPath": "docs/tasks/M04-006-implement-safe-failover-and-ambiguous-outcome-reconciliation.md"
+    },
+    {
+      "id": "M04-007",
+      "title": "Add second provider to prove abstraction",
+      "milestone": "M04",
+      "priority": "P1",
+      "dependsOn": [
+        "M04-006"
+      ],
+      "bodyPath": "docs/tasks/M04-007-add-second-provider-to-prove-abstraction.md"
+    },
+    {
+      "id": "M05-001",
+      "title": "Implement pricing rules and margin model",
+      "milestone": "M05",
+      "priority": "P0",
+      "dependsOn": [
+        "M03-002",
+        "M04-004"
+      ],
+      "bodyPath": "docs/tasks/M05-001-implement-pricing-rules-and-margin-model.md"
+    },
+    {
+      "id": "M05-002",
+      "title": "Implement immutable expiring quote snapshots",
+      "milestone": "M05",
+      "priority": "P0",
+      "dependsOn": [
+        "M05-001"
+      ],
+      "bodyPath": "docs/tasks/M05-002-implement-immutable-expiring-quote-snapshots.md"
+    },
+    {
+      "id": "M05-003",
+      "title": "Implement wallet and immutable ledger",
+      "milestone": "M05",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-006"
+      ],
+      "bodyPath": "docs/tasks/M05-003-implement-wallet-and-immutable-ledger.md"
+    },
+    {
+      "id": "M05-004",
+      "title": "Implement idempotent debit/credit/refund primitives",
+      "milestone": "M05",
+      "priority": "P0",
+      "dependsOn": [
+        "M05-003"
+      ],
+      "bodyPath": "docs/tasks/M05-004-implement-idempotent-debit-credit-refund-primitives.md"
+    },
+    {
+      "id": "M05-005",
+      "title": "Implement exchange-rate source abstraction if required",
+      "milestone": "M05",
+      "priority": "P2",
+      "dependsOn": [
+        "M05-001"
+      ],
+      "bodyPath": "docs/tasks/M05-005-implement-exchange-rate-source-abstraction-if-required.md"
+    },
+    {
+      "id": "M06-001",
+      "title": "Implement Order aggregate and explicit state machine",
+      "milestone": "M06",
+      "priority": "P0",
+      "dependsOn": [
+        "M05-002"
+      ],
+      "bodyPath": "docs/tasks/M06-001-implement-order-aggregate-and-explicit-state-machine.md"
+    },
+    {
+      "id": "M06-002",
+      "title": "Implement idempotent checkout/order creation",
+      "milestone": "M06",
+      "priority": "P0",
+      "dependsOn": [
+        "M06-001",
+        "M05-004"
+      ],
+      "bodyPath": "docs/tasks/M06-002-implement-idempotent-checkout-order-creation.md"
+    },
+    {
+      "id": "M06-003",
+      "title": "Define payment gateway port and fake adapter",
+      "milestone": "M06",
+      "priority": "P0",
+      "dependsOn": [
+        "M06-001"
+      ],
+      "bodyPath": "docs/tasks/M06-003-define-payment-gateway-port-and-fake-adapter.md"
+    },
+    {
+      "id": "M06-004",
+      "title": "Implement first payment gateway and verified callback",
+      "milestone": "M06",
+      "priority": "P0",
+      "dependsOn": [
+        "M06-003"
+      ],
+      "bodyPath": "docs/tasks/M06-004-implement-first-payment-gateway-and-verified-callback.md"
+    },
+    {
+      "id": "M06-005",
+      "title": "Implement transactional order-paid outbox flow",
+      "milestone": "M06",
+      "priority": "P0",
+      "dependsOn": [
+        "M06-002",
+        "M06-004"
+      ],
+      "bodyPath": "docs/tasks/M06-005-implement-transactional-order-paid-outbox-flow.md"
+    },
+    {
+      "id": "M07-001",
+      "title": "Implement durable fulfillment request/lease model",
+      "milestone": "M07",
+      "priority": "P0",
+      "dependsOn": [
+        "M06-005",
+        "M04-006"
+      ],
+      "bodyPath": "docs/tasks/M07-001-implement-durable-fulfillment-request-lease-model.md"
+    },
+    {
+      "id": "M07-002",
+      "title": "Implement virtual-number reservation orchestration",
+      "milestone": "M07",
+      "priority": "P0",
+      "dependsOn": [
+        "M07-001"
+      ],
+      "bodyPath": "docs/tasks/M07-002-implement-virtual-number-reservation-orchestration.md"
+    },
+    {
+      "id": "M07-003",
+      "title": "Implement activation polling and normalized message receipt",
+      "milestone": "M07",
+      "priority": "P0",
+      "dependsOn": [
+        "M07-002"
+      ],
+      "bodyPath": "docs/tasks/M07-003-implement-activation-polling-and-normalized-message-receipt.md"
+    },
+    {
+      "id": "M07-004",
+      "title": "Implement expiry/cancel/refund compensation workflow",
+      "milestone": "M07",
+      "priority": "P0",
+      "dependsOn": [
+        "M07-003",
+        "M05-004"
+      ],
+      "bodyPath": "docs/tasks/M07-004-implement-expiry-cancel-refund-compensation-workflow.md"
+    },
+    {
+      "id": "M07-005",
+      "title": "Implement reconciliation and Manual Review cases",
+      "milestone": "M07",
+      "priority": "P0",
+      "dependsOn": [
+        "M07-004"
+      ],
+      "bodyPath": "docs/tasks/M07-005-implement-reconciliation-and-manual-review-cases.md"
+    },
+    {
+      "id": "M08-001",
+      "title": "Implement public catalog pages from approved Penpot designs",
+      "milestone": "M08",
+      "priority": "P0",
+      "dependsOn": [
+        "M03-004",
+        "M01-007"
+      ],
+      "bodyPath": "docs/tasks/M08-001-implement-public-catalog-pages-from-approved-penpot-designs.md"
+    },
+    {
+      "id": "M08-002",
+      "title": "Implement quote and checkout UX",
+      "milestone": "M08",
+      "priority": "P0",
+      "dependsOn": [
+        "M06-002",
+        "M08-001"
+      ],
+      "bodyPath": "docs/tasks/M08-002-implement-quote-and-checkout-ux.md"
+    },
+    {
+      "id": "M08-003",
+      "title": "Implement customer order/dashboard UX",
+      "milestone": "M08",
+      "priority": "P0",
+      "dependsOn": [
+        "M06-005",
+        "M01-007"
+      ],
+      "bodyPath": "docs/tasks/M08-003-implement-customer-order-dashboard-ux.md"
+    },
+    {
+      "id": "M08-004",
+      "title": "Implement activation/OTP live experience",
+      "milestone": "M08",
+      "priority": "P0",
+      "dependsOn": [
+        "M07-003",
+        "M08-003"
+      ],
+      "bodyPath": "docs/tasks/M08-004-implement-activation-otp-live-experience.md"
+    },
+    {
+      "id": "M08-005",
+      "title": "Implement wallet/payment history UX",
+      "milestone": "M08",
+      "priority": "P1",
+      "dependsOn": [
+        "M05-003",
+        "M06-004"
+      ],
+      "bodyPath": "docs/tasks/M08-005-implement-wallet-payment-history-ux.md"
+    },
+    {
+      "id": "M09-001",
+      "title": "Implement admin shell and permission-aware navigation",
+      "milestone": "M09",
+      "priority": "P0",
+      "dependsOn": [
+        "M02-004",
+        "M01-007"
+      ],
+      "bodyPath": "docs/tasks/M09-001-implement-admin-shell-and-permission-aware-navigation.md"
+    },
+    {
+      "id": "M09-002",
+      "title": "Implement provider operations dashboard",
+      "milestone": "M09",
+      "priority": "P1",
+      "dependsOn": [
+        "M04-003",
+        "M09-001"
+      ],
+      "bodyPath": "docs/tasks/M09-002-implement-provider-operations-dashboard.md"
+    },
+    {
+      "id": "M09-003",
+      "title": "Implement catalog/provider mapping management",
+      "milestone": "M09",
+      "priority": "P0",
+      "dependsOn": [
+        "M03-003",
+        "M09-001"
+      ],
+      "bodyPath": "docs/tasks/M09-003-implement-catalog-provider-mapping-management.md"
+    },
+    {
+      "id": "M09-004",
+      "title": "Implement pricing and promotion administration",
+      "milestone": "M09",
+      "priority": "P1",
+      "dependsOn": [
+        "M05-001",
+        "M09-001"
+      ],
+      "bodyPath": "docs/tasks/M09-004-implement-pricing-and-promotion-administration.md"
+    },
+    {
+      "id": "M09-005",
+      "title": "Implement order/payment/refund support tools",
+      "milestone": "M09",
+      "priority": "P0",
+      "dependsOn": [
+        "M07-005",
+        "M09-001"
+      ],
+      "bodyPath": "docs/tasks/M09-005-implement-order-payment-refund-support-tools.md"
+    },
+    {
+      "id": "M09-006",
+      "title": "Implement audit event query and retention policy",
+      "milestone": "M09",
+      "priority": "P1",
+      "dependsOn": [
+        "M09-005"
+      ],
+      "bodyPath": "docs/tasks/M09-006-implement-audit-event-query-and-retention-policy.md"
+    },
+    {
+      "id": "M10-001",
+      "title": "Create critical-path browser E2E suite",
+      "milestone": "M10",
+      "priority": "P0",
+      "dependsOn": [
+        "M08-004",
+        "M09-005"
+      ],
+      "bodyPath": "docs/tasks/M10-001-create-critical-path-browser-e2e-suite.md"
+    },
+    {
+      "id": "M10-002",
+      "title": "Run load/concurrency and provider-failure tests",
+      "milestone": "M10",
+      "priority": "P0",
+      "dependsOn": [
+        "M10-001"
+      ],
+      "bodyPath": "docs/tasks/M10-002-run-load-concurrency-and-provider-failure-tests.md"
+    },
+    {
+      "id": "M10-003",
+      "title": "Complete production security hardening",
+      "milestone": "M10",
+      "priority": "P0",
+      "dependsOn": [
+        "M10-001",
+        "M02-003"
+      ],
+      "bodyPath": "docs/tasks/M10-003-complete-production-security-hardening.md"
+    },
+    {
+      "id": "M10-004",
+      "title": "Implement backup, restore and migration runbooks",
+      "milestone": "M10",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-006"
+      ],
+      "bodyPath": "docs/tasks/M10-004-implement-backup-restore-and-migration-runbooks.md"
+    },
+    {
+      "id": "M10-005",
+      "title": "Validate logs/metrics/traces and operational alerts",
+      "milestone": "M10",
+      "priority": "P0",
+      "dependsOn": [
+        "M00-008",
+        "M10-002"
+      ],
+      "bodyPath": "docs/tasks/M10-005-validate-logs-metrics-traces-and-operational-alerts.md"
+    },
+    {
+      "id": "M10-006",
+      "title": "Prepare first production release gate",
+      "milestone": "M10",
+      "priority": "P0",
+      "dependsOn": [
+        "M10-003",
+        "M10-004",
+        "M10-005"
+      ],
+      "bodyPath": "docs/tasks/M10-006-prepare-first-production-release-gate.md"
+    },
+    {
+      "id": "M11-001",
+      "title": "Evaluate broker introduction from measured workload",
+      "milestone": "M11",
+      "priority": "P2",
+      "dependsOn": [
+        "M10-002"
+      ],
+      "bodyPath": "docs/tasks/M11-001-evaluate-broker-introduction-from-measured-workload.md"
+    },
+    {
+      "id": "M11-002",
+      "title": "Harden horizontal worker coordination",
+      "milestone": "M11",
+      "priority": "P1",
+      "dependsOn": [
+        "M10-002"
+      ],
+      "bodyPath": "docs/tasks/M11-002-harden-horizontal-worker-coordination.md"
+    },
+    {
+      "id": "M11-003",
+      "title": "Add a second fulfillment product type",
+      "milestone": "M11",
+      "priority": "P2",
+      "dependsOn": [
+        "M10-006"
+      ],
+      "bodyPath": "docs/tasks/M11-003-add-a-second-fulfillment-product-type.md"
+    },
+    {
+      "id": "M11-004",
+      "title": "Design reseller/public API if product requires it",
+      "milestone": "M11",
+      "priority": "P2",
+      "dependsOn": [
+        "M10-006"
+      ],
+      "bodyPath": "docs/tasks/M11-004-design-reseller-public-api-if-product-requires-it.md"
+    },
+    {
+      "id": "M11-005",
+      "title": "Implement cross-domain SSO only if approved",
+      "milestone": "M11",
+      "priority": "P2",
+      "dependsOn": [
+        "M02-005",
+        "M10-003"
+      ],
+      "bodyPath": "docs/tasks/M11-005-implement-cross-domain-sso-only-if-approved.md"
+    }
+  ]
+}

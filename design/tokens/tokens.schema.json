@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GetCode design token snapshot",
+  "type": "object",
+  "required": ["meta", "color", "radius"],
+  "properties": {
+    "meta": { "type": "object" },
+    "color": { "type": "object", "additionalProperties": { "type": "string" } },
+    "radius": { "type": "object", "additionalProperties": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

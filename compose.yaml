@@ -1,0 +1,123 @@
+name: getcode
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-getcode}
+      POSTGRES_USER: ${POSTGRES_USER:-getcode}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-getcode-local}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - getcode-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-getcode} -d ${POSTGRES_DB:-getcode}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - getcode-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Postgres: ${ConnectionStrings__Postgres:-Host=postgres;Port=5432;Database=getcode;Username=getcode;Password=getcode-local}
+      Redis__Configuration: ${Redis__Configuration:-redis:6379}
+      SiteHosts__RejectUnknownHosts: ${SiteHosts__RejectUnknownHosts:-false}
+      SiteHosts__CanonicalKey: ${SiteHosts__CanonicalKey:-primary}
+      SiteHosts__Hosts__0__Key: primary
+      SiteHosts__Hosts__0__Host: ${GETCODE_PRIMARY_HOST:-getcode.example}
+      SiteHosts__Hosts__0__PublicBaseUrl: https://${GETCODE_PRIMARY_HOST:-getcode.example}
+      SiteHosts__Hosts__0__BrandKey: getcode
+      SiteHosts__Hosts__0__IsCanonical: "true"
+      SiteHosts__Hosts__1__Key: pluspremium
+      SiteHosts__Hosts__1__Host: ${GETCODE_PLUSPREMIUM_HOST:-vnumber.pluspremium.ir}
+      SiteHosts__Hosts__1__PublicBaseUrl: https://${GETCODE_PLUSPREMIUM_HOST:-vnumber.pluspremium.ir}
+      SiteHosts__Hosts__1__BrandKey: getcode-pluspremium
+      SiteHosts__Hosts__1__IsCanonical: "false"
+      LogStorage__RootPath: /data/logs
+    volumes:
+      - getcode-logs:/data/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  worker:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.worker
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: ${ConnectionStrings__Postgres:-Host=postgres;Port=5432;Database=getcode;Username=getcode;Password=getcode-local}
+      Redis__Configuration: ${Redis__Configuration:-redis:6379}
+      LogStorage__RootPath: /data/logs
+    volumes:
+      - getcode-logs:/data/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    profiles: ["app"]
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    environment:
+      INTERNAL_API_URL: http://api:8080
+      GETCODE_PRIMARY_HOST: ${GETCODE_PRIMARY_HOST:-getcode.example}
+      GETCODE_PLUSPREMIUM_HOST: ${GETCODE_PLUSPREMIUM_HOST:-vnumber.pluspremium.ir}
+      GETCODE_CANONICAL_HOST: ${GETCODE_CANONICAL_HOST:-getcode.example}
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  edge:
+    profiles: ["edge"]
+    image: caddy:2-alpine
+    environment:
+      GETCODE_PRIMARY_HOST: ${GETCODE_PRIMARY_HOST:-getcode.example}
+      GETCODE_PLUSPREMIUM_HOST: ${GETCODE_PLUSPREMIUM_HOST:-vnumber.pluspremium.ir}
+    volumes:
+      - ./infrastructure/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - getcode-caddy-data:/data
+      - getcode-caddy-config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+      - api
+    restart: unless-stopped
+
+volumes:
+  getcode-postgres:
+  getcode-redis:
+  getcode-logs:
+  getcode-caddy-data:
+  getcode-caddy-config:

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+  <PropertyGroup>
+    <AssemblyName>GetCode.Worker</AssemblyName>
+    <RootNamespace>GetCode.Worker</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GetCode.Application/GetCode.Application.csproj" />
+    <ProjectReference Include="../GetCode.Infrastructure/GetCode.Infrastructure.csproj" />
+    <ProjectReference Include="../GetCode.Persistence/GetCode.Persistence.csproj" />
+    <PackageReference Include="Serilog.AspNetCore" />
+  </ItemGroup>
+</Project>

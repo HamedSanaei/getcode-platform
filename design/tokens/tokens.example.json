@@ -1,0 +1,16 @@
+{
+  "$schema": "./tokens.schema.json",
+  "meta": {
+    "source": "Penpot",
+    "status": "placeholder"
+  },
+  "color": {
+    "background": "#F6F7F9",
+    "surface": "#FFFFFF",
+    "text": "#17191C",
+    "accent": "#2B59FF"
+  },
+  "radius": {
+    "md": "16px"
+  }
+}

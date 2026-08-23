@@ -1,0 +1,25 @@
+:root {
+  --gc-color-bg: #f6f7f9;
+  --gc-color-surface: #ffffff;
+  --gc-color-text: #17191c;
+  --gc-color-muted: #646b75;
+  --gc-color-accent: #2b59ff;
+  --gc-radius-md: 16px;
+  --gc-space-1: 0.25rem;
+  --gc-space-2: 0.5rem;
+  --gc-space-4: 1rem;
+  --gc-space-8: 2rem;
+}
+
+/* Placeholder tokens only. M01 replaces values with approved Penpot-exported tokens. */
+[data-brand="getcode-pluspremium"] {
+  --gc-color-accent: #2b59ff;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--gc-color-bg); color: var(--gc-color-text); font-family: system-ui, sans-serif; }
+.shell { min-height: 100vh; display: grid; place-items: center; padding: var(--gc-space-8); }
+.placeholder-card { width: min(760px, 100%); background: var(--gc-color-surface); border-radius: var(--gc-radius-md); padding: clamp(1.5rem, 4vw, 3rem); box-shadow: 0 12px 40px rgb(0 0 0 / 0.06); }
+.eyebrow { color: var(--gc-color-accent); font-weight: 700; letter-spacing: 0.08em; }
+.placeholder-card p { color: var(--gc-color-muted); line-height: 1.9; }

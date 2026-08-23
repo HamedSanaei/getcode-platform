@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        run: dotnet restore GetCode.sln
+      - name: Format check
+        run: dotnet format GetCode.sln --no-restore --verify-no-changes
+      - name: Build
+        run: dotnet build GetCode.sln -c Release --no-restore
+      - name: Test
+        run: dotnet test GetCode.sln -c Release --no-build --logger "trx;LogFileName=test-results.trx"
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # M00-001 replaces npm install with npm ci after the patched lockfile is committed.
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+        env:
+          GETCODE_PRIMARY_HOST: getcode.example
+          GETCODE_PLUSPREMIUM_HOST: vnumber.pluspremium.ir
+          GETCODE_CANONICAL_HOST: getcode.example
+          INTERNAL_API_URL: http://127.0.0.1:8080

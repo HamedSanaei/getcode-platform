@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <AssemblyName>GetCode.Api</AssemblyName>
+    <RootNamespace>GetCode.Api</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../GetCode.Application/GetCode.Application.csproj" />
+    <ProjectReference Include="../GetCode.Contracts/GetCode.Contracts.csproj" />
+    <ProjectReference Include="../GetCode.Infrastructure/GetCode.Infrastructure.csproj" />
+    <ProjectReference Include="../GetCode.Persistence/GetCode.Persistence.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Serilog.AspNetCore" />
+  </ItemGroup>
+</Project>
