@@ -12,7 +12,7 @@ public sealed class ApiLivenessTests : IClassFixture<WebApplicationFactory<Progr
     public async Task Live_endpoint_is_reachable()
     {
         using var client = _factory.CreateClient();
-        using var response = await client.GetAsync("/health/live");
+        using var response = await client.GetAsync("/health/live", TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
     }
 }

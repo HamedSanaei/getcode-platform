@@ -5,6 +5,7 @@ Use this to avoid broad repository scans.
 | Need | Start here |
 |---|---|
 | Architectural rules | `AGENTS.md`, `docs/architecture/ARCHITECTURE.md`, `docs/architecture/DECISIONS.md` |
+| Toolchain/dependency baselines | `docs/architecture/TOOLCHAIN.md`, `global.json`, `Directory.Packages.props`, `frontend/package-lock.json` |
 | Current work | `docs/STATUS.md`, `docs/roadmap/TASK_INDEX.md`, assigned file in `docs/tasks/` |
 | Domain invariants | `backend/src/GetCode.Domain/<Capability>/` |
 | Use cases / ports | `backend/src/GetCode.Application/<Capability>/` |

@@ -19,7 +19,7 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 
 ## Ready to start
 
-Start with `M00-001`, then follow dependencies in `docs/roadmap/TASK_INDEX.md`.
+`M00-001` (toolchain baselines) is DONE: .NET SDK `10.0.302`, Node 24 LTS, npm lockfile committed, deterministic `npm ci`, zero dependency advisories — see `docs/architecture/TOOLCHAIN.md`. Next: `M00-002`/`M00-003`, then follow dependencies in `docs/roadmap/TASK_INDEX.md`.
 
 ## Locked architecture decisions
 
