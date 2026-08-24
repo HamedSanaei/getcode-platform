@@ -8,7 +8,7 @@ Last scaffold update: **2026-08-24**
 
 All nine M00 tasks are DONE and verified (toolchain baselines, IL-enforced boundaries, local PostgreSQL/Redis, hardened CI with deterministic lockfiles, Testcontainers integration infrastructure, UUIDv7/migration policy ADR-014, structured logging + redaction + archive verification, tracing/metrics foundation, governance gate). See `docs/roadmap/TASK_INDEX.md` for per-task handoffs.
 
-The repository no longer contains only an architecture starter: persistence migrations, integration-test infrastructure, enforced observability policies and deterministic CI gates exist and run green locally (52 backend tests). No real provider, payment gateway or wallet mutation is implemented yet — that work starts at M03/M05/M06.
+The repository no longer contains only an architecture starter: persistence migrations, identity/authentication with durable lockout and audit, integration-test infrastructure, enforced observability policies and deterministic CI gates exist and run green locally (95 backend tests). No real provider, payment gateway or wallet mutation is implemented yet — that work starts at M03/M05/M06.
 
 Design work was executed ahead of milestone order by explicit product-owner request. The Penpot design system and page models are implemented, but production UI code remains intentionally unimplemented and all engineering dependencies still apply.
 
@@ -21,8 +21,8 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 
 ## Ready to start
 
-- `M02-001` (identity) and `M03-001` (canonical catalog) are unblocked by the completed M00 foundation.
-- `M01-004` (design token bridge), `M01-005` (UI primitives), `M01-006` (host-aware shell) are unblocked engineering tasks.
+- `M02-001` (identity/authentication) is DONE: `User` aggregate with durable lockout lifecycle, PBKDF2-HMACSHA512 credential hashing, audit trail without secrets; public auth endpoints deliberately deferred to M02-002/M02-003 (session + CSRF first).
+- `M02-002` (host-scoped session/token strategy), `M03-001` (canonical catalog) and `M01-004..006` (design token bridge, UI primitives, host-aware shell — still behind the M01 approval gate for production UI) are next.
 - `M01-001..003` remain IN_PROGRESS pending the product-owner design approval evidence gate (live-reference parity pack or recorded side-by-side approval).
 
 ## Locked architecture decisions

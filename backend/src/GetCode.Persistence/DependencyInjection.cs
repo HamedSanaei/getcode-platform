@@ -1,3 +1,5 @@
+using GetCode.Application.Identity;
+using GetCode.Persistence.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,8 @@ public static class DependencyInjection
             ?? throw new InvalidOperationException("ConnectionStrings:Postgres is required.");
 
         services.AddDbContext<GetCodeDbContext>(options => options.UseNpgsql(connectionString));
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IIdentityAuditTrail, IdentityAuditTrail>();
         return services;
     }
 }

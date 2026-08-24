@@ -23,6 +23,8 @@ try
     builder.Services.AddScoped<GetCode.Application.SiteHosts.ICurrentSite>(sp => sp.GetRequiredService<CurrentSiteAccessor>());
     builder.Services.AddGetCodePersistence(builder.Configuration);
     builder.Services.AddGetCodeInfrastructure(builder.Configuration, serviceName, instanceId, builder.Environment.IsDevelopment());
+    // Identity use cases (session/cookie strategy arrives with M02-002; no public endpoints yet).
+    builder.Services.AddScoped<GetCode.Application.Identity.IdentityService>();
 
     var app = builder.Build();
     app.UseMiddleware<CorrelationIdMiddleware>();

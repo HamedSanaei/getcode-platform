@@ -1,6 +1,9 @@
 using GetCode.Application.Common;
+using GetCode.Application.Identity;
 using GetCode.Application.Providers;
+using GetCode.Domain.Identity;
 using GetCode.Infrastructure.Common;
+using GetCode.Infrastructure.Identity;
 using GetCode.Infrastructure.Observability.Logging;
 using GetCode.Infrastructure.Providers.Fake;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +24,8 @@ public static class DependencyInjection
         services.AddSingleton(new LogServiceIdentity(serviceName, instanceId));
         services.AddHostedService<LogArchiveHostedService>();
         services.AddSingleton<IClock, SystemClock>();
+        services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
+        services.AddSingleton(CredentialPolicy.Default);
 
         if (enableFakeProvider)
         {

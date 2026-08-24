@@ -1,24 +1,8 @@
 using GetCode.Domain.Identity;
-using GetCode.Persistence.Identity;
-using GetCode.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace GetCode.Persistence;
-
-public sealed class GetCodeDbContext(DbContextOptions<GetCodeDbContext> options) : DbContext(options)
-{
-    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
-    public DbSet<User> Users => Set<User>();
-    public DbSet<IdentityAuditEventRecord> IdentityAuditEvents => Set<IdentityAuditEventRecord>();
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyMarker).Assembly);
-        Conventions.NamingConventions.Apply(modelBuilder);
-    }
-}
+namespace GetCode.Persistence.Identity;
 
 internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
@@ -32,7 +16,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.PasswordHash).HasMaxLength(512).IsRequired();
         builder.Property(x => x.Status).IsRequired();
         builder.Property(x => x.LockReason).HasMaxLength(256);
-        // Domain events are transient; they are never mapped.
+        // Domain events are transient and never mapped.
         builder.Ignore(x => x.DomainEvents);
     }
 }
