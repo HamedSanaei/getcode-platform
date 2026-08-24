@@ -32,6 +32,7 @@ public sealed class LedgerEntry : Entity<Guid>
         string? referenceType,
         Guid? referenceId,
         string idempotencyKey,
+        string requestHash,
         long resultingBalanceMinor,
         DateTimeOffset createdAtUtc)
         : base(id)
@@ -43,6 +44,7 @@ public sealed class LedgerEntry : Entity<Guid>
         ReferenceType = referenceType;
         ReferenceId = referenceId;
         IdempotencyKey = idempotencyKey;
+        RequestHash = requestHash;
         ResultingBalanceMinor = resultingBalanceMinor;
         CreatedAtUtc = createdAtUtc;
     }
@@ -53,6 +55,7 @@ public sealed class LedgerEntry : Entity<Guid>
     {
         Currency = string.Empty;
         IdempotencyKey = string.Empty;
+        RequestHash = string.Empty;
     }
 
     public Guid WalletId { get; }
@@ -62,6 +65,12 @@ public sealed class LedgerEntry : Entity<Guid>
     public string? ReferenceType { get; }
     public Guid? ReferenceId { get; }
     public string IdempotencyKey { get; }
+
+    /// <summary>
+    /// SHA-256 of the semantic request payload. Same key + same hash replays;
+    /// same key + different hash is an idempotency conflict.
+    /// </summary>
+    public string RequestHash { get; }
     public long ResultingBalanceMinor { get; }
     public DateTimeOffset CreatedAtUtc { get; }
 
@@ -72,6 +81,7 @@ public sealed class LedgerEntry : Entity<Guid>
         LedgerEntryType entryType,
         Money signedAmount,
         string idempotencyKey,
+        string requestHash,
         long resultingBalanceMinor,
         DateTimeOffset nowUtc,
         string? referenceType = null,
@@ -81,6 +91,11 @@ public sealed class LedgerEntry : Entity<Guid>
         if (string.IsNullOrWhiteSpace(idempotencyKey) || idempotencyKey.Length > 128)
         {
             throw new ArgumentException("Idempotency key is required (max 128 chars).", nameof(idempotencyKey));
+        }
+
+        if (string.IsNullOrWhiteSpace(requestHash) || requestHash.Length != 64 || !requestHash.All(Uri.IsHexDigit))
+        {
+            throw new ArgumentException("Request hash must be a SHA-256 hex digest.", nameof(requestHash));
         }
 
         if (signedAmount.AmountMinor == 0)
@@ -103,6 +118,7 @@ public sealed class LedgerEntry : Entity<Guid>
             referenceType is null ? null : referenceType.Trim().ToLowerInvariant(),
             referenceId,
             idempotencyKey.Trim(),
+            requestHash.ToLowerInvariant(),
             resultingBalanceMinor,
             nowUtc);
     }

@@ -49,9 +49,12 @@ public sealed record MutationOutcome(
     string Currency,
     bool ReplayedExistingEntry)
 {
+    /// <summary>Set when Success is false: "insufficient_funds" or "idempotency_conflict".</summary>
+    public string? FailureReason { get; init; }
+
     public static MutationOutcome Applied(long balanceMinorAfter, string currency) => new(true, balanceMinorAfter, currency, false);
     public static MutationOutcome Replayed(long balanceMinorAfter, string currency) => new(true, balanceMinorAfter, currency, true);
-    public static MutationOutcome InsufficientFunds(long balanceMinor, string currency) => new(false, balanceMinor, currency, false);
+    public static MutationOutcome InsufficientFunds(long balanceMinor, string currency) => new(false, balanceMinor, currency, false) { FailureReason = "insufficient_funds" };
 }
 
 /// <summary>Raised when the wallet row changed underneath us (xmin mismatch).</summary>

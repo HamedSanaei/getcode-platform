@@ -1,15 +1,23 @@
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 using GetCode.Application.Catalog;
 using GetCode.Domain.Wallets;
-using System.Text.Json;
 
 namespace GetCode.Application.Wallets;
 
 /// <summary>
 /// Ledger-based money mutations (AGENTS.md rule 7): every wallet mutation
 /// appends exactly one immutable ledger entry inside the same transaction as
-/// the wallet balance update. Idempotency keys make every operation replay-safe;
-/// concurrent debits are serialized by optimistic concurrency (xmin token) with
-/// bounded retry, so overspending is impossible by construction.
+/// the wallet balance update. Idempotency semantics (M05-004):
+/// <list type="bullet">
+/// <item>same idempotency key + same semantic request replays the committed outcome;</item>
+/// <item>same key + conflicting payload is rejected and audited (<c>wallet.idempotency_conflict</c>);</item>
+/// <item>a crash between commit and response is safe: the retry replays the winner.</item>
+/// </list>
+/// Concurrent debits are serialized by optimistic concurrency (xmin token) with
+/// bounded retry + backoff, so overspending is impossible by construction.
 /// </summary>
 public sealed class WalletService(
     IWalletRepository wallets,
@@ -61,9 +69,12 @@ public sealed class WalletService(
             throw new InvalidOperationException($"Invalid amount for {command.EntryType} entries; expected positive.");
         }
 
+        // The semantic identity of this request: identical payloads must replay identically.
+        var requestHash = ComputeRequestHash(command, amount.AmountMinor);
+
         for (var attempt = 0; ; attempt++)
         {
-            var replayed = await TryReplayExistingEntryAsync(command, amount.Currency, cancellationToken);
+            var replayed = await TryReplayExistingEntryAsync(command, requestHash, amount.Currency, cancellationToken);
             if (replayed is not null)
             {
                 return replayed;
@@ -96,6 +107,7 @@ public sealed class WalletService(
                 command.EntryType,
                 entryAmount,
                 command.IdempotencyKey,
+                requestHash,
                 resultingBalance,
                 DateTimeOffset.UtcNow,
                 command.ReferenceType,
@@ -131,9 +143,9 @@ public sealed class WalletService(
                 await unitOfWork.ResetAsync(cancellationToken);
                 await BackOffAsync(attempt, cancellationToken);
                 var winner = await ledger.FindByIdempotencyKeyAsync(command.IdempotencyKey, cancellationToken);
-                if (winner is not null && winner.WalletId == wallet.Id)
+                if (winner is not null)
                 {
-                    return MutationOutcome.Replayed(winner.ResultingBalanceMinor, wallet.Currency);
+                    return await ResolveReplayAsync(winner, requestHash, command.CorrelationId, cancellationToken);
                 }
             }
         }
@@ -149,8 +161,15 @@ public sealed class WalletService(
         return userWallet ?? throw new InvalidOperationException("Wallet does not exist for this user.");
     }
 
-    /// <summary>Duplicate idempotency keys replay the original committed outcome without side effects.</summary>
-    private async Task<MutationOutcome?> TryReplayExistingEntryAsync(WalletMutationCommand command, string currency, CancellationToken cancellationToken)
+    /// <summary>
+    /// M05-004 idempotency contract. Same key + same semantic payload → replay
+    /// the committed outcome; same key + different payload → reject and audit.
+    /// </summary>
+    private async Task<MutationOutcome?> TryReplayExistingEntryAsync(
+        WalletMutationCommand command,
+        string requestHash,
+        string currency,
+        CancellationToken cancellationToken)
     {
         var existingEntry = await ledger.FindByIdempotencyKeyAsync(command.IdempotencyKey, cancellationToken);
         if (existingEntry is null)
@@ -158,13 +177,65 @@ public sealed class WalletService(
             return null;
         }
 
-        if (currency != DefaultCurrency)
+        if (!string.Equals(existingEntry.RequestHash, requestHash, StringComparison.Ordinal))
         {
-            var wallet = await wallets.FindByIdAsync(existingEntry.WalletId, cancellationToken);
-            currency = wallet?.Currency ?? currency;
+            Collect("wallet.idempotency_conflict", new
+            {
+                idempotencyKey = command.IdempotencyKey,
+                storedRequestHash = existingEntry.RequestHash,
+                incomingRequestHash = requestHash,
+            }, command.CorrelationId);
+            await unitOfWork.SaveChangesAsync(cancellationToken); // persist the audit trail
+
+            return new MutationOutcome(false, 0, currency, ReplayedExistingEntry: false)
+            {
+                FailureReason = "idempotency_conflict",
+            };
         }
 
-        return MutationOutcome.Replayed(existingEntry.ResultingBalanceMinor, currency);
+        var entryCurrency = currency;
+        if (entryCurrency != DefaultCurrency)
+        {
+            var wallet = await wallets.FindByIdAsync(existingEntry.WalletId, cancellationToken);
+            entryCurrency = wallet?.Currency ?? entryCurrency;
+        }
+
+        return MutationOutcome.Replayed(existingEntry.ResultingBalanceMinor, entryCurrency);
+    }
+
+    private async Task<MutationOutcome> ResolveReplayAsync(
+        LedgerEntry winner,
+        string requestHash,
+        string? correlationId,
+        CancellationToken cancellationToken)
+    {
+        if (!string.Equals(winner.RequestHash, requestHash, StringComparison.Ordinal))
+        {
+            Collect("wallet.idempotency_conflict", new
+            {
+                idempotencyKey = winner.IdempotencyKey,
+                storedRequestHash = winner.RequestHash,
+                incomingRequestHash = requestHash,
+            }, correlationId);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return new MutationOutcome(false, 0, winner.Currency, ReplayedExistingEntry: false)
+            {
+                FailureReason = "idempotency_conflict",
+            };
+        }
+
+        var wallet = await wallets.FindByIdAsync(winner.WalletId, cancellationToken);
+        return MutationOutcome.Replayed(winner.ResultingBalanceMinor, wallet?.Currency ?? DefaultCurrency);
+    }
+
+    /// <summary>Canonical semantic-request digest: key-scoped payload hash over type/amount/currency/reference.</summary>
+    private static string ComputeRequestHash(WalletMutationCommand command, long amountMinor)
+    {
+        var canonicalPayload = string.Create(CultureInfo.InvariantCulture,
+            $"{command.EntryType}|{amountMinor}|{command.Currency ?? DefaultCurrency}|{command.ReferenceType?.ToLowerInvariant() ?? ""}|{command.ReferenceId?.ToString("D") ?? ""}");
+        var digest = SHA256.HashData(Encoding.UTF8.GetBytes(canonicalPayload));
+        return Convert.ToHexString(digest).ToLowerInvariant();
     }
 
     private void Collect(string type, object payload, string? correlationId) =>

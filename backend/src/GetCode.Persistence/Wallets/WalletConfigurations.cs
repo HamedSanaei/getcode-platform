@@ -39,7 +39,9 @@ internal sealed class LedgerEntryConfiguration : IEntityTypeConfiguration<Ledger
         builder.Property(x => x.ReferenceId).HasColumnName("reference_id");
         // The idempotency identity of every mutation: enforced unique by the database.
         builder.HasIndex(x => x.IdempotencyKey).IsUnique();
-        builder.Property(x => x.ResultingBalanceMinor).HasColumnName("resulting_balance_minor");
+        builder.Property(x => x.IdempotencyKey).HasMaxLength(128);
+        // SHA-256 of the semantic request; same key + same hash replays, different hash is a conflict.
+        builder.Property(x => x.RequestHash).HasColumnName("request_hash").HasMaxLength(64).IsRequired(); builder.Property(x => x.ResultingBalanceMinor).HasColumnName("resulting_balance_minor");
         builder.Property(x => x.CreatedAtUtc).HasColumnName("created_at_utc");
 
         builder

@@ -62,6 +62,72 @@ public sealed class WalletLedgerTests(DatabaseFixture database)
         Assert.Single(await scope.EntriesAsync(walletId));
     }
 
+    /// <summary>
+    /// M05-004: same key + conflicting payload is rejected and audited; the
+    /// ledger is untouched by the rejected attempt.
+    /// </summary>
+    [Fact]
+    public async Task Same_key_with_conflicting_payload_is_rejected_and_audited()
+    {
+        await using var scope = new WalletScope(database);
+        var ct = TestContext.Current.CancellationToken;
+        var userId = Guid.CreateVersion7();
+        var walletId = await scope.OpenWalletAsync(userId);
+
+        await scope.Service.DepositAsync(Cmd(userId, "key-x", LedgerEntryType.Deposit, 10m), ct);
+
+        // Same key, different amount: conflict.
+        var conflictAmount = await scope.Service.DepositAsync(Cmd(userId, "key-x", LedgerEntryType.Deposit, 11m), ct);
+        Assert.False(conflictAmount.Success);
+        Assert.Equal("idempotency_conflict", conflictAmount.FailureReason);
+
+        // Same key, different semantic type: conflict too (deposit vs purchase flow).
+        var conflictType = await scope.Service.PurchaseAsync(Cmd(userId, "key-x", LedgerEntryType.Purchase, 10m), ct);
+        Assert.False(conflictType.Success);
+        Assert.Equal("idempotency_conflict", conflictType.FailureReason);
+
+        Assert.Single(await scope.EntriesAsync(walletId));
+        Assert.Equal(1000, await scope.BalanceAsync(walletId));
+
+        // The conflicts were audited through the outbox.
+        var context = scope.DbForProbe();
+        var conflictEvents = await context.OutboxMessages
+            .Where(m => m.Type == "wallet.idempotency_conflict")
+            .ToListAsync(ct);
+        Assert.Equal(2, conflictEvents.Count);
+    }
+
+    /// <summary>
+    /// M05-004 crash/retry safety: a client retry after the committing process
+    /// died replays the committed entry instead of creating a duplicate.
+    /// </summary>
+    [Fact]
+    public async Task Crash_retry_after_commit_replays_instead_of_duplicating()
+    {
+        Guid userId;
+        decimal committedBalance;
+
+        // "Process" one: open wallet and commit a deposit, then die without returning anything.
+        {
+            await using var crashedScope = new WalletScope(database, ownsCleanup: false); // data must survive the "crash"
+            userId = Guid.CreateVersion7();
+            await crashedScope.OpenWalletAsync(userId);
+            var outcome = await crashedScope.Service.DepositAsync(Cmd(userId, "crash-key", LedgerEntryType.Deposit, 42m), TestContext.Current.CancellationToken);
+            Assert.True(outcome.Success);
+            committedBalance = outcome.BalanceMinorAfter;
+        }
+
+        // "Process" two (fresh host state): the retried request must replay, not double-apply.
+        await using var retryScope = new WalletScope(database);
+        var retry = await retryScope.Service.DepositAsync(Cmd(userId, "crash-key", LedgerEntryType.Deposit, 42m), TestContext.Current.CancellationToken);
+
+        Assert.True(retry.Success);
+        Assert.True(retry.ReplayedExistingEntry);
+        Assert.Equal(committedBalance, retry.BalanceMinorAfter);
+        Assert.Single(await retryScope.EntriesAsync(await retryScope.WalletIdAsync(userId)));
+        Assert.Equal(committedBalance, await retryScope.BalanceAsync(await retryScope.WalletIdAsync(userId)));
+    }
+
     [Fact]
     public async Task Insufficient_balance_fails_without_negative_state()
     {
@@ -154,6 +220,9 @@ public sealed class WalletLedgerTests(DatabaseFixture database)
 
         public async Task<long> BalanceAsync(Guid walletId) =>
             (await Db().Wallets.AsNoTracking().FirstAsync(w => w.Id == walletId, TestContext.Current.CancellationToken)).BalanceMinor;
+
+        /// <summary>Direct context access for outbox assertions (probe use).</summary>
+        public Persistence.GetCodeDbContext DbForProbe() => Db();
 
         private Persistence.GetCodeDbContext Db() =>
             _serviceScope.ServiceProvider.GetRequiredService<Persistence.GetCodeDbContext>();

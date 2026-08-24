@@ -95,19 +95,23 @@ public sealed class WalletTests
 public sealed class LedgerEntryTests
 {
     private static readonly DateTimeOffset Now = new(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+    private const string Hash = "a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e"; // any 64-hex
 
     [Fact]
-    public void Append_validates_idempotency_key_and_nonzero_amount()
+    public void Append_validates_idempotency_key_hash_and_nonzero_amount()
     {
         var walletId = Guid.CreateVersion7();
         var amount = Money.FromMajor(5m, "USD");
 
-        _ = LedgerEntry.Append(walletId, LedgerEntryType.Deposit, amount, "key-1", 500, Now);
+        _ = LedgerEntry.Append(walletId, LedgerEntryType.Deposit, amount, "key-1", Hash, 500, Now);
 
-        Assert.Throws<ArgumentException>(() => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, amount, " ", 500, Now));
-        Assert.Throws<ArgumentException>(() => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, amount, new string('x', 129), 500, Now));
+        Assert.Throws<ArgumentException>(() => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, amount, " ", Hash, 500, Now));
+        Assert.Throws<ArgumentException>(() => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, amount, new string('x', 129), Hash, 500, Now));
         _ = Assert.Throws<ArgumentException>(
-            () => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, Money.Zero("USD"), "key-2", 500, Now));
+            () => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, Money.Zero("USD"), "key-2", Hash, 500, Now));
+
+        // Request hash must be a SHA-256 hex digest.
+        Assert.Throws<ArgumentException>(() => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, amount, "key-3", "not-a-hash", 500, Now));
     }
 
     [Fact]
@@ -115,16 +119,17 @@ public sealed class LedgerEntryTests
     {
         var walletId = Guid.CreateVersion7();
         _ = Assert.Throws<InvalidOperationException>(
-            () => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, Money.FromMajor(-5m, "USD"), "k", 0, Now));
+            () => LedgerEntry.Append(walletId, LedgerEntryType.Deposit, Money.FromMajor(-5m, "USD"), "k", Hash, 0, Now));
     }
 
     [Fact]
-    public void Reference_is_normalized()
+    public void Reference_is_normalized_and_hash_lowercased()
     {
         var entry = LedgerEntry.Append(
-            Guid.CreateVersion7(), LedgerEntryType.Refund, Money.FromMajor(5m, "USD"), "k", 500, Now,
+            Guid.CreateVersion7(), LedgerEntryType.Refund, Money.FromMajor(5m, "USD"), "k", Hash.ToUpperInvariant(), 500, Now,
             referenceType: "ORDER", referenceId: Guid.CreateVersion7());
         Assert.Equal("order", entry.ReferenceType);
+        Assert.Equal(Hash, entry.RequestHash);
         Assert.True(entry.IsCredit);
     }
 }
