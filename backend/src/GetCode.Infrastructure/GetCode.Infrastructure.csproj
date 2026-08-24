@@ -4,6 +4,9 @@
     <RootNamespace>GetCode.Infrastructure</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="GetCode.ObservabilityTests" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../GetCode.Application/GetCode.Application.csproj" />
     <ProjectReference Include="../GetCode.Domain/GetCode.Domain.csproj" />
     <PackageReference Include="Serilog.AspNetCore" />

@@ -33,6 +33,7 @@ public static partial class StructuredLogging
             .Enrich.WithProperty("instance", instanceId)
             .Enrich.WithProperty("environment", environment)
             .Enrich.WithProperty("appVersion", appVersion)
+            .Enrich.With<RedactionEnricher>()
             .WriteTo.Console(formatter)
             .WriteTo.File(
                 formatter,

@@ -4,8 +4,16 @@ public static class LoggingRedactionPolicy
 {
     public static readonly IReadOnlySet<string> ForbiddenFieldNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
-        "authorization", "cookie", "set-cookie", "password", "passwd", "secret", "api-key", "apikey",
-        "access-token", "accesstoken", "refresh-token", "refreshtoken", "otp", "sms-body", "smsbody"
+        // Credentials & auth headers
+        "authorization", "proxy-authorization", "cookie", "set-cookie", "password", "passwd",
+        "secret", "client-secret", "api-key", "apikey", "x-api-key",
+        "access-token", "accesstoken", "refresh-token", "refreshtoken", "id-token", "idtoken",
+        "bearer", "jwt",
+        // Provider/payment secrets
+        "provider-token", "providertoken", "payment-credentials", "card-number", "cardnumber",
+        "pan", "cvv", "cvc",
+        // Customer-sensitive content
+        "otp", "sms-body", "smsbody",
     };
 
     public static string MaskPhone(string? value)

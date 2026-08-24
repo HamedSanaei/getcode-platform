@@ -36,7 +36,14 @@ internal sealed partial class LogArchiveHostedService(
         }
     }
 
-    private async Task ArchiveCompletedDaysAsync(CancellationToken cancellationToken)
+    /// <summary>
+    /// Archives every closed UTC-day JSONL file into
+    /// {root}/{YYYY}/{MM}/{service}/{yyyy-MM-dd}-{instance}[-chunk].jsonl.gz.
+    /// Idempotent: a completed archive is never written twice; a crashed run
+    /// (gzip present but source not yet removed) self-heals by verifying the
+    /// archived byte count before discarding the source.
+    /// </summary>
+    internal async Task ArchiveCompletedDaysAsync(CancellationToken cancellationToken)
     {
         var activeDirectory = Path.Combine(_options.RootPath, "active", identity.ServiceName, identity.InstanceId);
         if (!Directory.Exists(activeDirectory))
@@ -44,12 +51,13 @@ internal sealed partial class LogArchiveHostedService(
             return;
         }
 
-        var currentRollingDay = DateOnly.FromDateTime(DateTime.Now);
+        // Services run with TZ=UTC; the rolling filename date is treated as the UTC day it covers.
+        var currentUtcDay = DateOnly.FromDateTime(DateTime.UtcNow);
         foreach (var sourcePath in Directory.EnumerateFiles(activeDirectory, "*.jsonl", SearchOption.TopDirectoryOnly))
         {
             cancellationToken.ThrowIfCancellationRequested();
             var match = RolledLogRegex().Match(Path.GetFileName(sourcePath));
-            if (!match.Success || !DateOnly.TryParseExact(match.Groups["date"].Value, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var day) || day >= currentRollingDay)
+            if (!match.Success || !DateOnly.TryParseExact(match.Groups["date"].Value, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var day) || day >= currentUtcDay)
             {
                 continue;
             }
@@ -61,7 +69,17 @@ internal sealed partial class LogArchiveHostedService(
 
             if (File.Exists(destination))
             {
-                logger.LogWarning("log.archive.destination_exists {Destination}", destination);
+                // Previous run may have crashed between gzip creation and source deletion.
+                if (await ArchivedLengthMatchesAsync(destination, sourcePath, cancellationToken))
+                {
+                    File.Delete(sourcePath);
+                    logger.LogInformation("log.archive.recovered_after_crash {Source} {Destination}", sourcePath, destination);
+                }
+                else
+                {
+                    logger.LogWarning("log.archive.destination_exists {Destination}", destination);
+                }
+
                 continue;
             }
 
@@ -86,6 +104,36 @@ internal sealed partial class LogArchiveHostedService(
                     File.Delete(tempDestination);
                 }
             }
+        }
+    }
+
+    private static async Task<bool> ArchivedLengthMatchesAsync(string gzPath, string sourcePath, CancellationToken cancellationToken)
+    {
+        try
+        {
+            long archivedBytes;
+            await using (var gzStream = new FileStream(gzPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            await using (var gzip = new GZipStream(gzStream, CompressionMode.Decompress))
+            {
+                archivedBytes = 0;
+                var buffer = new byte[81920];
+                int read;
+                while ((read = await gzip.ReadAsync(buffer.AsMemory(0, buffer.Length), cancellationToken)) > 0)
+                {
+                    archivedBytes += read;
+                }
+            }
+
+            var sourceInfo = new FileInfo(sourcePath);
+            return sourceInfo.Exists && sourceInfo.Length == archivedBytes;
+        }
+        catch (IOException)
+        {
+            return false;
+        }
+        catch (InvalidDataException)
+        {
+            return false;
         }
     }
 }
