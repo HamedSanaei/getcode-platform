@@ -12,6 +12,7 @@
     "tokens:generate": "node scripts/tokens.mjs generate",
     "tokens:check": "node scripts/tokens.mjs check",
     "lint": "eslint . --max-warnings=0",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "audit": "npm audit --audit-level=high"
   },
@@ -21,11 +22,19 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.6",
+    "@types/jest-axe": "^3.5.9",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.1.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.3.0",
-    "typescript": "^5.9.0"
+    "jest-axe": "^11.0.0",
+    "jsdom": "^30.0.1",
+    "typescript": "^5.9.0",
+    "vitest": "^4.1.11"
   }
 }

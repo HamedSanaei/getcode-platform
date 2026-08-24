@@ -71,6 +71,8 @@ jobs:
       # M01-004: token snapshot schema + drift gate (fails if Penpot export or tokens.css changed without regeneration)
       - run: npm run tokens:check
       - run: npm run lint
+      # M01-005: component interaction + accessibility tests (vitest + testing-library + axe)
+      - run: npm test
       - run: npm run typecheck
       - run: npm run build
         env:

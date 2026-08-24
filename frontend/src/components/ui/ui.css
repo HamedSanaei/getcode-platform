@@ -1,0 +1,182 @@
+/*
+ * Shared UI primitives (M01-005) — implementation counterparts of the
+ * `GetCode · 02 Components` Penpot page. Every rule consumes the generated
+ * token bridge (src/styles/tokens.css, M01-004); no raw design values here.
+ * Logical properties keep all primitives RTL-safe without direction branches.
+ */
+
+/* --- Button — GetCode / Button Variants (Style × State × Size) --- */
+.gc-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gc-space-2);
+  border: var(--gc-border-width-strong) solid transparent;
+  border-radius: var(--gc-radius-md);
+  font-family: inherit;
+  font-weight: var(--gc-font-weight-semibold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.gc-button:focus-visible {
+  outline: var(--gc-border-width-strong) solid var(--gc-color-brand-focus);
+  outline-offset: var(--gc-space-1);
+}
+.gc-button:disabled {
+  opacity: var(--gc-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.gc-button--primary { background: var(--gc-color-brand-primary); color: var(--gc-color-base-white); }
+.gc-button--primary:hover:not(:disabled) { background: var(--gc-color-brand-primary-hover); }
+.gc-button--accent { background: var(--gc-color-brand-accent); color: var(--gc-color-ink-900); }
+.gc-button--accent:hover:not(:disabled) { background: var(--gc-color-brand-accent-hover); }
+.gc-button--secondary {
+  background: var(--gc-color-surface-card);
+  color: var(--gc-color-ink-900);
+  border-color: var(--gc-color-border-subtle);
+}
+.gc-button--secondary:hover:not(:disabled) { background: var(--gc-color-surface-soft); }
+.gc-button--ghost { background: transparent; color: var(--gc-color-brand-primary); }
+.gc-button--ghost:hover:not(:disabled) { background: var(--gc-color-brand-primary-soft); }
+
+.gc-button--sm { min-height: 32px; padding-inline: var(--gc-space-3); font-size: var(--gc-font-size-200); }
+.gc-button--md { min-height: 40px; padding-inline: var(--gc-space-4); font-size: var(--gc-font-size-300); }
+.gc-button--lg { min-height: 48px; padding-inline: var(--gc-space-6); font-size: var(--gc-font-size-400); }
+
+/* --- TextField — GetCode / Field Variants (State × Type) --- */
+.gc-field { display: flex; flex-direction: column; gap: var(--gc-space-2); }
+.gc-field__label { font-size: var(--gc-font-size-200); font-weight: var(--gc-font-weight-medium); color: var(--gc-color-ink-700); }
+/* Visually hidden but announced: used by TextField hideLabel (never display:none). */
+.gc-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.gc-field__input {
+  min-height: 40px;
+  padding-inline: var(--gc-space-3);
+  background: var(--gc-color-surface-card);
+  color: var(--gc-color-ink-900);
+  border: var(--gc-border-width-hairline) solid var(--gc-color-border-subtle);
+  border-radius: var(--gc-radius-sm);
+  font-size: var(--gc-font-size-300);
+  font-family: inherit;
+}
+.gc-field__input:hover:not(:disabled) { border-color: var(--gc-color-ink-300); }
+.gc-field__input:focus-visible {
+  outline: var(--gc-border-width-strong) solid var(--gc-color-brand-focus);
+  outline-offset: 0;
+}
+.gc-field__input:disabled { opacity: var(--gc-opacity-disabled); cursor: not-allowed; }
+.gc-field__input[aria-invalid='true'] { border-color: var(--gc-color-danger); }
+.gc-field__error { font-size: var(--gc-font-size-100); color: var(--gc-color-danger); }
+.gc-field__hint { font-size: var(--gc-font-size-100); color: var(--gc-color-ink-500); }
+
+/* --- Tabs — GetCode / Tab Variants (State) --- */
+.gc-tabs__list {
+  display: flex;
+  gap: var(--gc-space-1);
+  border-block-end: var(--gc-border-width-hairline) solid var(--gc-color-border-subtle);
+}
+.gc-tab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-block-end: var(--gc-border-width-strong) solid transparent;
+  margin-block-end: calc(-1 * var(--gc-border-width-hairline));
+  padding: var(--gc-space-2) var(--gc-space-4);
+  font-size: var(--gc-font-size-300);
+  font-weight: var(--gc-font-weight-medium);
+  color: var(--gc-color-ink-500);
+  cursor: pointer;
+}
+.gc-tab:hover { color: var(--gc-color-ink-700); }
+.gc-tab:focus-visible {
+  outline: var(--gc-border-width-strong) solid var(--gc-color-brand-focus);
+  outline-offset: calc(-1 * var(--gc-space-1));
+  border-radius: var(--gc-radius-sm);
+}
+.gc-tab[aria-selected='true'] {
+  color: var(--gc-color-brand-primary);
+  font-weight: var(--gc-font-weight-semibold);
+  border-block-end-color: var(--gc-color-brand-primary);
+}
+
+/* --- Badge — GetCode / Badge Variants (Tone) --- */
+.gc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--gc-space-3);
+  padding-block: calc(var(--gc-space-1) / 2);
+  border-radius: var(--gc-radius-pill);
+  font-size: var(--gc-font-size-100);
+  font-weight: var(--gc-font-weight-semibold);
+}
+.gc-badge--neutral { background: var(--gc-color-surface-soft); color: var(--gc-color-ink-700); }
+.gc-badge--success { background: var(--gc-color-successmuted); color: var(--gc-color-success); }
+.gc-badge--warning { background: var(--gc-color-warningmuted); color: var(--gc-color-warning); }
+.gc-badge--danger { background: var(--gc-color-dangermuted); color: var(--gc-color-danger); }
+.gc-badge--info { background: var(--gc-color-infomuted); color: var(--gc-color-info); }
+.gc-badge--brand { background: var(--gc-color-brand-primary-soft); color: var(--gc-color-brand-primary); }
+
+/* --- ServiceRow — GetCode / Service Row Variants (State) --- */
+.gc-service-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gc-space-4);
+  inline-size: 100%;
+  padding: var(--gc-space-4);
+  background: var(--gc-color-surface-card);
+  border: var(--gc-border-width-hairline) solid var(--gc-color-border-subtle);
+  border-radius: var(--gc-radius-md);
+  text-align: start;
+}
+.gc-service-row:hover:not([aria-disabled='true']) { background: var(--gc-color-surface-soft); }
+.gc-service-row[aria-disabled='true'] { opacity: var(--gc-opacity-muted); }
+.gc-service-row__body { display: flex; flex-direction: column; gap: var(--gc-space-1); flex: 1; }
+.gc-service-row__title { font-size: var(--gc-font-size-300); font-weight: var(--gc-font-weight-semibold); color: var(--gc-color-ink-900); }
+.gc-service-row__meta { font-size: var(--gc-font-size-200); color: var(--gc-color-ink-500); }
+.gc-service-row__price { font-size: var(--gc-font-size-400); font-weight: var(--gc-font-weight-bold); color: var(--gc-color-brand-primary); }
+
+/* --- Alert — GetCode / Alert Variants (Tone) --- */
+.gc-alert {
+  display: flex;
+  gap: var(--gc-space-3);
+  padding: var(--gc-space-4);
+  border-radius: var(--gc-radius-md);
+  border-inline-start: var(--gc-border-width-strong) solid;
+  font-size: var(--gc-font-size-300);
+}
+.gc-alert--success { background: var(--gc-color-successmuted); border-color: var(--gc-color-success); color: var(--gc-color-ink-700); }
+.gc-alert--warning { background: var(--gc-color-warningmuted); border-color: var(--gc-color-warning); color: var(--gc-color-ink-700); }
+.gc-alert--danger { background: var(--gc-color-dangermuted); border-color: var(--gc-color-danger); color: var(--gc-color-ink-700); }
+.gc-alert--info { background: var(--gc-color-infomuted); border-color: var(--gc-color-info); color: var(--gc-color-ink-700); }
+
+/* --- SidebarItem — GetCode / Sidebar Item Variants (State) --- */
+.gc-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: var(--gc-space-3);
+  padding: var(--gc-space-3) var(--gc-space-4);
+  border-radius: var(--gc-radius-md);
+  font-size: var(--gc-font-size-300);
+  color: var(--gc-color-ink-700);
+  text-decoration: none;
+}
+.gc-sidebar-item:hover { background: var(--gc-color-surface-soft); }
+.gc-sidebar-item:focus-visible {
+  outline: var(--gc-border-width-strong) solid var(--gc-color-brand-focus);
+  outline-offset: calc(-1 * var(--gc-space-1));
+}
+.gc-sidebar-item[aria-current='page'] {
+  background: var(--gc-color-brand-primary-soft);
+  color: var(--gc-color-brand-primary);
+  font-weight: var(--gc-font-weight-semibold);
+}
