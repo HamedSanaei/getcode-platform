@@ -1,5 +1,6 @@
 using GetCode.Application.Catalog;
 using GetCode.Application.Common;
+using GetCode.Domain.Catalog;
 using GetCode.IntegrationTests.Infrastructure;
 using GetCode.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ public sealed class CatalogIntegrationTests(DatabaseFixture database)
 
         public CatalogQueryService Queries => ServiceScope.ServiceProvider.GetRequiredService<CatalogQueryService>();
 
+        public IServiceProvider ServiceProvider => ServiceScope.ServiceProvider;
+
         public GetCodeDbContext NewContext() => ServiceScope.ServiceProvider.GetRequiredService<GetCodeDbContext>();
 
         /// <summary>
@@ -39,6 +42,7 @@ public sealed class CatalogIntegrationTests(DatabaseFixture database)
         public async ValueTask ResetCatalogAsync()
         {
             var context = NewContext();
+            await context.ProductSkus.ExecuteDeleteAsync(TestContext.Current.CancellationToken);
             await context.Countries.ExecuteDeleteAsync(TestContext.Current.CancellationToken);
             await context.Services.ExecuteDeleteAsync(TestContext.Current.CancellationToken);
             await context.OutboxMessages.Where(m => m.Type!.StartsWith("catalog.")).ExecuteDeleteAsync(TestContext.Current.CancellationToken);
@@ -117,5 +121,43 @@ public sealed class CatalogIntegrationTests(DatabaseFixture database)
         var visible = await catalog.Queries.ListServicesAsync(includeDisabled: false, cultureCode: "en", TestContext.Current.CancellationToken);
 
         Assert.Single(visible, v => v.StableKey == "telegram");
+    }
+
+    /// <summary>M03-002: SKU identity triple roundtrip through real PostgreSQL.</summary>
+    [Fact]
+    public async Task Product_sku_upsert_is_unique_per_identity_and_query_composes_names()
+    {
+        await using var catalog = new CatalogScope(database);
+        await catalog.ResetCatalogAsync();
+
+        var skuAdmin = catalog.ServiceProvider.GetRequiredService<ProductSkuAdminService>();
+        var skuQueries = catalog.ServiceProvider.GetRequiredService<ProductCatalogQueryService>();
+
+        await catalog.Admin.UpsertCountryAsync(new UpsertCountryCommand("ir", "Iran", new Dictionary<string, string> { ["fa"] = "\u0627\u06cc\u0631\u0627\u0646" }), TestContext.Current.CancellationToken);
+        await catalog.Admin.UpsertServiceAsync(new UpsertServiceCommand("telegram", "Telegram"), TestContext.Current.CancellationToken);
+        await catalog.Admin.SetAvailabilityAsync(new SetCatalogAvailabilityCommand("country", "IR", true), TestContext.Current.CancellationToken);
+        await catalog.Admin.SetAvailabilityAsync(new SetCatalogAvailabilityCommand("service", "telegram", true), TestContext.Current.CancellationToken);
+
+        // Same identity twice: upsert is idempotent, no duplicate rows.
+        var firstId = await skuAdmin.UpsertAsync(new UpsertProductSkuCommand("IR", "telegram", ProductType.Activation), TestContext.Current.CancellationToken);
+        var secondId = await skuAdmin.UpsertAsync(new UpsertProductSkuCommand("ir", "Telegram", ProductType.Activation), TestContext.Current.CancellationToken);
+        Assert.Equal(firstId, secondId);
+
+        // Rental for the same pair is a distinct product.
+        await skuAdmin.UpsertAsync(new UpsertProductSkuCommand("IR", "telegram", ProductType.Rental), TestContext.Current.CancellationToken);
+
+        // Nothing is offered yet.
+        Assert.Empty(await skuQueries.ListOfferedSkusAsync("en", TestContext.Current.CancellationToken));
+
+        await skuAdmin.SetOfferedAsync(new SetProductSkuOfferedCommand("ir", "telegram", ProductType.Activation, Offered: true), TestContext.Current.CancellationToken);
+        var offered = await skuQueries.ListOfferedSkusAsync("fa", TestContext.Current.CancellationToken);
+
+        var view = Assert.Single(offered);
+        Assert.Equal("IR-telegram-activation", view.StableKey);
+        Assert.Equal("\u0627\u06cc\u0631\u0627\u0646", view.CountryDisplayName); // localized name wins
+        Assert.Equal(ProductType.Activation, view.ProductType);
+
+        var context = catalog.NewContext();
+        Assert.Equal(2, await context.ProductSkus.CountAsync(TestContext.Current.CancellationToken));
     }
 }

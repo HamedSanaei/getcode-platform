@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IIdentityAuditTrail, IdentityAuditTrail>();
         services.AddScoped<ICountryRepository, CountryRepository>();
         services.AddScoped<IServiceRepository, ServiceRepository>();
+        services.AddScoped<IProductSkuRepository, ProductSkuRepository>();
         services.AddScoped<IOutboxCollector, OutboxCollector>();
         services.AddScoped<ICatalogUnitOfWork, CatalogUnitOfWork>();
         return services;

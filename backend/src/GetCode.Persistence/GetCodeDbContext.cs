@@ -13,6 +13,7 @@ public sealed class GetCodeDbContext(DbContextOptions<GetCodeDbContext> options)
     public DbSet<IdentityAuditEventRecord> IdentityAuditEvents => Set<IdentityAuditEventRecord>();
     public DbSet<Country> Countries => Set<Country>();
     public DbSet<Service> Services => Set<Service>();
+    public DbSet<ProductSku> ProductSkus => Set<ProductSku>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

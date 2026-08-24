@@ -25,7 +25,7 @@ public sealed class CatalogAdminService(
     IOutboxCollector outbox,
     ICatalogUnitOfWork unitOfWork)
 {
-    private static readonly JsonSerializerOptions PayloadOptions = new(JsonSerializerDefaults.Web);
+    internal static readonly JsonSerializerOptions PayloadOptions = new(JsonSerializerDefaults.Web);
 
     public async Task<Guid> UpsertCountryAsync(UpsertCountryCommand command, CancellationToken cancellationToken)
     {

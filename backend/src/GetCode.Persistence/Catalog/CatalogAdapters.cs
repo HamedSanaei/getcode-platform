@@ -53,6 +53,18 @@ internal sealed class ServiceRepository(GetCodeDbContext context) : IServiceRepo
     }
 }
 
+internal sealed class ProductSkuRepository(GetCodeDbContext context) : IProductSkuRepository
+{
+    public Task<ProductSku?> FindAsync(Guid countryId, Guid serviceId, ProductType productType, CancellationToken cancellationToken) =>
+        context.ProductSkus.FirstOrDefaultAsync(s =>
+            s.CountryId == countryId && s.ServiceId == serviceId && s.ProductType == productType, cancellationToken);
+
+    public void Add(ProductSku sku) => context.ProductSkus.Add(sku);
+
+    public async Task<IReadOnlyList<ProductSku>> ListOfferedAsync(CancellationToken cancellationToken) =>
+        await context.ProductSkus.Where(s => s.IsOffered).ToListAsync(cancellationToken);
+}
+
 /// <summary>
 /// Stamps ambient trace/correlation context onto collected notifications and
 /// persists them in the same unit of work as the triggering state change.

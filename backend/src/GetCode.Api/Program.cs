@@ -28,6 +28,8 @@ try
     // Catalog admin/read use cases (public catalog API surface arrives with the storefront milestone).
     builder.Services.AddScoped<GetCode.Application.Catalog.CatalogAdminService>();
     builder.Services.AddScoped<GetCode.Application.Catalog.CatalogQueryService>();
+    builder.Services.AddScoped<GetCode.Application.Catalog.ProductSkuAdminService>();
+    builder.Services.AddScoped<GetCode.Application.Catalog.ProductCatalogQueryService>();
 
     var app = builder.Build();
     app.UseMiddleware<CorrelationIdMiddleware>();
