@@ -31,6 +31,12 @@ Map to `Checkout / Desktop`, `Checkout / Mobile` and `Payment / Results` on `Get
 - Keep provider/payment DTOs contained in Infrastructure when applicable.
 - Update `docs/STATUS.md` and this task status when completed.
 
+## Progress (2026-08-24, in progress)
+
+- Backend groundwork landed: `POST /api/checkout` (authenticated + CSRF) delegating to the M06-002 CheckoutService. Server revalidates the quote (never trusts client price); duplicate submits with a stable client-side idempotency key deterministically return the SAME order (`replayed=true`). Expired/unknown/tampered quotes map to explicit 410/404/409 responses.
+- Integration test: full auth+CSRF handshake -> issue quote -> triple submit -> same orderId; tampered amount rejected 409.
+- NEXT: React `/checkout` page mapping Penpot frames (Checkout / Desktop `...8776b3a59fe4`, Mobile `...8776b4fd84a1`, Payment / Results `...8776b4a88636`) incl. expiry countdown/refresh and duplicate-submit disabled state; then browser duplicate-submit test.
+
 ## Agent handoff
 
 Record: files changed, decisions/assumptions, commands/tests run, migration/config/operations impact, residual risk and next unblocked task.
