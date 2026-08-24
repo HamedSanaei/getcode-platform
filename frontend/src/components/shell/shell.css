@@ -1,0 +1,94 @@
+/*
+ * Application shell (M01-006) — Header Desktop + Bottom Mobile navigation
+ * from `GetCode · 10 Responsive & States`. Token-driven, brand-agnostic:
+ * the same markup serves both hosts; colors come from the data-brand scope.
+ */
+
+.gc-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--gc-color-surface-canvas);
+  color: var(--gc-color-ink-900);
+}
+
+.gc-header {
+  display: flex;
+  align-items: center;
+  gap: var(--gc-space-6);
+  padding: var(--gc-space-4);
+  background: var(--gc-color-surface-card);
+  border-block-end: var(--gc-border-width-hairline) solid var(--gc-color-border-subtle);
+}
+.gc-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--gc-space-2);
+  font-weight: var(--gc-font-weight-bold);
+  font-size: var(--gc-font-size-400);
+  color: var(--gc-color-ink-900);
+  text-decoration: none;
+}
+.gc-header__logo {
+  inline-size: var(--gc-space-6);
+  block-size: var(--gc-space-6);
+  border-radius: var(--gc-radius-sm);
+  background: linear-gradient(135deg, var(--gc-color-brand-primary), var(--gc-color-brand-accent));
+}
+.gc-header__nav {
+  display: flex;
+  gap: var(--gc-space-5);
+}
+.gc-header__nav a {
+  color: var(--gc-color-ink-700);
+  text-decoration: none;
+  font-size: var(--gc-font-size-300);
+  padding: var(--gc-space-1) var(--gc-space-2);
+  border-radius: var(--gc-radius-sm);
+}
+.gc-header__nav a:hover { background: var(--gc-color-surface-soft); color: var(--gc-color-ink-900); }
+.gc-header__nav a:focus-visible {
+  outline: var(--gc-border-width-strong) solid var(--gc-color-brand-focus);
+  outline-offset: var(--gc-space-1);
+}
+
+.gc-shell__main {
+  flex: 1;
+  inline-size: 100%;
+  max-inline-size: 72rem;
+  margin-inline: auto;
+  padding: var(--gc-space-6) var(--gc-space-4);
+  /* Keep clear of the mobile bottom navigation. */
+  padding-block-end: calc(var(--gc-space-20));
+}
+
+.gc-bottom-nav {
+  position: fixed;
+  inset-block-end: 0;
+  inset-inline: 0;
+  display: none;
+  justify-content: space-around;
+  background: var(--gc-color-surface-card);
+  border-block-start: var(--gc-border-width-hairline) solid var(--gc-color-border-subtle);
+  padding-block: var(--gc-space-2);
+}
+.gc-bottom-nav__item {
+  color: var(--gc-color-ink-500);
+  text-decoration: none;
+  font-size: var(--gc-font-size-200);
+  padding: var(--gc-space-1) var(--gc-space-3);
+  border-radius: var(--gc-radius-sm);
+}
+.gc-bottom-nav__item[aria-current='page'] {
+  color: var(--gc-color-brand-primary);
+  font-weight: var(--gc-font-weight-semibold);
+}
+.gc-bottom-nav__item:focus-visible {
+  outline: var(--gc-border-width-strong) solid var(--gc-color-brand-focus);
+  outline-offset: 0;
+}
+
+@media (max-width: 48rem) {
+  .gc-header__nav { display: none; }
+  .gc-bottom-nav { display: flex; }
+}
