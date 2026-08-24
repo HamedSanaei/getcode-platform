@@ -56,7 +56,7 @@
 | [M08-003](../../docs/tasks/M08-003-implement-customer-order-dashboard-ux.md) | M08 | P0 | TODO | M06-005, M01-007 | Implement customer order/dashboard UX |
 | [M08-004](../../docs/tasks/M08-004-implement-activation-otp-live-experience.md) | M08 | P0 | TODO | M07-003, M08-003 | Implement activation/OTP live experience |
 | [M08-005](../../docs/tasks/M08-005-implement-wallet-payment-history-ux.md) | M08 | P1 | TODO | M05-003, M06-004 | Implement wallet/payment history UX |
-| [M09-001](../../docs/tasks/M09-001-implement-admin-shell-and-permission-aware-navigation.md) | M09 | P0 | TODO | M02-004, M01-007 | Implement admin shell and permission-aware navigation |
+| [M09-001](../../docs/tasks/M09-001-implement-admin-shell-and-permission-aware-navigation.md) | M09 | P0 | DONE | M02-004, M01-007 | Implement admin shell and permission-aware navigation |
 | [M09-002](../../docs/tasks/M09-002-implement-provider-operations-dashboard.md) | M09 | P1 | TODO | M04-003, M09-001 | Implement provider operations dashboard |
 | [M09-003](../../docs/tasks/M09-003-implement-catalog-provider-mapping-management.md) | M09 | P0 | TODO | M03-003, M09-001 | Implement catalog/provider mapping management |
 | [M09-004](../../docs/tasks/M09-004-implement-pricing-and-promotion-administration.md) | M09 | P1 | TODO | M05-001, M09-001 | Implement pricing and promotion administration |

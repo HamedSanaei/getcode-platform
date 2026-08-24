@@ -20,6 +20,7 @@ Use this to avoid broad repository scans.
 | UI shell / site host | `frontend/src/app/`, `frontend/src/lib/site/` |
 | UI primitives | `frontend/src/components/ui/` |
 | Visual regression harness | `frontend/playwright.config.ts`, `frontend/tests/visual/`, fixture `frontend/src/app/visual-gallery/`, workflow doc `frontend/VISUAL.md` |
+| Admin shell & authorization boundary | `backend/src/GetCode.Api/Security/` (session auth + permission policy), `backend/src/GetCode.Api/Endpoints/AdminEndpoints.cs`, `frontend/src/components/admin/AdminShell.tsx`, `frontend/src/app/admin/` |
 | UI feature | `frontend/src/features/` after its task exists |
 | DB backup/restore + migration runbooks/scripts | `docs/operations/BACKUP_RESTORE.md`, `docs/operations/MIGRATIONS.md`, `scripts/db/`, PITR override `infrastructure/postgres/compose.pitr.yaml` |
 | Design source/handoff | `design/` and Penpot link in `design/penpot/README.md` |

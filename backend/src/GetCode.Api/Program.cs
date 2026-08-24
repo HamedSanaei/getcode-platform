@@ -65,6 +65,20 @@ try
     builder.Services.AddScoped<GetCode.Application.Authorization.IAuthorizationService, GetCode.Application.Authorization.EffectiveAuthorizationService>();
     // Wallet use cases (M05-003): ledger-based, idempotent, optimistic-concurrency guarded money mutations.
     builder.Services.AddScoped<GetCode.Application.Wallets.WalletService>();
+    // M09-001: session-cookie authentication plus capability-based authorization.
+    // The SPA's principal view is UX only; these policies are the boundary.
+    builder.Services
+        .AddAuthentication(GetCode.Api.Security.SessionAuthenticationHandler.SchemeName)
+        .AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, GetCode.Api.Security.SessionAuthenticationHandler>(
+            GetCode.Api.Security.SessionAuthenticationHandler.SchemeName, _ => { });
+    builder.Services.AddScoped<Microsoft.AspNetCore.Authorization.IAuthorizationHandler, GetCode.Api.Security.PermissionAuthorizationHandler>();
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("admin.access", policy => policy
+            .RequireAuthenticatedUser()
+            .AddRequirements(new GetCode.Api.Security.PermissionRequirement(
+                GetCode.Domain.Authorization.PermissionCatalog.AdminAccess)));
+    });
 
     var app = builder.Build();
     app.UseMiddleware<CorrelationIdMiddleware>();
@@ -73,12 +87,17 @@ try
     app.UseCors(BrowserCorsOptions.PolicyName);
     app.UseMiddleware<BrowserWriteProtectionMiddleware>();
     app.UseSerilogRequestLogging();
+    // M09-001: authentication resolves the session cookie; authorization evaluates policies.
+    app.UseAuthentication();
+    app.UseAuthorization();
 
     // Public API contract surface (M03-004): OpenAPI document served in all environments.
     app.MapOpenApi();
     app.MapCatalogEndpoints();
     // Session surface (M02-002): host-scoped cookie issuance/rotation/revocation.
     app.MapAuthEndpoints();
+    // Admin surface (M09-001): every route requires the admin.access capability server-side.
+    app.MapAdminEndpoints();
     app.MapGet("/health/live", () => Results.Ok(new { status = "ok" })).AllowAnonymous();
     app.MapGet("/", (IHostEnvironment env) => Results.Ok(new ApiInfoResponse("getcode-api", typeof(Program).Assembly.GetName().Version?.ToString() ?? "dev", env.EnvironmentName))).AllowAnonymous();
 

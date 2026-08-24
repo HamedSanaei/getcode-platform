@@ -14,6 +14,13 @@ public static class PermissionCatalog
     public const string ProvidersManage = "providers.manage";
     public const string WalletAdjust = "wallet.adjust";
 
+    /// <summary>
+    /// Gates the admin shell and every /api/admin surface (M09-001). Kept as a
+    /// capability like any other so finer-grained admin permissions can be
+    /// introduced without changing the enforcement mechanism.
+    /// </summary>
+    public const string AdminAccess = "admin.access";
+
     /// <summary>Registry of every valid permission; granting anything else is rejected.</summary>
     public static readonly IReadOnlySet<string> All = new HashSet<string>(StringComparer.Ordinal)
     {
@@ -22,6 +29,7 @@ public static class PermissionCatalog
         PricingManage,
         ProvidersManage,
         WalletAdjust,
+        AdminAccess,
     };
 }
 

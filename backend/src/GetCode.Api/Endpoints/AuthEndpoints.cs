@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using AppAuthZ = GetCode.Application.Authorization;
 
 namespace GetCode.Api.Endpoints;
 
@@ -174,6 +175,37 @@ internal static class AuthEndpoints
         .Produces<RedirectTargetResponse>()
         .WithSummary("Resolves a return URL to a trusted target on the configured sites");
 
+        // M09-001: capability context for UX/navigation only. The response is
+        // shaped around stable role keys and canonical permission strings —
+        // never a single hard-coded role name. It is NOT a security boundary:
+        // every privileged API enforces authorization server-side.
+        group.MapGet("/principal", async (
+            System.Security.Claims.ClaimsPrincipal user,
+            AppAuthZ.IAuthorizationService authorization,
+            AppAuthZ.IUserRoleRepository userRoles,
+            AppAuthZ.IRoleRepository roles,
+            CancellationToken cancellationToken) =>
+        {
+            var userId = Guid.Parse(user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value);
+            var roleIds = await userRoles.ListRoleIdsForUserAsync(userId, cancellationToken);
+            var roleKeys = new List<string>(roleIds.Count);
+            foreach (var roleId in roleIds)
+            {
+                var role = await roles.FindByIdAsync(roleId, cancellationToken);
+                if (role is not null)
+                {
+                    roleKeys.Add(role.Key);
+                }
+            }
+
+            var permissions = await authorization.GetEffectivePermissionsAsync(userId, cancellationToken);
+            return Results.Ok(new PrincipalResponse(userId, [.. roleKeys], [.. permissions]));
+        })
+        .RequireAuthorization()
+        .Produces<PrincipalResponse>()
+        .Produces(StatusCodes.Status401Unauthorized)
+        .WithSummary("Returns the session principal with stable roles and effective permissions");
+
         return group;
     }
 }
@@ -181,6 +213,8 @@ internal static class AuthEndpoints
 public sealed record LoginRequest(string Email, string Password);
 
 public sealed record SessionResponse(Guid UserId);
+
+public sealed record PrincipalResponse(Guid UserId, IReadOnlyList<string> Roles, IReadOnlyList<string> Permissions);
 
 public sealed record CsrfTokenResponse(string RequestToken);
 
