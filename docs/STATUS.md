@@ -64,9 +64,11 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 
 ## Roadmap state after round 8 (2026-08-24)
 
-All locally executable tasks are DONE (32 of 69 index rows). The dependency graph now has exactly one root-level open task:
+Product decisions resolved: first real virtual-number supplier = 5SIM (M04-002 DONE) and outbound user SMS provider = Kavenegar (M04-008 DONE, new ISmsNotificationPort + adapter + separation architecture test, ADR-016). Both adapters run fully offline/stubbed in CI; only live smoke verification remains externally blocked (funded accounts).
 
-- **M04-002 (first real provider adapter)** — blocked by an external product decision: which virtual-number vendor to integrate first (vendor selection + API documentation access), plus real credentials for live verification. Per its own contract the adapter's CI runs against stubbed HTTP and holds no secrets, but the adapter cannot be written without naming an actual vendor.
+The dependency graph now re-roots at M04-003..M04-007 (provider health/offers/routing/failover/second-provider), which are the next locally executable work.
+
+- M04-002 and M04-008 are DONE; see task handoffs and ADR-016.
 
 Every other remaining TODO is transitively dependent on M04-002 or on separate external decisions (payment-gateway/PSP selection for M06-004, Penpot owner sign-off for design-parity residuals, product approval gates for M11-*). None can start before those inputs arrive; none should be marked DONE speculatively.
 

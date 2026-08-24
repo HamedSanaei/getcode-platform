@@ -21,6 +21,8 @@ Use this to avoid broad repository scans.
 | UI primitives | `frontend/src/components/ui/` |
 | Visual regression harness | `frontend/playwright.config.ts`, `frontend/tests/visual/`, fixture `frontend/src/app/visual-gallery/`, workflow doc `frontend/VISUAL.md` |
 | Admin shell & authorization boundary | `backend/src/GetCode.Api/Security/` (session auth + permission policy), `backend/src/GetCode.Api/Endpoints/AdminEndpoints.cs`, `frontend/src/components/admin/AdminShell.tsx`, `frontend/src/app/admin/` |
+| 5SIM virtual-number adapter | `backend/src/GetCode.Infrastructure/Providers/FiveSim/`, contract suite `backend/tests/GetCode.ProviderContractTests/FiveSimProviderTests.cs` |
+| SMS notification abstraction & Kavenegar adapter | `backend/src/GetCode.Application/Notifications/SmsNotificationPort.cs`, `backend/src/GetCode.Infrastructure/Notifications/Sms/Kavenegar/` |
 | Catalog/provider mapping management | `backend/src/GetCode.Application/Providers/ProviderAdminService.cs` (bind/preview/list + outbox audit), `frontend/src/app/admin/catalog-mapping/page.tsx` |
 | UI feature | `frontend/src/features/` after its task exists |
 | DB backup/restore + migration runbooks/scripts | `docs/operations/BACKUP_RESTORE.md`, `docs/operations/MIGRATIONS.md`, `scripts/db/`, PITR override `infrastructure/postgres/compose.pitr.yaml` |

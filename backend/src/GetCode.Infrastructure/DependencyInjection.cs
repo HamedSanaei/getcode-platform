@@ -1,10 +1,12 @@
 using GetCode.Application.Common;
 using GetCode.Application.Identity;
+using GetCode.Application.Notifications;
 using GetCode.Application.Providers;
 using GetCode.Domain.Identity;
 using GetCode.Infrastructure.Common;
 using GetCode.Infrastructure.Identity;
 using GetCode.Infrastructure.Observability.Logging;
+using GetCode.Infrastructure.Notifications.Sms.Kavenegar;
 using GetCode.Infrastructure.Providers.Fake;
 using GetCode.Infrastructure.Providers.FiveSim;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +48,20 @@ public static class DependencyInjection
                 })
                 .AddTypedClient<FiveSimVirtualNumberProvider>()
                 .Services.AddSingleton<IVirtualNumberProvider>(sp => sp.GetRequiredService<FiveSimVirtualNumberProvider>());
+        }
+
+        // M04-008: Kavenegar outbound user-SMS adapter — secret-driven, opt-in.
+        var kavenegar = configuration.GetSection(KavenegarOptions.SectionName).Get<KavenegarOptions>() ?? new KavenegarOptions();
+        if (kavenegar.Enabled)
+        {
+            services.AddSingleton(kavenegar);
+            services.AddHttpClient("kavenegar-sms", client =>
+                {
+                    client.BaseAddress = new Uri(kavenegar.BaseUrl);
+                    client.Timeout = TimeSpan.FromSeconds(Math.Clamp(kavenegar.TimeoutSeconds, 1, 120));
+                })
+                .AddTypedClient<KavenegarSmsNotificationSender>()
+                .Services.AddSingleton<ISmsNotificationPort>(sp => sp.GetRequiredService<KavenegarSmsNotificationSender>());
         }
 
         return services;
