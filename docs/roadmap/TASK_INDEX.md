@@ -49,7 +49,7 @@
 | [M06-005](../../docs/tasks/M06-005-implement-transactional-order-paid-outbox-flow.md) | M06 | P0 | DONE | M06-002, M06-004 | Implement transactional order-paid outbox flow |
 | [M07-001](../../docs/tasks/M07-001-implement-durable-fulfillment-request-lease-model.md) | M07 | P0 | DONE | M06-005, M04-006 | Implement durable fulfillment request/lease model |
 | [M07-002](../../docs/tasks/M07-002-implement-virtual-number-reservation-orchestration.md) | M07 | P0 | DONE | M07-001 | Implement virtual-number reservation orchestration |
-| [M07-003](../../docs/tasks/M07-003-implement-activation-polling-and-normalized-message-receipt.md) | M07 | P0 | TODO | M07-002 | Implement activation polling and normalized message receipt |
+| [M07-003](../../docs/tasks/M07-003-implement-activation-polling-and-normalized-message-receipt.md) | M07 | P0 | DONE | M07-002 | Implement activation polling and normalized message receipt |
 | [M07-004](../../docs/tasks/M07-004-implement-expiry-cancel-refund-compensation-workflow.md) | M07 | P0 | TODO | M07-003, M05-004 | Implement expiry/cancel/refund compensation workflow |
 | [M07-005](../../docs/tasks/M07-005-implement-reconciliation-and-manual-review-cases.md) | M07 | P0 | TODO | M07-004 | Implement reconciliation and Manual Review cases |
 | [M08-001](../../docs/tasks/M08-001-implement-public-catalog-pages-from-approved-penpot-designs.md) | M08 | P0 | DONE | M03-004, M01-007 | Implement public catalog pages from approved Penpot designs |
