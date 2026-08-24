@@ -32,6 +32,9 @@ try
     builder.Services.AddScoped<GetCode.Application.Catalog.ProductSkuAdminService>();
     builder.Services.AddScoped<GetCode.Application.Catalog.ProductCatalogQueryService>();
     builder.Services.AddScoped<GetCode.Application.Providers.ProviderAdminService>();
+    // Authorization administration (M02-004): deny-by-default, privilege changes audited via outbox.
+    builder.Services.AddScoped<GetCode.Application.Authorization.AuthorizationAdminService>();
+    builder.Services.AddScoped<GetCode.Application.Authorization.IAuthorizationService, GetCode.Application.Authorization.EffectiveAuthorizationService>();
 
     var app = builder.Build();
     app.UseMiddleware<CorrelationIdMiddleware>();

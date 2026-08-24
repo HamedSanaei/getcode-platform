@@ -23,7 +23,7 @@
 | [M02-001](../../docs/tasks/M02-001-implement-identity-model-and-authentication-service.md) | M02 | P0 | DONE | M00-006 | Implement identity model and authentication service |
 | [M02-002](../../docs/tasks/M02-002-implement-secure-host-scoped-session-token-strategy.md) | M02 | P0 | TODO | M02-001, M01-006 | Implement secure host-scoped session/token strategy |
 | [M02-003](../../docs/tasks/M02-003-implement-csrf-cors-and-trusted-redirect-policy.md) | M02 | P0 | TODO | M02-002 | Implement CSRF, CORS and trusted redirect policy |
-| [M02-004](../../docs/tasks/M02-004-implement-roles-permissions-and-admin-authorization.md) | M02 | P0 | TODO | M02-001 | Implement roles/permissions and admin authorization |
+| [M02-004](../../docs/tasks/M02-004-implement-roles-permissions-and-admin-authorization.md) | M02 | P0 | DONE | M02-001 | Implement roles/permissions and admin authorization |
 | [M02-005](../../docs/tasks/M02-005-decide-and-document-cross-domain-sso-v1-scope.md) | M02 | P1 | TODO | M02-002 | Decide and document cross-domain SSO v1 scope |
 | [M03-001](../../docs/tasks/M03-001-implement-canonical-country-and-service-catalog.md) | M03 | P0 | DONE | M00-006 | Implement canonical Country and Service catalog |
 | [M03-002](../../docs/tasks/M03-002-implement-product-sku-model-for-virtual-number-offerings.md) | M03 | P0 | DONE | M03-001 | Implement Product/SKU model for virtual-number offerings |

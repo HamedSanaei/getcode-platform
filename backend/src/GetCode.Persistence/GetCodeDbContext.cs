@@ -1,6 +1,8 @@
+using GetCode.Domain.Authorization;
 using GetCode.Domain.Catalog;
 using GetCode.Domain.Identity;
 using GetCode.Domain.Providers;
+using GetCode.Persistence.Authorization;
 using GetCode.Persistence.Identity;
 using GetCode.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,8 @@ public sealed class GetCodeDbContext(DbContextOptions<GetCodeDbContext> options)
     public DbSet<ProductSku> ProductSkus => Set<ProductSku>();
     public DbSet<ProviderDefinition> Providers => Set<ProviderDefinition>();
     public DbSet<ProviderMapping> ProviderMappings => Set<ProviderMapping>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<UserRoleAssignmentRecord> UserRoles => Set<UserRoleAssignmentRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
