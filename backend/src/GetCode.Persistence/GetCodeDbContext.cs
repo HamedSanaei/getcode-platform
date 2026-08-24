@@ -15,6 +15,7 @@ public sealed class GetCodeDbContext(DbContextOptions<GetCodeDbContext> options)
 {
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
     public DbSet<Domain.Orders.Order> Orders => Set<Domain.Orders.Order>();
+    public DbSet<Fulfillment.FulfillmentRequestRecord> FulfillmentRequests => Set<Fulfillment.FulfillmentRequestRecord>();
     public DbSet<User> Users => Set<User>();
     public DbSet<IdentityAuditEventRecord> IdentityAuditEvents => Set<IdentityAuditEventRecord>();
     public DbSet<Country> Countries => Set<Country>();

@@ -34,6 +34,7 @@ public static class DependencyInjection
         services.AddScoped<IOutboxCollector, OutboxCollector>();
         services.AddScoped<ICatalogUnitOfWork, CatalogUnitOfWork>();
         services.AddScoped<IOrderRepository, OrderRepository>(); // M06-002
+        services.AddScoped<GetCode.Application.Fulfillment.IFulfillmentJobStore, Fulfillment.FulfillmentJobStore>(); // M07-001
         return services;
     }
 }
