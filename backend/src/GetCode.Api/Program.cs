@@ -97,6 +97,7 @@ try
     // Session surface (M02-002): host-scoped cookie issuance/rotation/revocation.
     app.MapAuthEndpoints();
     // Admin surface (M09-001): every route requires the admin.access capability server-side.
+    app.MapQuoteEndpoints();
     app.MapAdminEndpoints();
     app.MapGet("/health/live", () => Results.Ok(new { status = "ok" })).AllowAnonymous();
     app.MapGet("/", (IHostEnvironment env) => Results.Ok(new ApiInfoResponse("getcode-api", typeof(Program).Assembly.GetName().Version?.ToString() ?? "dev", env.EnvironmentName))).AllowAnonymous();

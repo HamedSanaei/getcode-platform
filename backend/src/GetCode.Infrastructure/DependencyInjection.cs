@@ -68,6 +68,9 @@ public static class DependencyInjection
         // M04-003: provider health/balance observation (latest snapshots) + M04-007 registry.
         services.AddSingleton<Application.Providers.IVirtualNumberProviderRegistry, Providers.VirtualNumberProviderRegistry>();
         services.AddSingleton<ProviderHealthService>();
+        // M05-002: immutable expiring quote snapshots.
+        services.AddSingleton<GetCode.Application.Pricing.PricingEngine>();
+        services.AddSingleton<GetCode.Application.Quotes.QuoteService>();
 
         // M04-008: Kavenegar outbound user-SMS adapter — secret-driven, opt-in.
         var kavenegar = configuration.GetSection(KavenegarOptions.SectionName).Get<KavenegarOptions>() ?? new KavenegarOptions();
