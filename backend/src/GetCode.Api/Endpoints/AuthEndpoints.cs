@@ -1,4 +1,6 @@
 using GetCode.Application.Identity;
+using GetCode.Application.SiteHosts;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -148,6 +150,30 @@ internal static class AuthEndpoints
         .Produces(StatusCodes.Status401Unauthorized)
         .WithSummary("Rotates the current session: old token revoked, fresh cookie issued");
 
+        // M02-003: hands the SPA an antiforgery token pair (cookie + body value
+        // for the X-XSRF-TOKEN header). Safe method — no validation here.
+        group.MapGet("/csrf", (IAntiforgery antiforgery, HttpContext http) =>
+        {
+            var tokens = antiforgery.GetAndStoreTokens(http);
+            return Results.Ok(new CsrfTokenResponse(tokens.RequestToken!));
+        })
+        .Produces<CsrfTokenResponse>()
+        .WithSummary("Issues the CSRF token pair used by state-changing browser requests");
+
+        // M02-003: trusted redirect resolution. Browser-supplied return URLs are
+        // resolved against the Site Context allow-list; foreign targets collapse
+        // to the current site's base URL.
+        group.MapGet("/redirect-target", (
+            string? returnUrl,
+            TrustedRedirectResolver resolver,
+            GetCode.Application.SiteHosts.ICurrentSite currentSite) =>
+        {
+            var resolved = resolver.ResolveReturnUrl(returnUrl, currentSite.Site);
+            return Results.Ok(new RedirectTargetResponse(resolved));
+        })
+        .Produces<RedirectTargetResponse>()
+        .WithSummary("Resolves a return URL to a trusted target on the configured sites");
+
         return group;
     }
 }
@@ -155,3 +181,7 @@ internal static class AuthEndpoints
 public sealed record LoginRequest(string Email, string Password);
 
 public sealed record SessionResponse(Guid UserId);
+
+public sealed record CsrfTokenResponse(string RequestToken);
+
+public sealed record RedirectTargetResponse(string ResolvedUrl);

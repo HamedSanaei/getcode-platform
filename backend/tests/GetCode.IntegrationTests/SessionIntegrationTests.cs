@@ -88,11 +88,8 @@ public sealed class SessionIntegrationTests(DatabaseFixture database)
         var (_, cookie) = await LoginAsync(factory, PrimaryHost, email);
         Assert.Equal(HttpStatusCode.OK, (await GetAsyncWithCookie(factory, PrimaryHost, "/api/auth/session", cookie.RawHeader)).Item1);
 
-        // Logout with the cookie.
-        var request = new HttpRequestMessage(HttpMethod.Post, "/api/auth/logout");
-        request.Headers.Host = PrimaryHost;
-        request.Headers.Add("Cookie", cookie.Pair);
-        var logout = await factory.CreateClient().SendAsync(request, TestContext.Current.CancellationToken);
+        // Logout with the session cookie + CSRF contract.
+        var logout = await PostWithSessionAsync(factory, PrimaryHost, "/api/auth/logout", cookie.Pair);
         Assert.Equal(HttpStatusCode.NoContent, logout.StatusCode);
 
         // The captured token no longer works — revocation is server-side state.
@@ -112,11 +109,8 @@ public sealed class SessionIntegrationTests(DatabaseFixture database)
         var (_, firstDevice) = await LoginAsync(factory, PrimaryHost, email);
         var (_, secondDevice) = await LoginAsync(factory, PrimaryHost, email);
 
-        // Rotate the second device's session via the endpoint.
-        var rotate = new HttpRequestMessage(HttpMethod.Post, "/api/auth/session/rotate");
-        rotate.Headers.Host = PrimaryHost;
-        rotate.Headers.Add("Cookie", secondDevice.Pair.Split(';')[0]);
-        var rotatedResponse = await factory.CreateClient().SendAsync(rotate, TestContext.Current.CancellationToken);
+        // Rotate the second device's session via the endpoint (CSRF contract).
+        var rotatedResponse = await PostWithSessionAsync(factory, PrimaryHost, "/api/auth/session/rotate", secondDevice.Pair);
         Assert.Equal(HttpStatusCode.OK, rotatedResponse.StatusCode);
 
         // Old token dead; replacement works; the untouched first device still works.
@@ -177,16 +171,40 @@ public sealed class SessionIntegrationTests(DatabaseFixture database)
         await identity.RegisterAsync(new RegisterUserCommand(email, StrongPassword), TestContext.Current.CancellationToken);
     }
 
+    /// <summary>HTTPS base address so SecurePolicy.Always cookies behave like production.</summary>
+    private static HttpClient CreateHttpsClient(GetCodeApiFactory factory)
+    {
+        factory.ClientOptions.BaseAddress = new Uri($"https://{PrimaryHost}/");
+        return factory.CreateClient();
+    }
+
+    /// <summary>M02-003 browser contract: fetch the CSRF pair before any state-changing call.</summary>
+    private static async Task<(string CookiePair, string RequestToken)> GetCsrfPairAsync(
+        HttpClient client, string host)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/api/auth/csrf");
+        request.Headers.Host = host;
+        var response = await client.SendAsync(request, TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        var payload = await response.Content.ReadFromJsonAsync<JsonElement>(TestContext.Current.CancellationToken);
+        var cookiePair = response.Headers.GetValues("Set-Cookie").Single().Split(';')[0];
+        return (cookiePair, payload.GetProperty("requestToken").GetString()!);
+    }
+
     private static async Task<(HttpResponseMessage Response, SessionCookie Cookie)> LoginAsync(
         GetCodeApiFactory factory, string host, string email)
     {
-        var client = factory.CreateClient();
+        var client = CreateHttpsClient(factory);
+        var (csrfCookie, csrfToken) = await GetCsrfPairAsync(client, host);
         using var request = new HttpRequestMessage(HttpMethod.Post, "/api/auth/login")
         {
             Content = JsonContent.Create(new { email, password = StrongPassword }),
         };
         request.Headers.Host = host;
-        var response = await client.SendAsync(request);
+        request.Headers.Add("Cookie", csrfCookie);
+        request.Headers.Add("X-XSRF-TOKEN", csrfToken);
+        request.Headers.Add("Origin", $"https://{host}");
+        var response = await client.SendAsync(request, TestContext.Current.CancellationToken);
 
         if (response.StatusCode != HttpStatusCode.OK)
         {
@@ -198,6 +216,19 @@ public sealed class SessionIntegrationTests(DatabaseFixture database)
         var name = pair.Split('=', 2)[0];
         var value = pair.Split('=', 2)[1];
         return (response, new SessionCookie(setCookie, $"{name}={value}", value));
+    }
+
+    private static async Task<HttpResponseMessage> PostWithSessionAsync(
+        GetCodeApiFactory factory, string host, string path, string sessionCookieHeader)
+    {
+        var client = CreateHttpsClient(factory);
+        var (csrfCookie, csrfToken) = await GetCsrfPairAsync(client, host);
+        using var request = new HttpRequestMessage(HttpMethod.Post, path);
+        request.Headers.Host = host;
+        request.Headers.Add("Cookie", $"{sessionCookieHeader.Split(';')[0]}; {csrfCookie}");
+        request.Headers.Add("X-XSRF-TOKEN", csrfToken);
+        request.Headers.Add("Origin", $"https://{host}");
+        return await client.SendAsync(request, TestContext.Current.CancellationToken);
     }
 
     private static async Task<(HttpStatusCode Status, HttpResponseMessage Message)> GetAsyncWithCookie(

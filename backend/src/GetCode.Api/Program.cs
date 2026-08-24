@@ -22,6 +22,33 @@ try
     builder.Services.Configure<SiteHostOptions>(builder.Configuration.GetSection(SiteHostOptions.SectionName));
     builder.Services.AddScoped<CurrentSiteAccessor>();
     builder.Services.AddScoped<GetCode.Application.SiteHosts.ICurrentSite>(sp => sp.GetRequiredService<CurrentSiteAccessor>());
+    // M02-003: site catalog for application services + trusted redirect resolution.
+    builder.Services.AddSingleton<GetCode.Application.SiteHosts.ISiteCatalog, ConfiguredSiteCatalog>();
+    builder.Services.AddScoped<GetCode.Application.SiteHosts.TrustedRedirectResolver>();
+    // M02-003: CSRF double-submit tokens (cookie is JS-readable by design; the
+    // __Host- prefix keeps it host-scoped, Strict SameSite adds a second lock).
+    builder.Services.AddAntiforgery(options =>
+    {
+        options.HeaderName = "X-XSRF-TOKEN";
+        options.Cookie.Name = "__Host-xcsrf";
+        options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+        options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+        options.Cookie.Path = "/";
+    });
+    // M02-003: credentialed CORS is allow-list-only; empty config = no cross-origin access.
+    builder.Services.Configure<BrowserCorsOptions>(builder.Configuration.GetSection(BrowserCorsOptions.SectionName));
+    var corsOrigins = BrowserCorsOptions.ParseOrigins(builder.Configuration[BrowserCorsOptions.SectionName + ":AllowedOrigins"]);
+    builder.Services.AddCors(options => options.AddPolicy(BrowserCorsOptions.PolicyName, policy =>
+    {
+        if (corsOrigins.Length > 0)
+        {
+            policy.WithOrigins(corsOrigins)
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithExposedHeaders("X-Correlation-Id");
+        }
+    }));
     builder.Services.AddGetCodePersistence(builder.Configuration);
     builder.Services.AddGetCodeInfrastructure(builder.Configuration, serviceName, instanceId, builder.Environment.IsDevelopment());
     // Identity use cases (session/cookie strategy arrives with M02-002; no public endpoints yet).
@@ -42,6 +69,9 @@ try
     var app = builder.Build();
     app.UseMiddleware<CorrelationIdMiddleware>();
     app.UseMiddleware<SiteHostResolutionMiddleware>();
+    // M02-003: CORS first (preflight short-circuit), then browser write protection.
+    app.UseCors(BrowserCorsOptions.PolicyName);
+    app.UseMiddleware<BrowserWriteProtectionMiddleware>();
     app.UseSerilogRequestLogging();
 
     // Public API contract surface (M03-004): OpenAPI document served in all environments.
