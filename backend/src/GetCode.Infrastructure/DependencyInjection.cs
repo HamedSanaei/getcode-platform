@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddHostedService<LogArchiveHostedService>();
         services.AddSingleton<IClock, SystemClock>();
         services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
+        services.AddSingleton<ISessionTokenProvider, CryptographicSessionTokens>();
         services.AddSingleton(CredentialPolicy.Default);
 
         if (enableFakeProvider)

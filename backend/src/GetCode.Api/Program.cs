@@ -26,6 +26,7 @@ try
     builder.Services.AddGetCodeInfrastructure(builder.Configuration, serviceName, instanceId, builder.Environment.IsDevelopment());
     // Identity use cases (session/cookie strategy arrives with M02-002; no public endpoints yet).
     builder.Services.AddScoped<GetCode.Application.Identity.IdentityService>();
+    builder.Services.AddScoped<GetCode.Application.Identity.SessionService>();
     // Catalog admin/read use cases (public catalog API surface arrives with the storefront milestone).
     builder.Services.AddScoped<GetCode.Application.Catalog.CatalogAdminService>();
     builder.Services.AddScoped<GetCode.Application.Catalog.CatalogQueryService>();
@@ -46,6 +47,8 @@ try
     // Public API contract surface (M03-004): OpenAPI document served in all environments.
     app.MapOpenApi();
     app.MapCatalogEndpoints();
+    // Session surface (M02-002): host-scoped cookie issuance/rotation/revocation.
+    app.MapAuthEndpoints();
     app.MapGet("/health/live", () => Results.Ok(new { status = "ok" })).AllowAnonymous();
     app.MapGet("/", (IHostEnvironment env) => Results.Ok(new ApiInfoResponse("getcode-api", typeof(Program).Assembly.GetName().Version?.ToString() ?? "dev", env.EnvironmentName))).AllowAnonymous();
 
