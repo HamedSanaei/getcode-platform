@@ -1,7 +1,9 @@
 using GetCode.Application.Catalog;
 using GetCode.Application.Identity;
 using GetCode.Persistence.Catalog;
+using GetCode.Application.Orders;
 using GetCode.Persistence.Identity;
+using GetCode.Persistence.Orders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +33,7 @@ public static class DependencyInjection
         services.AddScoped<GetCode.Application.Wallets.IWalletUnitOfWork, Wallets.WalletUnitOfWork>();
         services.AddScoped<IOutboxCollector, OutboxCollector>();
         services.AddScoped<ICatalogUnitOfWork, CatalogUnitOfWork>();
+        services.AddScoped<IOrderRepository, OrderRepository>(); // M06-002
         return services;
     }
 }

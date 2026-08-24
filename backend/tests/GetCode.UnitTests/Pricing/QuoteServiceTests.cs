@@ -41,7 +41,7 @@ public sealed class QuoteServiceTests
         var service = Create();
         var issued = service.Issue(Request);
 
-        var (result, snapshot) = service.ValidateForCheckout(issued.CustomerView.QuoteId, 127m);
+        var (result, snapshot) = service.ValidateForCheckout(issued.CustomerView.QuoteId, 127m, TestContext.Current.CancellationToken);
 
         Assert.Equal(QuoteValidation.Valid, result);
         Assert.NotNull(snapshot);
@@ -54,9 +54,9 @@ public sealed class QuoteServiceTests
         var service = new QuoteService(new PricingEngine(clock), new QuoteOptions { TtlSeconds = 300 }, clock);
         var issued = service.Issue(Request);
 
-        var before = service.ValidateForCheckout(issued.CustomerView.QuoteId, 127m);
+        var before = service.ValidateForCheckout(issued.CustomerView.QuoteId, 127m, TestContext.Current.CancellationToken);
         clock.Advance(TimeSpan.FromSeconds(301)); // past expiry
-        var after = service.ValidateForCheckout(issued.CustomerView.QuoteId, 127m);
+        var after = service.ValidateForCheckout(issued.CustomerView.QuoteId, 127m, TestContext.Current.CancellationToken);
 
         Assert.Equal(QuoteValidation.Valid, before.Result);
         Assert.Equal(QuoteValidation.Expired, after.Result);
@@ -69,8 +69,8 @@ public sealed class QuoteServiceTests
         var service = Create();
         var issued = service.Issue(Request);
 
-        var tamperedResult = service.ValidateForCheckout(issued.CustomerView.QuoteId, 126.99m);
-        var unknownResult = service.ValidateForCheckout(Guid.NewGuid(), 127m);
+        var tamperedResult = service.ValidateForCheckout(issued.CustomerView.QuoteId, 126.99m, TestContext.Current.CancellationToken);
+        var unknownResult = service.ValidateForCheckout(Guid.NewGuid(), 127m, TestContext.Current.CancellationToken);
 
         Assert.True(tamperedResult.Result == QuoteValidation.Tampered, $"got {tamperedResult.Result}");
         Assert.True(unknownResult.Result == QuoteValidation.NotFound, $"got {unknownResult.Result}");
@@ -87,7 +87,7 @@ public sealed class QuoteServiceTests
         Assert.Equal(first.CustomerView.CustomerAmount, refreshed.CustomerView.CustomerAmount); // same rules → same price
 
         // Old quote remains independently valid until ITS expiry.
-        var (oldResult, _) = service.ValidateForCheckout(first.CustomerView.QuoteId, 127m);
+        var (oldResult, _) = service.ValidateForCheckout(first.CustomerView.QuoteId, 127m, TestContext.Current.CancellationToken);
         Assert.Equal(QuoteValidation.Valid, oldResult);
     }
 

@@ -71,6 +71,8 @@ public static class DependencyInjection
         // M05-002: immutable expiring quote snapshots.
         services.AddSingleton<GetCode.Application.Pricing.PricingEngine>();
         services.AddSingleton<GetCode.Application.Quotes.QuoteService>();
+        // M06-002: idempotent checkout.
+        services.AddScoped<GetCode.Application.Orders.CheckoutService>();
 
         // M04-008: Kavenegar outbound user-SMS adapter — secret-driven, opt-in.
         var kavenegar = configuration.GetSection(KavenegarOptions.SectionName).Get<KavenegarOptions>() ?? new KavenegarOptions();

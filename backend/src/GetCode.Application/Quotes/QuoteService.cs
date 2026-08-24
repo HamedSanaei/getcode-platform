@@ -64,7 +64,8 @@ public sealed class QuoteService(PricingEngine pricing, QuoteOptions? options = 
     }
 
     /// <summary>Customer-facing validation: never exposes the provider cost.</summary>
-    public (QuoteValidation Result, QuoteSnapshot? Snapshot) ValidateForCheckout(Guid quoteId, decimal presentedAmount)
+    public (QuoteValidation Result, QuoteSnapshot? Snapshot) ValidateForCheckout(
+        Guid quoteId, decimal presentedAmount, CancellationToken cancellationToken = default)
     {
         if (!_quotes.TryGetValue(quoteId, out var entry))
         {

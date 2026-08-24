@@ -12,7 +12,7 @@ public sealed class OrderStateTransitionTests
     private static readonly DateTimeOffset T0 = new(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
     private static Order NewOrder() => new(
-        Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), amount: 127m, currency: "RUB",
+        Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "idem-matrix", amount: 127m, currency: "RUB",
         countryKey: "RU", serviceKey: "telegram", productTypeKey: "activation",
         pricingRuleVersion: 1, createdAtUtc: T0);
 

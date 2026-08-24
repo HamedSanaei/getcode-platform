@@ -73,6 +73,9 @@ public sealed class Order
     public Guid CustomerId { get; }
     public Guid QuoteId { get; }
 
+    /// <summary>Durable client-supplied idempotency key; unique per customer.</summary>
+    public string IdempotencyKey { get; }
+
     /// <summary>Immutable commercial snapshot (support/audit truth).</summary>
     public decimal Amount { get; }
     public string Currency { get; }
@@ -88,7 +91,7 @@ public sealed class Order
     /// <summary>Canonical provider operation reference once reserved (audit link).</summary>
     public string? ProviderOperationId { get; private set; }
 
-    public Order(Guid id, Guid customerId, Guid quoteId, decimal amount, string currency,
+    public Order(Guid id, Guid customerId, Guid quoteId, string idempotencyKey, decimal amount, string currency,
         string countryKey, string serviceKey, string productTypeKey, int pricingRuleVersion, DateTimeOffset createdAtUtc)
     {
         if (amount <= 0m)
@@ -96,9 +99,12 @@ public sealed class Order
             throw new ArgumentOutOfRangeException(nameof(amount), "order amount must be positive");
         }
 
+        ArgumentException.ThrowIfNullOrWhiteSpace(idempotencyKey);
+
         Id = id == Guid.Empty ? Guid.NewGuid() : id;
         CustomerId = customerId;
         QuoteId = quoteId;
+        IdempotencyKey = idempotencyKey;
         Amount = amount;
         Currency = currency;
         CountryKey = countryKey;
