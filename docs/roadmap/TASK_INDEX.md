@@ -51,7 +51,7 @@
 | [M07-003](../../docs/tasks/M07-003-implement-activation-polling-and-normalized-message-receipt.md) | M07 | P0 | TODO | M07-002 | Implement activation polling and normalized message receipt |
 | [M07-004](../../docs/tasks/M07-004-implement-expiry-cancel-refund-compensation-workflow.md) | M07 | P0 | TODO | M07-003, M05-004 | Implement expiry/cancel/refund compensation workflow |
 | [M07-005](../../docs/tasks/M07-005-implement-reconciliation-and-manual-review-cases.md) | M07 | P0 | TODO | M07-004 | Implement reconciliation and Manual Review cases |
-| [M08-001](../../docs/tasks/M08-001-implement-public-catalog-pages-from-approved-penpot-designs.md) | M08 | P0 | TODO | M03-004, M01-007 | Implement public catalog pages from approved Penpot designs |
+| [M08-001](../../docs/tasks/M08-001-implement-public-catalog-pages-from-approved-penpot-designs.md) | M08 | P0 | DONE | M03-004, M01-007 | Implement public catalog pages from approved Penpot designs |
 | [M08-002](../../docs/tasks/M08-002-implement-quote-and-checkout-ux.md) | M08 | P0 | TODO | M06-002, M08-001 | Implement quote and checkout UX |
 | [M08-003](../../docs/tasks/M08-003-implement-customer-order-dashboard-ux.md) | M08 | P0 | TODO | M06-005, M01-007 | Implement customer order/dashboard UX |
 | [M08-004](../../docs/tasks/M08-004-implement-activation-otp-live-experience.md) | M08 | P0 | TODO | M07-003, M08-003 | Implement activation/OTP live experience |
