@@ -37,8 +37,10 @@ public sealed class SchemaShapeTests(DatabaseFixture database)
             }
         }
 
+        // Column order reflects creation history: base table first, then
+        // ALTER TABLE additions (trace context) appended at the end.
         Assert.Equal(
-            ["id", "occurred_at_utc", "type", "payload_json", "correlation_id", "processed_at_utc", "attempt_count", "last_error_code"],
+            ["id", "occurred_at_utc", "type", "payload_json", "correlation_id", "processed_at_utc", "attempt_count", "last_error_code", "span_id", "trace_id"],
             columns);
 
         var constraintNames = new List<string>();

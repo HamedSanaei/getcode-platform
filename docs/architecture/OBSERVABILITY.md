@@ -83,4 +83,28 @@ Incoming safe `X-Correlation-Id` may be accepted; otherwise generate one. Preser
 
 ## Metrics/traces
 
-OpenTelemetry is the intended compatibility layer. Introduce counters/histograms for provider success/latency, order transitions, payment callbacks, worker queue age and retry/reconciliation counts when those workflows exist.
+OpenTelemetry is the compatibility layer. The foundation (M00-008) wires BCL
+`ActivitySource`/`Meter` primitives — export pipelines arrive with M10-005.
+
+Conventions:
+
+- one `ActivitySource` and one `Meter` per service area, named `GetCode.<Area>`;
+  the shared root is `GetCode.Core` (`GetCode.Application/Common/GetCodeObservability.cs`);
+- activity names reuse the stable dotted event model above (`order.paid`,
+  `provider.reserve.started`, …);
+- metric instruments are named `getcode.<area>.<noun>` with explicit units;
+- **tag policy**: bounded cardinality only — canonical keys, normalized error codes,
+  HTTP status, duration buckets. Never user IDs, phone numbers, emails, tokens or raw
+  provider payloads as labels; those are structured log properties where redaction applies.
+
+### Trace context into durable work
+
+Publishers capture the ambient W3C context via
+`GetCodeObservability.CaptureTraceContext()`; outbox rows persist `trace_id`/`span_id`
+alongside `correlation_id` so a worker consuming an outbox message can rejoin the
+originating trace even across process restarts. New durable job tables must include the
+same three columns from day one.
+
+OpenTelemetry counters/histograms for provider success/latency, order transitions,
+payment callbacks, worker queue age and retry/reconciliation counts arrive with the
+workflows they measure.
