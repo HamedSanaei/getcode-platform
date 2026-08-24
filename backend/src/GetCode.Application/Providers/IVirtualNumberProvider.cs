@@ -75,6 +75,10 @@ public enum ProviderErrorCode
     Rejected = 6,
     InvalidResponse = 7,
     AuthenticationFailed = 8,
+    /// <summary>M04-002: the provider may or may not have executed a paid operation
+    /// (e.g. the purchase request timed out after being sent). Callers must
+    /// reconcile through provider-state queries — never blindly retry.</summary>
+    AmbiguousOutcome = 9,
     Unknown = 99,
 }
 

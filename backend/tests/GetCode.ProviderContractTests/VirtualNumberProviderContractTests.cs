@@ -18,6 +18,9 @@ public abstract class VirtualNumberProviderContractTests
     /// <summary>Factory hook: return a fresh adapter instance per test.</summary>
     protected abstract Task<IVirtualNumberProvider> CreateProviderAsync();
 
+    /// <summary>Offer key used across scenarios; adapters may need vendor-shaped keys.</summary>
+    protected virtual string OfferKey => "offer-1";
+
     [Fact]
     public async Task SearchOffers_returns_offers_with_canonical_shape_and_sane_timestamps()
     {
@@ -64,15 +67,15 @@ public abstract class VirtualNumberProviderContractTests
     {
         var provider = await CreateProviderAsync();
 
-        var first = await provider.ReserveAsync(new ProviderReservationRequest("offer-1", "idem-key-1", "corr-1"), TestContext.Current.CancellationToken);
-        var replay = await provider.ReserveAsync(new ProviderReservationRequest("offer-1", "idem-key-1", "corr-1"), TestContext.Current.CancellationToken);
+        var first = await provider.ReserveAsync(new ProviderReservationRequest(OfferKey, "idem-key-1", "corr-1"), TestContext.Current.CancellationToken);
+        var replay = await provider.ReserveAsync(new ProviderReservationRequest(OfferKey, "idem-key-1", "corr-1"), TestContext.Current.CancellationToken);
 
         Assert.True(first.IsSuccess);
         Assert.Equal(first.Value!.ProviderOperationId, replay.Value!.ProviderOperationId);
         Assert.Equal(first.Value!.PhoneNumberE164, replay.Value!.PhoneNumberE164);
         Assert.Matches(@"^\+\d{8,15}$", first.Value!.PhoneNumberE164); // E.164 shape
 
-        var differentKey = await provider.ReserveAsync(new ProviderReservationRequest("offer-1", "idem-key-2", "corr-1"), TestContext.Current.CancellationToken);
+        var differentKey = await provider.ReserveAsync(new ProviderReservationRequest(OfferKey, "idem-key-2", "corr-1"), TestContext.Current.CancellationToken);
         Assert.NotEqual(first.Value!.ProviderOperationId, differentKey.Value!.ProviderOperationId);
 
         Assert.InRange(
@@ -85,7 +88,7 @@ public abstract class VirtualNumberProviderContractTests
     public async Task GetActivation_reports_known_operation_and_safe_failure_for_unknown()
     {
         var provider = await CreateProviderAsync();
-        var reserved = await provider.ReserveAsync(new ProviderReservationRequest("offer-1", $"status-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
+        var reserved = await provider.ReserveAsync(new ProviderReservationRequest(OfferKey, $"status-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
         Assert.True(reserved.IsSuccess);
 
         var snapshot = await provider.GetActivationAsync(reserved.Value!.ProviderOperationId, TestContext.Current.CancellationToken);
@@ -103,7 +106,7 @@ public abstract class VirtualNumberProviderContractTests
     public async Task Cancel_transitions_reservation_to_cancelled_state()
     {
         var provider = await CreateProviderAsync();
-        var reserved = await provider.ReserveAsync(new ProviderReservationRequest("offer-1", $"cancel-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
+        var reserved = await provider.ReserveAsync(new ProviderReservationRequest(OfferKey, $"cancel-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
         Assert.True(reserved.IsSuccess);
 
         var cancelled = await provider.CancelAsync(reserved.Value!.ProviderOperationId, TestContext.Current.CancellationToken);
@@ -147,7 +150,7 @@ public abstract class VirtualNumberProviderContractTests
     {
         var provider = await CreateProviderAsync();
         var search = await provider.SearchOffersAsync(new ProviderSearchQuery("IR", "telegram", "activation"), TestContext.Current.CancellationToken);
-        var reserve = await provider.ReserveAsync(new ProviderReservationRequest("offer-1", $"leak-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
+        var reserve = await provider.ReserveAsync(new ProviderReservationRequest(OfferKey, $"leak-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
         Assert.True(search.IsSuccess);
         Assert.True(reserve.IsSuccess);
 
@@ -195,7 +198,7 @@ public abstract class VirtualNumberProviderContractTests
             return; // real-adapter timeout behavior gets its own scripted test in its subclass
         }
 
-        var result = await provider.ReserveAsync(new ProviderReservationRequest("offer-1", $"timeout-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
+        var result = await provider.ReserveAsync(new ProviderReservationRequest(OfferKey, $"timeout-{Guid.NewGuid():N}", "corr"), TestContext.Current.CancellationToken);
         Assert.False(result.IsSuccess);
         Assert.Equal(ProviderErrorCode.Timeout, result.ErrorCode);
         Assert.Matches("^[A-Za-z0-9_.\\-]{0,64}$", result.SafeErrorCode); // stable token, not a raw payload
