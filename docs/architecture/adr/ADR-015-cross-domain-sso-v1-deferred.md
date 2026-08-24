@@ -7,9 +7,13 @@
 
 GetCode serves two independent root domains (`getcode` primary host and
 `vnumber.pluspremium.ir`) from one codebase and one identity store
-(ADR-005). Users may hold sessions on both hosts at once. Whether seamless
-cross-domain single sign-on is required for v1 was left open in
-`docs/STATUS.md`; M11-005 gates any SSO implementation on explicit approval.
+(ADR-005). Users may hold sessions on both hosts at once.
+
+**This ADR records the current, accepted v1 architecture — not an open TODO.**
+The operative v1 design is: shared identity with per-host sessions and no
+seamless SSO. It is implemented and enforced today by the M02-002 session
+stack (`__Host-` cookie scoping plus server-side SiteMismatch rejection) and
+verified by its integration tests.
 
 ## Decision
 
@@ -45,6 +49,9 @@ may ship.
 
 - Implementations and reviews must preserve this decision; a conflicting
   change requires a superseding ADR plus migration/operational consequences.
-- Product-owner ratification of this default is tracked as the task's residual
-  risk; an affirmative "SSO required for v1" decision reopens M02-005 and pulls
-  M11-005 forward with a security review gate before any code.
+- Seamless SSO remains explicitly deferred to M11-005 and may only proceed
+  after product approval AND a superseding ADR with a full OIDC/OAuth
+  threat-model review. No SSO code, endpoints or shared-cookie mechanisms may
+  exist before that gate.
+- The M02-005 task file retains the product-ratification note as process
+  hygiene; it does not weaken the accepted status of this architecture.

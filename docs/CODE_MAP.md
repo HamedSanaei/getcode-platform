@@ -18,7 +18,10 @@ Use this to avoid broad repository scans.
 | Dependency tests | `backend/tests/GetCode.ArchitectureTests/` |
 | Provider behavior tests | `backend/tests/GetCode.ProviderContractTests/` |
 | UI shell / site host | `frontend/src/app/`, `frontend/src/lib/site/` |
+| UI primitives | `frontend/src/components/ui/` |
+| Visual regression harness | `frontend/playwright.config.ts`, `frontend/tests/visual/`, fixture `frontend/src/app/visual-gallery/`, workflow doc `frontend/VISUAL.md` |
 | UI feature | `frontend/src/features/` after its task exists |
+| DB backup/restore + migration runbooks/scripts | `docs/operations/BACKUP_RESTORE.md`, `docs/operations/MIGRATIONS.md`, `scripts/db/`, PITR override `infrastructure/postgres/compose.pitr.yaml` |
 | Design source/handoff | `design/` and Penpot link in `design/penpot/README.md` |
 | Deployment example | `compose.yaml`, `infrastructure/caddy/` |
 | GitHub roadmap creation | `scripts/github/` |

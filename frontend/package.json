@@ -13,6 +13,8 @@
     "tokens:check": "node scripts/tokens.mjs check",
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run",
+    "visual:test": "playwright test",
+    "visual:update": "playwright test --update-snapshots",
     "typecheck": "tsc --noEmit",
     "audit": "npm audit --audit-level=high"
   },
@@ -22,6 +24,7 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.6",

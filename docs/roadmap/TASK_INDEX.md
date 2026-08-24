@@ -19,7 +19,7 @@
 | [M01-004](../../docs/tasks/M01-004-implement-penpot-to-code-design-token-bridge.md) | M01 | P0 | DONE | M01-002, M00-001 | Implement Penpot-to-code design token bridge |
 | [M01-005](../../docs/tasks/M01-005-implement-shared-next-js-ui-primitives.md) | M01 | P0 | DONE | M01-003, M01-004 | Implement shared Next.js UI primitives |
 | [M01-006](../../docs/tasks/M01-006-implement-host-aware-application-shell-and-canonical-metadata.md) | M01 | P0 | DONE | M01-004 | Implement host-aware application shell and canonical metadata |
-| [M01-007](../../docs/tasks/M01-007-establish-visual-regression-harness.md) | M01 | P1 | TODO | M01-005, M01-006 | Establish visual regression harness |
+| [M01-007](../../docs/tasks/M01-007-establish-visual-regression-harness.md) | M01 | P1 | DONE | M01-005, M01-006 | Establish visual regression harness |
 | [M02-001](../../docs/tasks/M02-001-implement-identity-model-and-authentication-service.md) | M02 | P0 | DONE | M00-006 | Implement identity model and authentication service |
 | [M02-002](../../docs/tasks/M02-002-implement-secure-host-scoped-session-token-strategy.md) | M02 | P0 | DONE | M02-001, M01-006 | Implement secure host-scoped session/token strategy |
 | [M02-003](../../docs/tasks/M02-003-implement-csrf-cors-and-trusted-redirect-policy.md) | M02 | P0 | DONE | M02-002 | Implement CSRF, CORS and trusted redirect policy |

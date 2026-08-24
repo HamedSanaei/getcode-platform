@@ -80,3 +80,8 @@ jobs:
           GETCODE_PLUSPREMIUM_HOST: vnumber.pluspremium.ir
           GETCODE_CANONICAL_HOST: getcode.example
           INTERNAL_API_URL: http://127.0.0.1:8080
+      # M01-007: visual regression against committed baselines. CI (ubuntu-latest)
+      # is the authoritative rendering platform; see frontend/VISUAL.md for the
+      # reviewed baseline-update workflow.
+      - run: npx playwright install --with-deps chromium
+      - run: npm run visual:test

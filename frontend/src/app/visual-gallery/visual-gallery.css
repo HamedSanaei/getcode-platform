@@ -1,0 +1,92 @@
+/* M01-007 visual-regression fixture styles.
+   Deterministic layout only; component appearance comes from ui.css/tokens. */
+
+.vg-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 32px 64px;
+  font-family: var(--gc-font-family-sans);
+}
+
+.vg-note {
+  color: var(--gc-color-text-muted);
+  font-size: var(--gc-font-size-sm);
+}
+
+.vg-context {
+  border: 1px dashed var(--gc-color-border-subtle, #ccc);
+  border-radius: 12px;
+  padding: 16px 20px 24px;
+  margin-top: 24px;
+}
+
+.vg-context-label {
+  font-size: var(--gc-font-size-sm);
+  font-weight: var(--gc-font-weight-semibold);
+  color: var(--gc-color-text-muted);
+  margin: 0 0 12px;
+}
+
+.vg-section {
+  margin-top: 20px;
+}
+
+.vg-section h2 {
+  font-size: var(--gc-font-size-md);
+  margin: 0 0 8px;
+}
+
+.vg-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.vg-tabs {
+  width: 100%;
+}
+
+.vg-sidebar {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 220px;
+}
+
+/* State fixtures (loading/empty) use neutral primitive vocabulary. */
+.vg-skeleton {
+  width: 260px;
+  height: 48px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--gc-color-bg-subtle, #eee) 25%,
+    var(--gc-color-bg-muted, #e2e2e2) 50%,
+    var(--gc-color-bg-subtle, #eee) 75%
+  );
+}
+
+.vg-empty {
+  border: 1px dashed var(--gc-color-border-subtle, #ccc);
+  border-radius: 8px;
+  padding: 18px 22px;
+  color: var(--gc-color-text-muted);
+  font-size: var(--gc-font-size-sm);
+}
+
+.vg-loading-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gc-color-text-muted);
+  font-size: var(--gc-font-size-sm);
+}
+
+.vg-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid var(--gc-color-border-strong, #bbb);
+  border-top-color: transparent;
+}
