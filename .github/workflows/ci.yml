@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Install exactly the SDK pinned by global.json (M00-001 baseline).
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
       - name: Restore (locked mode)
