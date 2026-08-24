@@ -46,7 +46,7 @@
 | [M06-002](../../docs/tasks/M06-002-implement-idempotent-checkout-order-creation.md) | M06 | P0 | DONE | M06-001, M05-004 | Implement idempotent checkout/order creation |
 | [M06-003](../../docs/tasks/M06-003-define-payment-gateway-port-and-fake-adapter.md) | M06 | P0 | DONE | M06-001 | Define payment gateway port and fake adapter |
 | [M06-004](../../docs/tasks/M06-004-implement-first-payment-gateway-and-verified-callback.md) | M06 | P0 | DONE | M06-003 | Implement first payment gateway and verified callback |
-| [M06-005](../../docs/tasks/M06-005-implement-transactional-order-paid-outbox-flow.md) | M06 | P0 | TODO | M06-002, M06-004 | Implement transactional order-paid outbox flow |
+| [M06-005](../../docs/tasks/M06-005-implement-transactional-order-paid-outbox-flow.md) | M06 | P0 | DONE | M06-002, M06-004 | Implement transactional order-paid outbox flow |
 | [M07-001](../../docs/tasks/M07-001-implement-durable-fulfillment-request-lease-model.md) | M07 | P0 | TODO | M06-005, M04-006 | Implement durable fulfillment request/lease model |
 | [M07-002](../../docs/tasks/M07-002-implement-virtual-number-reservation-orchestration.md) | M07 | P0 | TODO | M07-001 | Implement virtual-number reservation orchestration |
 | [M07-003](../../docs/tasks/M07-003-implement-activation-polling-and-normalized-message-receipt.md) | M07 | P0 | TODO | M07-002 | Implement activation polling and normalized message receipt |

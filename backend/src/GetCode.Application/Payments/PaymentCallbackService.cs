@@ -9,7 +9,10 @@ namespace GetCode.Application.Payments;
 /// are idempotent; every rejection reason is counted for audit. The order
 /// aggregate's own transition guards are the second line of defense.
 /// </summary>
-public sealed class PaymentCallbackService(IPaymentCallbackVerifier verifier, Orders.IOrderRepository orders)
+public sealed class PaymentCallbackService(
+    IPaymentCallbackVerifier verifier,
+    Orders.IOrderRepository orders,
+    IOrderPaidUnitOfWork? paidCommit = null)
 {
     public const string MeterName = "GetCode.Payments";
 
@@ -47,7 +50,17 @@ public sealed class PaymentCallbackService(IPaymentCallbackVerifier verifier, Or
         // Gateway captured → authorize then capture through the explicit guards.
         order.MarkPaymentAuthorized();
         order.MarkPaid();
-        await orders.UpdateAsync(order, cancellationToken);
+
+        if (paidCommit is not null)
+        {
+            // M06-005: order state + fulfillment intent commit ATOMICALLY.
+            await paidCommit.CommitAsync(order,
+                new OrderPaidEvent(order.Id, order.Amount, order.Currency, DateTimeOffset.UtcNow), cancellationToken);
+        }
+        else
+        {
+            await orders.UpdateAsync(order, cancellationToken);
+        }
 
         CallbackCounter.Add(1, new KeyValuePair<string, object?>("outcome", "applied"));
         return new CallbackHandlingResult(Handling.Applied, "paid", order.Id);
