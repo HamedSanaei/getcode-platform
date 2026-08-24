@@ -75,6 +75,9 @@ public sealed class ProviderAdminServiceTests
         public Task<ProviderDefinition?> FindByKeyAsync(string providerKey, CancellationToken cancellationToken) =>
             Task.FromResult(All.FirstOrDefault(p => p.ProviderKey == providerKey.Trim().ToLowerInvariant()));
 
+        public Task<IReadOnlyList<ProviderDefinition>> ListAsync(CancellationToken cancellationToken) =>
+            Task.FromResult<IReadOnlyList<ProviderDefinition>>(All.OrderBy(p => p.ProviderKey).ToList());
+
         public void Add(ProviderDefinition provider) => All.Add(provider);
     }
 
@@ -87,6 +90,9 @@ public sealed class ProviderAdminServiceTests
 
         public Task<Guid?> ResolveCanonicalIdAsync(Guid providerId, MappingKind kind, string externalCode, CancellationToken cancellationToken) =>
             Task.FromResult(FindByExternalCodeAsync(providerId, kind, externalCode, cancellationToken).Result?.CanonicalId);
+
+        public Task<IReadOnlyList<ProviderMapping>> ListForProviderAsync(Guid providerId, CancellationToken cancellationToken) =>
+            Task.FromResult<IReadOnlyList<ProviderMapping>>(All.Where(m => m.ProviderId == providerId).ToList());
 
         public void Add(ProviderMapping mapping) => All.Add(mapping);
     }

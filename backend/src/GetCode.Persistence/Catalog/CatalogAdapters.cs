@@ -71,6 +71,9 @@ internal sealed class ProviderRepository(GetCodeDbContext context) : GetCode.App
     public Task<ProviderDefinition?> FindByKeyAsync(string providerKey, CancellationToken cancellationToken) =>
         context.Providers.FirstOrDefaultAsync(p => p.ProviderKey == providerKey.Trim().ToLowerInvariant(), cancellationToken);
 
+    public async Task<IReadOnlyList<ProviderDefinition>> ListAsync(CancellationToken cancellationToken) =>
+        await context.Providers.OrderBy(p => p.ProviderKey).ToListAsync(cancellationToken);
+
     public void Add(ProviderDefinition provider) => context.Providers.Add(provider);
 }
 
@@ -85,6 +88,12 @@ internal sealed class ProviderMappingRepository(GetCodeDbContext context) : GetC
             .Where(m => m.ProviderId == providerId && m.Kind == kind && m.ExternalCode == externalCode.Trim())
             .Select(m => (Guid?)m.CanonicalId)
             .FirstOrDefaultAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<ProviderMapping>> ListForProviderAsync(Guid providerId, CancellationToken cancellationToken) =>
+        await context.ProviderMappings
+            .Where(m => m.ProviderId == providerId)
+            .OrderBy(m => m.Kind).ThenBy(m => m.ExternalCode)
+            .ToListAsync(cancellationToken);
 
     public void Add(ProviderMapping mapping) => context.ProviderMappings.Add(mapping);
 }
