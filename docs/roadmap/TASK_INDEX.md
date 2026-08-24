@@ -37,7 +37,7 @@
 | [M04-006](../../docs/tasks/M04-006-implement-safe-failover-and-ambiguous-outcome-reconciliation.md) | M04 | P0 | DONE | M04-005 | Implement safe failover and ambiguous-outcome reconciliation |
 | [M04-007](../../docs/tasks/M04-007-add-second-provider-to-prove-abstraction.md) | M04 | P1 | DONE | M04-006 | Add second provider to prove abstraction |
 | [M04-008](../../docs/tasks/M04-008-implement-sms-notification-abstraction-and-kavenegar-adapter.md) | M04 | P1 | DONE | — | Implement SMS notification abstraction and Kavenegar adapter |
-| [M05-001](../../docs/tasks/M05-001-implement-pricing-rules-and-margin-model.md) | M05 | P0 | TODO | M03-002, M04-004 | Implement pricing rules and margin model |
+| [M05-001](../../docs/tasks/M05-001-implement-pricing-rules-and-margin-model.md) | M05 | P0 | DONE | M03-002, M04-004 | Implement pricing rules and margin model |
 | [M05-002](../../docs/tasks/M05-002-implement-immutable-expiring-quote-snapshots.md) | M05 | P0 | TODO | M05-001 | Implement immutable expiring quote snapshots |
 | [M05-003](../../docs/tasks/M05-003-implement-wallet-and-immutable-ledger.md) | M05 | P0 | DONE | M00-006 | Implement wallet and immutable ledger |
 | [M05-004](../../docs/tasks/M05-004-implement-idempotent-debit-credit-refund-primitives.md) | M05 | P0 | DONE | M05-003 | Implement idempotent debit/credit/refund primitives |
