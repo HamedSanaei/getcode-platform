@@ -33,7 +33,7 @@
 | [M04-002](../../docs/tasks/M04-002-implement-first-real-provider-adapter.md) | M04 | P0 | DONE | M04-001 | Implement first real provider adapter |
 | [M04-003](../../docs/tasks/M04-003-implement-provider-health-and-balance-observation.md) | M04 | P1 | DONE | M04-002 | Implement provider health and balance observation |
 | [M04-004](../../docs/tasks/M04-004-implement-offer-normalization-and-short-lived-availability-cache.md) | M04 | P0 | DONE | M04-002, M03-004 | Implement offer normalization and short-lived availability cache |
-| [M04-005](../../docs/tasks/M04-005-implement-provider-routing-policy-v1.md) | M04 | P0 | TODO | M04-003, M04-004 | Implement provider routing policy v1 |
+| [M04-005](../../docs/tasks/M04-005-implement-provider-routing-policy-v1.md) | M04 | P0 | DONE | M04-003, M04-004 | Implement provider routing policy v1 |
 | [M04-006](../../docs/tasks/M04-006-implement-safe-failover-and-ambiguous-outcome-reconciliation.md) | M04 | P0 | TODO | M04-005 | Implement safe failover and ambiguous-outcome reconciliation |
 | [M04-007](../../docs/tasks/M04-007-add-second-provider-to-prove-abstraction.md) | M04 | P1 | TODO | M04-006 | Add second provider to prove abstraction |
 | [M04-008](../../docs/tasks/M04-008-implement-sms-notification-abstraction-and-kavenegar-adapter.md) | M04 | P1 | DONE | — | Implement SMS notification abstraction and Kavenegar adapter |
