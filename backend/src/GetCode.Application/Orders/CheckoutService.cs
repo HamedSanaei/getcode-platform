@@ -8,8 +8,14 @@ public interface IOrderRepository
     /// <summary>Find an existing order by durable idempotency scope, if any.</summary>
     Task<Order?> FindByIdempotencyKeyAsync(Guid customerId, string idempotencyKey, CancellationToken cancellationToken);
 
+    /// <summary>M06-004: find by order id (callback handling).</summary>
+    Task<Order?> FindByIdAsync(Guid orderId, CancellationToken cancellationToken);
+
     /// <summary>Persist a new order. Throws a unique-constraint failure when the idempotency scope already exists.</summary>
     Task AddAsync(Order order, CancellationToken cancellationToken);
+
+    /// <summary>M06-004: persist state transitions of an existing order.</summary>
+    Task UpdateAsync(Order order, CancellationToken cancellationToken);
 }
 
 /// <summary>

@@ -11,6 +11,11 @@ public sealed class OrderRepository(GetCodeDbContext db) : IOrderRepository
         db.Set<Order>().SingleOrDefaultAsync(
             o => o.CustomerId == customerId && o.IdempotencyKey == idempotencyKey, cancellationToken);
 
+    public Task<Order?> FindByIdAsync(Guid orderId, CancellationToken cancellationToken) =>
+        db.Set<Order>().SingleOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+
+    public Task UpdateAsync(Order order, CancellationToken cancellationToken) => db.SaveChangesAsync(cancellationToken);
+
     public async Task AddAsync(Order order, CancellationToken cancellationToken)
     {
         db.Set<Order>().Add(order);

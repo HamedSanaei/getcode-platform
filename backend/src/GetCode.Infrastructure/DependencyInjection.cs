@@ -7,6 +7,7 @@ using GetCode.Infrastructure.Common;
 using GetCode.Infrastructure.Identity;
 using GetCode.Infrastructure.Observability.Logging;
 using GetCode.Infrastructure.Notifications.Sms.Kavenegar;
+using GetCode.Infrastructure.Payments;
 using GetCode.Infrastructure.Providers.Fake;
 using GetCode.Infrastructure.Providers.FiveSim;
 using GetCode.Infrastructure.Providers.SecondVendor;
@@ -71,6 +72,13 @@ public static class DependencyInjection
         // M05-002: immutable expiring quote snapshots.
         services.AddSingleton<GetCode.Application.Pricing.PricingEngine>();
         services.AddSingleton<GetCode.Application.Quotes.QuoteService>();
+        // M06-004: first gateway - HMAC-signed redirect callback flow (opt-in).
+        var signedGatewayOptions = configuration.GetSection(SignedRedirectGatewayOptions.SectionName).Get<SignedRedirectGatewayOptions>() ?? new SignedRedirectGatewayOptions();
+        services.AddSingleton(signedGatewayOptions);
+        services.AddSingleton<Payments.SignedRedirectGateway>();
+        services.AddSingleton<GetCode.Application.Payments.IPaymentCallbackVerifier>(sp => sp.GetRequiredService<Payments.SignedRedirectGateway>());
+        services.AddScoped<GetCode.Application.Payments.PaymentCallbackService>();
+
         // M06-003: fake payment gateway (tests/local only).
         services.AddSingleton<Payments.FakePaymentGateway>();
         services.AddSingleton<GetCode.Application.Payments.IPaymentGateway>(sp => sp.GetRequiredService<Payments.FakePaymentGateway>());
