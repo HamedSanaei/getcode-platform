@@ -26,7 +26,7 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 - `M02-004` is DONE: permission-catalog-based roles with deny-by-default server-side resolution, user-role assignments, and outbox-audited privilege changes (migration `AddAuthorization`). HTTP enforcement wiring lands with M02-002/M02-003 sessions.
 - `M04-002` (first real provider adapter) is BLOCKED on the product decision: which real provider to onboard first, plus API credentials via secret manager. Everything downstream that only needs the fake/contract layer proceeds.
 - `M05-003` and `M05-004` are DONE: wallet + immutable ledger — minor-unit money, xmin optimistic concurrency with backoff retry, database-unique idempotency keys (migration `AddWallets` + `AddLedgerRequestHash`), compensating refunds/adjustments, 8-way concurrent-debit race proven safe; payload-aware idempotency (same key + same semantic request replays; conflicting payload rejected and audited via `wallet.idempotency_conflict`; crash/retry proven duplicate-free).
-- `M01-004` is now the highest-value fully unblocked task (Penpot design token bridge); `M01-005`/`M01-006` follow it. Remaining M04/M06 chains wait on provider credentials, gateway selection, or upstream milestones.
+- `M01-004` is DONE: Penpot token snapshot (file `c269caa0...be64`, rev 104, v1.1 live-HTML validation) versioned under `design/tokens/` with a structural schema; deterministic generator emits brand-scoped CSS (`data-brand` contract, no component forking); CI runs a schema+drift gate before the frontend build. `M01-005`/`M01-006` follow it.
 - `M02-002` (host-scoped session/token strategy) waits on `M01-006`.
 
 ## Locked architecture decisions

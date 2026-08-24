@@ -1,0 +1,106 @@
+{
+  "$schema": "./getcode-tokens.schema.json",
+  "meta": {
+    "snapshotVersion": "1.0.0",
+    "penpotFileId": "c269caa0-e456-818c-8008-85a77340be64",
+    "penpotFileName": "New File 1",
+    "designSystemVersion": "1.1.0",
+    "namedVersion": "GetCode Design System v1.1 - live HTML validation",
+    "fileRevision": "104",
+    "exportedAtUtc": "2026-08-24T11:40:00Z",
+    "tokenSetNames": [
+      "GetCode/Core",
+      "GetCode/Brand/GetCode",
+      "GetCode/Brand/PlusPremium"
+    ],
+    "tokenCounts": {
+      "GetCode/Core": 53,
+      "GetCode/Brand/GetCode": 7,
+      "GetCode/Brand/PlusPremium": 7
+    }
+  },
+  "sets": {
+    "GetCode/Core": {
+      "active": true,
+      "tokens": [
+        { "name": "border.width.hairline", "type": "borderWidth", "value": "1" },
+        { "name": "border.width.strong", "type": "borderWidth", "value": "2" },
+        { "name": "color.base.black", "type": "color", "value": "#000000" },
+        { "name": "color.base.white", "type": "color", "value": "#FFFFFF" },
+        { "name": "color.border.subtle", "type": "color", "value": "#DFEAF0" },
+        { "name": "color.danger", "type": "color", "value": "#E85D6A" },
+        { "name": "color.dangerMuted", "type": "color", "value": "#FFF0F2" },
+        { "name": "color.ink.300", "type": "color", "value": "#A8BAC5" },
+        { "name": "color.ink.500", "type": "color", "value": "#718896" },
+        { "name": "color.ink.700", "type": "color", "value": "#3E5B6B" },
+        { "name": "color.ink.900", "type": "color", "value": "#143247" },
+        { "name": "color.info", "type": "color", "value": "#2389D7" },
+        { "name": "color.infoMuted", "type": "color", "value": "#ECF6FE" },
+        { "name": "color.success", "type": "color", "value": "#20B778" },
+        { "name": "color.successMuted", "type": "color", "value": "#EAF9F2" },
+        { "name": "color.surface.canvas", "type": "color", "value": "#F3F8FC" },
+        { "name": "color.surface.card", "type": "color", "value": "#FFFFFF" },
+        { "name": "color.surface.soft", "type": "color", "value": "#F8FBFD" },
+        { "name": "color.warning", "type": "color", "value": "#F5A524" },
+        { "name": "color.warningMuted", "type": "color", "value": "#FFF7E6" },
+        { "name": "font.family.fa", "type": "fontFamilies", "value": ["Vazirmatn"] },
+        { "name": "font.family.latin", "type": "fontFamilies", "value": ["Inter"] },
+        { "name": "font.size.100", "type": "fontSizes", "value": "12" },
+        { "name": "font.size.200", "type": "fontSizes", "value": "14" },
+        { "name": "font.size.300", "type": "fontSizes", "value": "16" },
+        { "name": "font.size.400", "type": "fontSizes", "value": "18" },
+        { "name": "font.size.500", "type": "fontSizes", "value": "22" },
+        { "name": "font.size.600", "type": "fontSizes", "value": "28" },
+        { "name": "font.size.700", "type": "fontSizes", "value": "36" },
+        { "name": "font.size.800", "type": "fontSizes", "value": "48" },
+        { "name": "font.weight.bold", "type": "fontWeights", "value": "700" },
+        { "name": "font.weight.medium", "type": "fontWeights", "value": "500" },
+        { "name": "font.weight.regular", "type": "fontWeights", "value": "400" },
+        { "name": "font.weight.semibold", "type": "fontWeights", "value": "600" },
+        { "name": "opacity.disabled", "type": "opacity", "value": "0.42" },
+        { "name": "opacity.muted", "type": "opacity", "value": "0.68" },
+        { "name": "radius.2xl", "type": "borderRadius", "value": "28" },
+        { "name": "radius.lg", "type": "borderRadius", "value": "16" },
+        { "name": "radius.md", "type": "borderRadius", "value": "12" },
+        { "name": "radius.pill", "type": "borderRadius", "value": "999" },
+        { "name": "radius.sm", "type": "borderRadius", "value": "8" },
+        { "name": "radius.xl", "type": "borderRadius", "value": "20" },
+        { "name": "space.1", "type": "spacing", "value": "4" },
+        { "name": "space.10", "type": "spacing", "value": "40" },
+        { "name": "space.12", "type": "spacing", "value": "48" },
+        { "name": "space.16", "type": "spacing", "value": "64" },
+        { "name": "space.2", "type": "spacing", "value": "8" },
+        { "name": "space.20", "type": "spacing", "value": "80" },
+        { "name": "space.3", "type": "spacing", "value": "12" },
+        { "name": "space.4", "type": "spacing", "value": "16" },
+        { "name": "space.5", "type": "spacing", "value": "20" },
+        { "name": "space.6", "type": "spacing", "value": "24" },
+        { "name": "space.8", "type": "spacing", "value": "32" }
+      ]
+    },
+    "GetCode/Brand/GetCode": {
+      "active": true,
+      "tokens": [
+        { "name": "color.brand.accent", "type": "color", "value": "#FFB53F" },
+        { "name": "color.brand.accentHover", "type": "color", "value": "#F29C19" },
+        { "name": "color.brand.focus", "type": "color", "value": "#6FD2EA" },
+        { "name": "color.brand.hero", "type": "color", "value": "#DDF5FB" },
+        { "name": "color.brand.primary", "type": "color", "value": "#13A9D4" },
+        { "name": "color.brand.primaryHover", "type": "color", "value": "#0C8FB7" },
+        { "name": "color.brand.primarySoft", "type": "color", "value": "#E8F8FC" }
+      ]
+    },
+    "GetCode/Brand/PlusPremium": {
+      "active": false,
+      "tokens": [
+        { "name": "color.brand.accent", "type": "color", "value": "#F2A63B" },
+        { "name": "color.brand.accentHover", "type": "color", "value": "#D98C20" },
+        { "name": "color.brand.focus", "type": "color", "value": "#AFA0F1" },
+        { "name": "color.brand.hero", "type": "color", "value": "#EAE5FF" },
+        { "name": "color.brand.primary", "type": "color", "value": "#7257D9" },
+        { "name": "color.brand.primaryHover", "type": "color", "value": "#5C43BE" },
+        { "name": "color.brand.primarySoft", "type": "color", "value": "#F0EDFF" }
+      ]
+    }
+  }
+}

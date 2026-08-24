@@ -9,6 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "tokens:generate": "node scripts/tokens.mjs generate",
+    "tokens:check": "node scripts/tokens.mjs check",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "audit": "npm audit --audit-level=high"

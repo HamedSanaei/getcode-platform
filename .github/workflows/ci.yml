@@ -68,6 +68,8 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - name: Dependency audit
         run: npm audit --audit-level=high
+      # M01-004: token snapshot schema + drift gate (fails if Penpot export or tokens.css changed without regeneration)
+      - run: npm run tokens:check
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build

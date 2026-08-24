@@ -1,0 +1,88 @@
+/*
+ * GENERATED FILE - do not edit by hand.
+ * Source: design/tokens/getcode-tokens.v1.1.rev104.json
+ * Penpot file: c269caa0-e456-818c-8008-85a77340be64 (rev 104)
+ * Design system: 1.1.0 - GetCode Design System v1.1 - live HTML validation
+ * Exported: 2026-08-24T11:40:00Z
+ */
+
+/* GetCode/Core */
+:root {
+  --gc-border-width-hairline: 1px;
+  --gc-border-width-strong: 2px;
+  --gc-color-base-black: #000000;
+  --gc-color-base-white: #FFFFFF;
+  --gc-color-border-subtle: #DFEAF0;
+  --gc-color-danger: #E85D6A;
+  --gc-color-dangermuted: #FFF0F2;
+  --gc-color-info: #2389D7;
+  --gc-color-infomuted: #ECF6FE;
+  --gc-color-ink-300: #A8BAC5;
+  --gc-color-ink-500: #718896;
+  --gc-color-ink-700: #3E5B6B;
+  --gc-color-ink-900: #143247;
+  --gc-color-success: #20B778;
+  --gc-color-successmuted: #EAF9F2;
+  --gc-color-surface-canvas: #F3F8FC;
+  --gc-color-surface-card: #FFFFFF;
+  --gc-color-surface-soft: #F8FBFD;
+  --gc-color-warning: #F5A524;
+  --gc-color-warningmuted: #FFF7E6;
+  --gc-font-family-fa: 'Vazirmatn';
+  --gc-font-family-latin: 'Inter';
+  --gc-font-size-100: 12px;
+  --gc-font-size-200: 14px;
+  --gc-font-size-300: 16px;
+  --gc-font-size-400: 18px;
+  --gc-font-size-500: 22px;
+  --gc-font-size-600: 28px;
+  --gc-font-size-700: 36px;
+  --gc-font-size-800: 48px;
+  --gc-font-weight-bold: 700;
+  --gc-font-weight-medium: 500;
+  --gc-font-weight-regular: 400;
+  --gc-font-weight-semibold: 600;
+  --gc-opacity-disabled: 0.42;
+  --gc-opacity-muted: 0.68;
+  --gc-radius-2xl: 28px;
+  --gc-radius-lg: 16px;
+  --gc-radius-md: 12px;
+  --gc-radius-pill: 999px;
+  --gc-radius-sm: 8px;
+  --gc-radius-xl: 20px;
+  --gc-space-1: 4px;
+  --gc-space-10: 40px;
+  --gc-space-12: 48px;
+  --gc-space-16: 64px;
+  --gc-space-2: 8px;
+  --gc-space-20: 80px;
+  --gc-space-3: 12px;
+  --gc-space-4: 16px;
+  --gc-space-5: 20px;
+  --gc-space-6: 24px;
+  --gc-space-8: 32px;
+}
+
+/* GetCode/Brand/GetCode */
+:root,
+[data-brand="getcode"] {
+  --gc-color-brand-accent: #FFB53F;
+  --gc-color-brand-accenthover: #F29C19;
+  --gc-color-brand-focus: #6FD2EA;
+  --gc-color-brand-hero: #DDF5FB;
+  --gc-color-brand-primary: #13A9D4;
+  --gc-color-brand-primaryhover: #0C8FB7;
+  --gc-color-brand-primarysoft: #E8F8FC;
+}
+
+/* GetCode/Brand/PlusPremium */
+[data-brand="pluspremium"] {
+  --gc-color-brand-accent: #F2A63B;
+  --gc-color-brand-accenthover: #D98C20;
+  --gc-color-brand-focus: #AFA0F1;
+  --gc-color-brand-hero: #EAE5FF;
+  --gc-color-brand-primary: #7257D9;
+  --gc-color-brand-primaryhover: #5C43BE;
+  --gc-color-brand-primarysoft: #F0EDFF;
+}
+

@@ -1,25 +1,38 @@
-:root {
-  --gc-color-bg: #f6f7f9;
-  --gc-color-surface: #ffffff;
-  --gc-color-text: #17191c;
-  --gc-color-muted: #646b75;
-  --gc-color-accent: #2b59ff;
-  --gc-radius-md: 16px;
-  --gc-space-1: 0.25rem;
-  --gc-space-2: 0.5rem;
-  --gc-space-4: 1rem;
-  --gc-space-8: 2rem;
-}
-
-/* Placeholder tokens only. M01 replaces values with approved Penpot-exported tokens. */
-[data-brand="getcode-pluspremium"] {
-  --gc-color-accent: #2b59ff;
-}
+/*
+ * App styles consume the generated design tokens (M01-004).
+ * Token values live in ../styles/tokens.css, regenerated from the approved
+ * Penpot snapshot - never edit token values here.
+ */
+@import '../styles/tokens.css';
 
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
-body { background: var(--gc-color-bg); color: var(--gc-color-text); font-family: system-ui, sans-serif; }
-.shell { min-height: 100vh; display: grid; place-items: center; padding: var(--gc-space-8); }
-.placeholder-card { width: min(760px, 100%); background: var(--gc-color-surface); border-radius: var(--gc-radius-md); padding: clamp(1.5rem, 4vw, 3rem); box-shadow: 0 12px 40px rgb(0 0 0 / 0.06); }
-.eyebrow { color: var(--gc-color-accent); font-weight: 700; letter-spacing: 0.08em; }
-.placeholder-card p { color: var(--gc-color-muted); line-height: 1.9; }
+body {
+  background: var(--gc-color-surface-canvas);
+  color: var(--gc-color-ink-900);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+html[lang='fa'] body { font-family: 'Vazirmatn', system-ui, sans-serif; }
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2rem);
+  background: linear-gradient(var(--gc-color-brand-hero), var(--gc-color-surface-canvas));
+}
+.placeholder-card {
+  width: min(760px, 100%);
+  background: var(--gc-color-surface-card);
+  border: var(--gc-border-width-hairline) solid var(--gc-color-border-subtle);
+  border-radius: var(--gc-radius-lg);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  box-shadow: 0 12px 40px rgb(20 50 71 / 0.08);
+}
+.eyebrow {
+  color: var(--gc-color-brand-primary);
+  font-weight: var(--gc-font-weight-bold);
+  letter-spacing: 0.08em;
+  font-size: var(--gc-font-size-200);
+}
+.placeholder-card p { color: var(--gc-color-ink-700); line-height: 1.9; }

@@ -16,7 +16,7 @@
 | [M01-001](../../docs/tasks/M01-001-define-ux-sitemap-and-critical-user-flows-in-penpot.md) | M01 | P0 | DONE | M00-009 | Define UX sitemap and critical user flows in Penpot |
 | [M01-002](../../docs/tasks/M01-002-create-penpot-foundations-and-token-taxonomy.md) | M01 | P0 | DONE | M01-001 | Create Penpot foundations and token taxonomy |
 | [M01-003](../../docs/tasks/M01-003-create-reusable-penpot-component-library.md) | M01 | P0 | DONE | M01-002 | Create reusable Penpot component library |
-| [M01-004](../../docs/tasks/M01-004-implement-penpot-to-code-design-token-bridge.md) | M01 | P0 | TODO | M01-002, M00-001 | Implement Penpot-to-code design token bridge |
+| [M01-004](../../docs/tasks/M01-004-implement-penpot-to-code-design-token-bridge.md) | M01 | P0 | DONE | M01-002, M00-001 | Implement Penpot-to-code design token bridge |
 | [M01-005](../../docs/tasks/M01-005-implement-shared-next-js-ui-primitives.md) | M01 | P0 | TODO | M01-003, M01-004 | Implement shared Next.js UI primitives |
 | [M01-006](../../docs/tasks/M01-006-implement-host-aware-application-shell-and-canonical-metadata.md) | M01 | P0 | TODO | M01-004 | Implement host-aware application shell and canonical metadata |
 | [M01-007](../../docs/tasks/M01-007-establish-visual-regression-harness.md) | M01 | P1 | TODO | M01-005, M01-006 | Establish visual regression harness |
