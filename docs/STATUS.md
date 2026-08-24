@@ -22,7 +22,8 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 ## Ready to start
 
 - `M03-001..004` are DONE (milestone M03 complete): canonical catalog, Product/SKU model, provider registry + validated mappings, and public paged read models (`/api/catalog/*`) with OpenAPI-documented contracts.
-- Next: `M04-001` (common provider behavioral contract suite) — the real-provider track (`M04-002`) additionally needs the product-owner's provider list/credentials.
+- `M04-001` is DONE: reusable provider behavioral contract suite (search/reserve/status/cancel/error/timeout/cancellation + leakage guards); the fake adapter is now deterministic and failure-injectable.
+- `M04-002` (first real provider adapter) is BLOCKED on the product decision: which real provider to onboard first, plus API credentials via secret manager. Everything downstream that only needs the fake/contract layer proceeds.
 - `M02-002` (host-scoped session/token strategy) waits on `M01-006`, which sits behind the design approval gate.
 - `M01-001..003` remain IN_PROGRESS pending the product-owner design approval evidence gate (live-reference parity pack or recorded side-by-side approval).
 

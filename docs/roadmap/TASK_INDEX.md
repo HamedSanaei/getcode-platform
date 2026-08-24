@@ -29,7 +29,7 @@
 | [M03-002](../../docs/tasks/M03-002-implement-product-sku-model-for-virtual-number-offerings.md) | M03 | P0 | DONE | M03-001 | Implement Product/SKU model for virtual-number offerings |
 | [M03-003](../../docs/tasks/M03-003-implement-provider-registry-and-canonical-mappings.md) | M03 | P0 | DONE | M03-001 | Implement provider registry and canonical mappings |
 | [M03-004](../../docs/tasks/M03-004-implement-catalog-query-read-models.md) | M03 | P1 | DONE | M03-002, M03-003 | Implement catalog/query read models |
-| [M04-001](../../docs/tasks/M04-001-define-common-provider-behavioral-contract-suite.md) | M04 | P0 | TODO | M03-003, M00-005 | Define common provider behavioral contract suite |
+| [M04-001](../../docs/tasks/M04-001-define-common-provider-behavioral-contract-suite.md) | M04 | P0 | DONE | M03-003, M00-005 | Define common provider behavioral contract suite |
 | [M04-002](../../docs/tasks/M04-002-implement-first-real-provider-adapter.md) | M04 | P0 | TODO | M04-001 | Implement first real provider adapter |
 | [M04-003](../../docs/tasks/M04-003-implement-provider-health-and-balance-observation.md) | M04 | P1 | TODO | M04-002 | Implement provider health and balance observation |
 | [M04-004](../../docs/tasks/M04-004-implement-offer-normalization-and-short-lived-availability-cache.md) | M04 | P0 | TODO | M04-002, M03-004 | Implement offer normalization and short-lived availability cache |
