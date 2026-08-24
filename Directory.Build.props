@@ -8,5 +8,8 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <!-- M00-004: commit per-project NuGet lock files; CI restores in locked mode.
+         Not applied to the solution metaproject (no framework identifier there). -->
+    <RestorePackagesWithLockFile Condition="'$(MSBuildProjectExtension)' != '.sln'">true</RestorePackagesWithLockFile>
   </PropertyGroup>
 </Project>

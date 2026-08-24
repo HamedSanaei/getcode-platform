@@ -3,13 +3,17 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY Directory.Build.props Directory.Packages.props global.json GetCode.sln ./
 COPY backend/src ./backend/src
-RUN dotnet restore backend/src/GetCode.Worker/GetCode.Worker.csproj
+# Deterministic package resolution against committed packages.lock.json files.
+RUN dotnet restore backend/src/GetCode.Worker/GetCode.Worker.csproj --locked-mode /p:ContinuousIntegrationBuild=true
 RUN dotnet publish backend/src/GetCode.Worker/GetCode.Worker.csproj -c Release -o /out --no-restore /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 ENV TZ=UTC
-RUN adduser --disabled-password --home /app --gecos "" getcode && mkdir -p /data/logs && chown -R getcode:getcode /app /data
+# .NET 10 runtime images are Ubuntu-based: useradd/groupadd, no adduser.
+RUN groupadd --system getcode \
+    && useradd --system --gid getcode --home-dir /app --shell /usr/sbin/nologin getcode \
+    && mkdir -p /data/logs && chown -R getcode:getcode /app /data
 COPY --from=build /out ./
 USER getcode
 ENTRYPOINT ["dotnet", "GetCode.Worker.dll"]

@@ -26,3 +26,21 @@ Every relevant workflow must test duplicates and ambiguity:
 - provider returning unexpected/malformed state.
 
 “100% happy-path coverage” is weaker than a small set of strong invariant/failure tests.
+
+## CI gates and bypass policy (M00-004)
+
+Required status checks on every push/PR (`ci.yml`, `codeql.yml`, `container.yml`):
+
+- backend: locked-mode restore → format → build → vulnerable-package audit → tests;
+- frontend: deterministic `npm ci` → npm audit → lint → typecheck → production build;
+- containers: api/worker/web images build on every PR and tag.
+
+Rules:
+
+1. Determinism is enforced mechanically: NuGet lock files are committed and CI restores
+   with `--locked-mode`; the frontend uses `npm ci`. Dependency drift cannot enter through
+   "it restored fine on my machine".
+2. No agent or contributor may delete, skip, weaken, or conditionally disable a gate to
+   land a change. Root causes are fixed, never the signal.
+3. Branch protection must mark these workflows as required checks (repository-admin
+   action; recorded here as the standing governance requirement).
