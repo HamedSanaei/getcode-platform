@@ -26,6 +26,18 @@ internal static class AdminEndpoints
             .Produces<AdminOverviewResponse>()
             .WithSummary("Shell bootstrap payload for the admin overview");
 
+        // M04-003: latest provider health/balance observations (supplier
+        // telemetry — never customer wallet truth).
+        group.MapGet("/providers/health", (AppProviders.ProviderHealthService health) =>
+            {
+                var snapshots = health.LatestSnapshots;
+                return Results.Ok(new ProviderHealthResponse(
+                    [.. snapshots.Select(s => new ProviderHealthItem(
+                        s.ProviderKey, s.Outcome.ToString(), s.BalanceAmount, s.SafeErrorToken, s.ConsecutiveFailures, s.ObservedAtUtc))]));
+            })
+            .Produces<ProviderHealthResponse>()
+            .WithSummary("Latest normalized health/balance observation per provider");
+
         // M09-003: catalog/provider mapping management. All mutations are
         // validated against the canonical catalog and audited via the
         // transactional outbox by ProviderAdminService.
@@ -135,4 +147,8 @@ internal static class AdminEndpoints
     public sealed record MappingResponse(string Kind, string ExternalCode, string CanonicalStableKey);
 
     public sealed record ProviderManagementResponse(string ProviderKey, string DisplayName, bool IsEnabled, bool SupportsActivation, bool SupportsRental, IReadOnlyList<MappingResponse> Mappings);
+
+    public sealed record ProviderHealthItem(string ProviderKey, string Outcome, decimal? BalanceAmount, string? SafeErrorToken, int ConsecutiveFailures, DateTimeOffset ObservedAtUtc);
+
+    public sealed record ProviderHealthResponse(IReadOnlyList<ProviderHealthItem> Providers);
 }

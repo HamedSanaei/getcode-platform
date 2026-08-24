@@ -18,6 +18,7 @@ try
     builder.Services.AddGetCodePersistence(builder.Configuration);
     builder.Services.AddGetCodeInfrastructure(builder.Configuration, serviceName, instanceId, builder.Environment.IsDevelopment());
     builder.Services.AddHostedService<WorkerHeartbeat>();
+    builder.Services.AddHostedService<ProviderHealthPollingWorker>();
 
     var host = builder.Build();
     await host.RunAsync();

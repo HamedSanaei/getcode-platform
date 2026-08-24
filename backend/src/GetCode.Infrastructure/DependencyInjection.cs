@@ -50,6 +50,9 @@ public static class DependencyInjection
                 .Services.AddSingleton<IVirtualNumberProvider>(sp => sp.GetRequiredService<FiveSimVirtualNumberProvider>());
         }
 
+        // M04-003: provider health/balance observation (latest snapshots).
+        services.AddSingleton<ProviderHealthService>();
+
         // M04-008: Kavenegar outbound user-SMS adapter — secret-driven, opt-in.
         var kavenegar = configuration.GetSection(KavenegarOptions.SectionName).Get<KavenegarOptions>() ?? new KavenegarOptions();
         if (kavenegar.Enabled)

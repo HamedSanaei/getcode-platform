@@ -25,9 +25,14 @@ namespace GetCode.Infrastructure.Providers.FiveSim;
 /// stable ASCII tokens, never raw provider text; phone numbers appear only in
 /// the canonical reservation record which is documented as sensitive.
 /// </summary>
-public sealed class FiveSimVirtualNumberProvider : IVirtualNumberProvider
+public sealed class FiveSimVirtualNumberProvider : IVirtualNumberProvider, IProviderBalanceObserver
 {
     public const string ProviderKeyValue = "five-sim";
+
+    string IProviderBalanceObserver.ObserverProviderKey => ProviderKeyValue;
+
+    async Task<ProviderResult<decimal>> IProviderBalanceObserver.ObserveBalanceAsync(CancellationToken cancellationToken) =>
+        await GetBalanceAsync(cancellationToken);
 
     private static readonly Dictionary<string, (string Token, ProviderErrorCode Code)> ErrorTextMap =
         new(StringComparer.OrdinalIgnoreCase)
