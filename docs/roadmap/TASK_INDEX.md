@@ -42,7 +42,7 @@
 | [M05-003](../../docs/tasks/M05-003-implement-wallet-and-immutable-ledger.md) | M05 | P0 | DONE | M00-006 | Implement wallet and immutable ledger |
 | [M05-004](../../docs/tasks/M05-004-implement-idempotent-debit-credit-refund-primitives.md) | M05 | P0 | DONE | M05-003 | Implement idempotent debit/credit/refund primitives |
 | [M05-005](../../docs/tasks/M05-005-implement-exchange-rate-source-abstraction-if-required.md) | M05 | P2 | TODO | M05-001 | Implement exchange-rate source abstraction if required |
-| [M06-001](../../docs/tasks/M06-001-implement-order-aggregate-and-explicit-state-machine.md) | M06 | P0 | TODO | M05-002 | Implement Order aggregate and explicit state machine |
+| [M06-001](../../docs/tasks/M06-001-implement-order-aggregate-and-explicit-state-machine.md) | M06 | P0 | DONE | M05-002 | Implement Order aggregate and explicit state machine |
 | [M06-002](../../docs/tasks/M06-002-implement-idempotent-checkout-order-creation.md) | M06 | P0 | TODO | M06-001, M05-004 | Implement idempotent checkout/order creation |
 | [M06-003](../../docs/tasks/M06-003-define-payment-gateway-port-and-fake-adapter.md) | M06 | P0 | TODO | M06-001 | Define payment gateway port and fake adapter |
 | [M06-004](../../docs/tasks/M06-004-implement-first-payment-gateway-and-verified-callback.md) | M06 | P0 | TODO | M06-003 | Implement first payment gateway and verified callback |
