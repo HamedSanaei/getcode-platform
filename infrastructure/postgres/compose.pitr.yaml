@@ -1,0 +1,25 @@
+# PITR enablement for the compose PostgreSQL instance (M10-004).
+#
+# Applies on top of compose.yaml:
+#   docker compose -f compose.yaml -f infrastructure/postgres/compose.pitr.yaml up -d postgres
+#
+# Enables continuous WAL archiving into a durable volume. Combined with a
+# pg_basebackup taken from this instance, this gives point-in-time recovery:
+# restore the base backup, then replay archived WAL up to the target timestamp
+# (recovery_target_time) using restore_command.
+#
+# Production note: mount wal_archive on durable storage with the same retention
+# as the PITR window (see docs/operations/BACKUP_RESTORE.md).
+services:
+  postgres:
+    # The named volume is root-owned on first use; hand it to the postgres user
+    # before the server starts so archive_command can write into it.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - chown postgres:postgres /wal_archive || true; exec docker-entrypoint.sh postgres -c wal_level=replica -c archive_mode=on -c 'archive_command=test ! -f /wal_archive/%f && cp %p /wal_archive/%f' -c archive_timeout=60s
+    volumes:
+      - getcode-wal-archive:/wal_archive
+
+volumes:
+  getcode-wal-archive:

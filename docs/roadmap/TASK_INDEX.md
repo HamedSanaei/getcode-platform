@@ -65,7 +65,7 @@
 | [M10-001](../../docs/tasks/M10-001-create-critical-path-browser-e2e-suite.md) | M10 | P0 | TODO | M08-004, M09-005 | Create critical-path browser E2E suite |
 | [M10-002](../../docs/tasks/M10-002-run-load-concurrency-and-provider-failure-tests.md) | M10 | P0 | TODO | M10-001 | Run load/concurrency and provider-failure tests |
 | [M10-003](../../docs/tasks/M10-003-complete-production-security-hardening.md) | M10 | P0 | TODO | M10-001, M02-003 | Complete production security hardening |
-| [M10-004](../../docs/tasks/M10-004-implement-backup-restore-and-migration-runbooks.md) | M10 | P0 | TODO | M00-006 | Implement backup, restore and migration runbooks |
+| [M10-004](../../docs/tasks/M10-004-implement-backup-restore-and-migration-runbooks.md) | M10 | P0 | DONE | M00-006 | Implement backup, restore and migration runbooks |
 | [M10-005](../../docs/tasks/M10-005-validate-logs-metrics-traces-and-operational-alerts.md) | M10 | P0 | TODO | M00-008, M10-002 | Validate logs/metrics/traces and operational alerts |
 | [M10-006](../../docs/tasks/M10-006-prepare-first-production-release-gate.md) | M10 | P0 | TODO | M10-003, M10-004, M10-005 | Prepare first production release gate |
 | [M11-001](../../docs/tasks/M11-001-evaluate-broker-introduction-from-measured-workload.md) | M11 | P2 | TODO | M10-002 | Evaluate broker introduction from measured workload |
