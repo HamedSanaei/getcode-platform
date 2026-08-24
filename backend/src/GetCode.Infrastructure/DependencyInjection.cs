@@ -71,6 +71,10 @@ public static class DependencyInjection
         // M05-002: immutable expiring quote snapshots.
         services.AddSingleton<GetCode.Application.Pricing.PricingEngine>();
         services.AddSingleton<GetCode.Application.Quotes.QuoteService>();
+        // M06-003: fake payment gateway (tests/local only).
+        services.AddSingleton<Payments.FakePaymentGateway>();
+        services.AddSingleton<GetCode.Application.Payments.IPaymentGateway>(sp => sp.GetRequiredService<Payments.FakePaymentGateway>());
+
         // M06-002: idempotent checkout.
         services.AddScoped<GetCode.Application.Orders.CheckoutService>();
 
