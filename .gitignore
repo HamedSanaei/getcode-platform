@@ -39,3 +39,6 @@ logs/
 # Generated
 artifacts/
 dist/
+
+# Scratch files
+.tmp/
