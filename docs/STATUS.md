@@ -61,3 +61,13 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 - Authentication product policy and whether cross-root-domain SSO is required for v1 are not finalized.
 - `numberland.ir` is reachable. The 2026-08-24 direct-curl audit downloaded live HTML, inventoried 163 internal routes across 20 families and fetched 17 representative pages with HTTP 200; evidence is in `design/handoff/NUMBERLAND_LIVE_HTML_AUDIT_2026-08-24.md`.
 - Exact pixel parity remains an owner-review question only where HTML/CSS and the preserved snapshot are insufficient. It is not an acceptance blocker for the completed sitemap, foundations or reusable-component tasks.
+
+## Roadmap state after round 8 (2026-08-24)
+
+All locally executable tasks are DONE (32 of 69 index rows). The dependency graph now has exactly one root-level open task:
+
+- **M04-002 (first real provider adapter)** — blocked by an external product decision: which virtual-number vendor to integrate first (vendor selection + API documentation access), plus real credentials for live verification. Per its own contract the adapter's CI runs against stubbed HTTP and holds no secrets, but the adapter cannot be written without naming an actual vendor.
+
+Every other remaining TODO is transitively dependent on M04-002 or on separate external decisions (payment-gateway/PSP selection for M06-004, Penpot owner sign-off for design-parity residuals, product approval gates for M11-*). None can start before those inputs arrive; none should be marked DONE speculatively.
+
+Unblocking M04-002 immediately reopens the chain: M04-003..007 → M05 pricing/quotes → M06 orders/payments → M07 fulfillment → M08 customer UX remainder → M09 admin tools remainder → M10 hardening/release → M11 evolution.
