@@ -8,7 +8,7 @@ Last scaffold update: **2026-08-24**
 
 All nine M00 tasks are DONE and verified (toolchain baselines, IL-enforced boundaries, local PostgreSQL/Redis, hardened CI with deterministic lockfiles, Testcontainers integration infrastructure, UUIDv7/migration policy ADR-014, structured logging + redaction + archive verification, tracing/metrics foundation, governance gate). See `docs/roadmap/TASK_INDEX.md` for per-task handoffs.
 
-The repository no longer contains only an architecture starter: persistence migrations, identity/authentication with durable lockout and audit, the canonical Country/Service catalog with outbox-audited admin mutations, integration-test infrastructure, enforced observability policies and deterministic CI gates exist and run green locally (130 backend tests). No real provider, payment gateway or wallet mutation is implemented yet — that work starts at M04/M05/M06.
+The repository no longer contains only an architecture starter: persistence migrations, identity/authentication with durable lockout and audit, the canonical Country/Service catalog with outbox-audited admin mutations, the Product/SKU model, and the provider registry with validated canonical mappings — plus integration-test infrastructure, enforced observability policies and deterministic CI gates — run green locally (161 backend tests). No real provider integration, payment gateway or wallet mutation is implemented yet — that work starts at M04/M05/M06.
 
 Design work was executed ahead of milestone order by explicit product-owner request. The Penpot design system and page models are implemented, but production UI code remains intentionally unimplemented and all engineering dependencies still apply.
 
@@ -21,8 +21,8 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 
 ## Ready to start
 
-- `M03-001` (canonical Country/Service catalog) is DONE: GetCode-owned stable keys, owned localization, availability/order changes mirrored into the transactional outbox with trace context.
-- `M03-002` (Product/SKU model) and `M03-003` (provider registry + canonical mappings) are unblocked by the completed foundation.
+- `M03-001..003` are DONE: canonical catalog, Product/SKU model (provider-free identity), provider registry + validated canonical mappings, all audited through the transactional outbox.
+- `M03-004` (catalog/query read models) is unblocked; then the M04 provider contract suite (`M04-001`) opens the real-provider track (real provider list/credentials remain a product decision).
 - `M02-002` (host-scoped session/token strategy) waits on `M01-006`, which sits behind the design approval gate.
 - `M01-001..003` remain IN_PROGRESS pending the product-owner design approval evidence gate (live-reference parity pack or recorded side-by-side approval).
 

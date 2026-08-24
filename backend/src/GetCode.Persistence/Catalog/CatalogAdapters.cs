@@ -1,5 +1,6 @@
 using GetCode.Application.Catalog;
 using GetCode.Domain.Catalog;
+using GetCode.Domain.Providers;
 using GetCode.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,6 +64,29 @@ internal sealed class ProductSkuRepository(GetCodeDbContext context) : IProductS
 
     public async Task<IReadOnlyList<ProductSku>> ListOfferedAsync(CancellationToken cancellationToken) =>
         await context.ProductSkus.Where(s => s.IsOffered).ToListAsync(cancellationToken);
+}
+
+internal sealed class ProviderRepository(GetCodeDbContext context) : GetCode.Application.Providers.IProviderRepository
+{
+    public Task<ProviderDefinition?> FindByKeyAsync(string providerKey, CancellationToken cancellationToken) =>
+        context.Providers.FirstOrDefaultAsync(p => p.ProviderKey == providerKey.Trim().ToLowerInvariant(), cancellationToken);
+
+    public void Add(ProviderDefinition provider) => context.Providers.Add(provider);
+}
+
+internal sealed class ProviderMappingRepository(GetCodeDbContext context) : GetCode.Application.Providers.IProviderMappingRepository
+{
+    public Task<ProviderMapping?> FindByExternalCodeAsync(Guid providerId, MappingKind kind, string externalCode, CancellationToken cancellationToken) =>
+        context.ProviderMappings.FirstOrDefaultAsync(m =>
+            m.ProviderId == providerId && m.Kind == kind && m.ExternalCode == externalCode.Trim(), cancellationToken);
+
+    public Task<Guid?> ResolveCanonicalIdAsync(Guid providerId, MappingKind kind, string externalCode, CancellationToken cancellationToken) =>
+        context.ProviderMappings
+            .Where(m => m.ProviderId == providerId && m.Kind == kind && m.ExternalCode == externalCode.Trim())
+            .Select(m => (Guid?)m.CanonicalId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+    public void Add(ProviderMapping mapping) => context.ProviderMappings.Add(mapping);
 }
 
 /// <summary>

@@ -1,5 +1,6 @@
 using GetCode.Domain.Catalog;
 using GetCode.Domain.Identity;
+using GetCode.Domain.Providers;
 using GetCode.Persistence.Identity;
 using GetCode.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@ public sealed class GetCodeDbContext(DbContextOptions<GetCodeDbContext> options)
     public DbSet<Country> Countries => Set<Country>();
     public DbSet<Service> Services => Set<Service>();
     public DbSet<ProductSku> ProductSkus => Set<ProductSku>();
+    public DbSet<ProviderDefinition> Providers => Set<ProviderDefinition>();
+    public DbSet<ProviderMapping> ProviderMappings => Set<ProviderMapping>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

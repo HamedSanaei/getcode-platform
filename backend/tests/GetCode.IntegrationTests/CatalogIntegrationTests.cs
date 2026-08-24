@@ -1,6 +1,7 @@
 using GetCode.Application.Catalog;
 using GetCode.Application.Common;
 using GetCode.Domain.Catalog;
+using GetCode.Domain.Providers;
 using GetCode.IntegrationTests.Infrastructure;
 using GetCode.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -159,5 +160,47 @@ public sealed class CatalogIntegrationTests(DatabaseFixture database)
 
         var context = catalog.NewContext();
         Assert.Equal(2, await context.ProductSkus.CountAsync(TestContext.Current.CancellationToken));
+    }
+
+    /// <summary>M03-003: provider registry and canonical mappings against real PostgreSQL.</summary>
+    [Fact]
+    public async Task Provider_registry_and_mappings_roundtrip_with_resolution()
+    {
+        await using var catalog = new CatalogScope(database);
+        await catalog.ResetCatalogAsync();
+        await catalog.NewContext().ProviderMappings.ExecuteDeleteAsync(TestContext.Current.CancellationToken);
+        await catalog.NewContext().Providers.ExecuteDeleteAsync(TestContext.Current.CancellationToken);
+
+        var admin = catalog.ServiceProvider.GetRequiredService<GetCode.Application.Providers.ProviderAdminService>();
+        var mappingRepo = catalog.ServiceProvider.GetRequiredService<GetCode.Application.Providers.IProviderMappingRepository>();
+
+        await catalog.Admin.UpsertCountryAsync(new UpsertCountryCommand("ir", "Iran"), TestContext.Current.CancellationToken);
+
+        var providerId = await admin.RegisterAsync(new GetCode.Application.Providers.RegisterProviderCommand(
+            "tiger-sms", "Tiger SMS", SupportsActivation: true, SupportsRental: false), TestContext.Current.CancellationToken);
+
+        // Idempotent registration.
+        var again = await admin.RegisterAsync(new GetCode.Application.Providers.RegisterProviderCommand("tiger-sms", "Tiger SMS"), TestContext.Current.CancellationToken);
+        Assert.Equal(providerId, again);
+
+        // Bind provider code '16' to canonical IR, then resolve it back.
+        await admin.BindMappingAsync(new GetCode.Application.Providers.BindCanonicalMappingCommand(
+            "tiger-sms", MappingKind.Country, "16", "IR"), TestContext.Current.CancellationToken);
+
+        var mappingContext = catalog.NewContext();
+        var mapping = await mappingContext.ProviderMappings.SingleAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(providerId, mapping.ProviderId);
+
+        var resolved = await mappingRepo.ResolveCanonicalIdAsync(providerId, MappingKind.Country, "16", TestContext.Current.CancellationToken);
+        var iranId = await catalog.NewContext().Countries.Where(c => c.Code == "IR").Select(c => (Guid?)c.Id).SingleAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(iranId, resolved);
+
+        // Audit events for register + bind are in the outbox with trace stamps.
+        // (Trace ids require an ambient activity; the API host registers a listener.)
+        var audit = await catalog.NewContext().OutboxMessages
+            .Where(m => m.Type!.StartsWith("providers."))
+            .ToListAsync(TestContext.Current.CancellationToken);
+        Assert.Contains(audit, m => m.Type == "providers.registered");
+        Assert.Contains(audit, m => m.Type == "providers.mapping.bound");
     }
 }

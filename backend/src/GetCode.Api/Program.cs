@@ -30,6 +30,7 @@ try
     builder.Services.AddScoped<GetCode.Application.Catalog.CatalogQueryService>();
     builder.Services.AddScoped<GetCode.Application.Catalog.ProductSkuAdminService>();
     builder.Services.AddScoped<GetCode.Application.Catalog.ProductCatalogQueryService>();
+    builder.Services.AddScoped<GetCode.Application.Providers.ProviderAdminService>();
 
     var app = builder.Build();
     app.UseMiddleware<CorrelationIdMiddleware>();

@@ -21,6 +21,8 @@ public static class DependencyInjection
         services.AddScoped<ICountryRepository, CountryRepository>();
         services.AddScoped<IServiceRepository, ServiceRepository>();
         services.AddScoped<IProductSkuRepository, ProductSkuRepository>();
+        services.AddScoped<GetCode.Application.Providers.IProviderRepository, ProviderRepository>();
+        services.AddScoped<GetCode.Application.Providers.IProviderMappingRepository, ProviderMappingRepository>();
         services.AddScoped<IOutboxCollector, OutboxCollector>();
         services.AddScoped<ICatalogUnitOfWork, CatalogUnitOfWork>();
         return services;
