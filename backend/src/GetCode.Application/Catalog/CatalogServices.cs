@@ -1,4 +1,5 @@
 using System.Text.Json;
+using GetCode.Application.Common;
 using GetCode.Domain.Catalog;
 using GetCode.Domain.Common;
 
@@ -193,4 +194,29 @@ public sealed class CatalogQueryService(ICountryRepository countries, IServiceRe
         var list = await services.ListAsync(includeDisabled, cancellationToken);
         return [.. list.Select(s => new CatalogEntryView(s.Id, s.Slug, s.DisplayNameFor(cultureCode), s.DisplayOrder))];
     }
+
+    /// <summary>Public paged read: enabled entries only, deterministic order (display order, then key).</summary>
+    public async Task<PagedResult<CatalogEntryView>> ListCountriesPagedAsync(string cultureCode, PageRequest page, CancellationToken cancellationToken)
+    {
+        var all = await countries.ListAsync(includeDisabled: false, cancellationToken);
+        return ToPagedPage(all, page, c => new CatalogEntryView(c.Id, c.Code, c.DisplayNameFor(cultureCode), c.DisplayOrder));
+    }
+
+    public async Task<PagedResult<CatalogEntryView>> ListServicesPagedAsync(string cultureCode, PageRequest page, CancellationToken cancellationToken)
+    {
+        var all = await services.ListAsync(includeDisabled: false, cancellationToken);
+        return ToPagedPage(all, page, s => new CatalogEntryView(s.Id, s.Slug, s.DisplayNameFor(cultureCode), s.DisplayOrder));
+    }
+
+    private static PagedResult<CatalogEntryView> ToPagedPage(
+        IReadOnlyList<Domain.Catalog.Country> source,
+        PageRequest page,
+        Func<Domain.Catalog.Country, CatalogEntryView> project) =>
+        new([.. source.Skip(page.Skip).Take(page.PageSize).Select(project)], page.Page, page.PageSize, source.Count);
+
+    private static PagedResult<CatalogEntryView> ToPagedPage(
+        IReadOnlyList<Domain.Catalog.Service> source,
+        PageRequest page,
+        Func<Domain.Catalog.Service, CatalogEntryView> project) =>
+        new([.. source.Skip(page.Skip).Take(page.PageSize).Select(project)], page.Page, page.PageSize, source.Count);
 }

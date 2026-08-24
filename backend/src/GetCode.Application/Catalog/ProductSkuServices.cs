@@ -1,3 +1,4 @@
+using GetCode.Application.Common;
 using GetCode.Domain.Catalog;
 
 namespace GetCode.Application.Catalog;
@@ -133,5 +134,21 @@ public sealed class ProductCatalogQueryService(
         }
 
         return views;
+    }
+
+    /// <summary>
+    /// Public paged read of offered SKUs. Deterministic order (stable key) keeps
+    /// pagination stable and makes the response cache-friendly; provider data is
+    /// absent by construction.
+    /// </summary>
+    public async Task<PagedResult<ProductSkuView>> ListOfferedSkusPagedAsync(string cultureCode, PageRequest page, CancellationToken cancellationToken)
+    {
+        var all = await ListOfferedSkusAsync(cultureCode, cancellationToken);
+        var ordered = all.OrderBy(v => v.StableKey, StringComparer.Ordinal).ToList();
+        return new PagedResult<ProductSkuView>(
+            [.. ordered.Skip(page.Skip).Take(page.PageSize)],
+            page.Page,
+            page.PageSize,
+            ordered.Count);
     }
 }

@@ -1,3 +1,4 @@
+using GetCode.Api.Endpoints;
 using GetCode.Api.Middleware;
 using GetCode.Contracts.System;
 using GetCode.Infrastructure;
@@ -37,11 +38,9 @@ try
     app.UseMiddleware<SiteHostResolutionMiddleware>();
     app.UseSerilogRequestLogging();
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.MapOpenApi();
-    }
-
+    // Public API contract surface (M03-004): OpenAPI document served in all environments.
+    app.MapOpenApi();
+    app.MapCatalogEndpoints();
     app.MapGet("/health/live", () => Results.Ok(new { status = "ok" })).AllowAnonymous();
     app.MapGet("/", (IHostEnvironment env) => Results.Ok(new ApiInfoResponse("getcode-api", typeof(Program).Assembly.GetName().Version?.ToString() ?? "dev", env.EnvironmentName))).AllowAnonymous();
 
