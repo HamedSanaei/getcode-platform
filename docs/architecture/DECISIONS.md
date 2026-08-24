@@ -15,3 +15,4 @@
 | ADR-011 | No message broker by default; introduce on measured need | Accepted |
 | ADR-012 | Sensitive-data minimization/redaction in observability | Accepted |
 | ADR-013 | Configurable canonical SEO host | Accepted |
+| ADR-014 | UUIDv7 durable identifiers; snake_case naming; expand/contract migrations | Accepted |

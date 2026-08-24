@@ -9,7 +9,7 @@ Use this to avoid broad repository scans.
 | Current work | `docs/STATUS.md`, `docs/roadmap/TASK_INDEX.md`, assigned file in `docs/tasks/` |
 | Domain invariants | `backend/src/GetCode.Domain/<Capability>/` |
 | Use cases / ports | `backend/src/GetCode.Application/<Capability>/` |
-| EF/PostgreSQL | `backend/src/GetCode.Persistence/` (migrations in `Migrations/`) |
+| EF/PostgreSQL | `backend/src/GetCode.Persistence/` (migrations in `Migrations/`, naming policy in `Conventions/NamingConventions.cs`, rules in `docs/architecture/DATABASE.md`) |
 | Provider adapters | `backend/src/GetCode.Infrastructure/Providers/` |
 | Logging/redaction/archive | `backend/src/GetCode.Infrastructure/Observability/Logging/` and `docs/architecture/OBSERVABILITY.md` |
 | HTTP / host context | `backend/src/GetCode.Api/` |

@@ -1,3 +1,4 @@
+using GetCode.Persistence.Conventions;
 using GetCode.Persistence.Outbox;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,5 +12,6 @@ public sealed class GetCodeDbContext(DbContextOptions<GetCodeDbContext> options)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyMarker).Assembly);
+        NamingConventions.Apply(modelBuilder);
     }
 }
