@@ -16,3 +16,4 @@
 | ADR-012 | Sensitive-data minimization/redaction in observability | Accepted |
 | ADR-013 | Configurable canonical SEO host | Accepted |
 | ADR-014 | UUIDv7 durable identifiers; snake_case naming; expand/contract migrations | Accepted |
+| ADR-015 | Cross-domain SSO out of v1 scope; separate host sessions over shared identity | Accepted |

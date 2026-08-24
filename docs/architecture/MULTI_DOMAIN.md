@@ -21,6 +21,8 @@ Preferred browser path is same-origin `/api/*`, routed at the edge to ASP.NET Co
 
 A cookie issued on the independent root domain cannot be shared with `pluspremium.ir`. Each host can maintain its own secure host-scoped session backed by the same identity. If seamless cross-domain SSO is required, use a central OAuth/OIDC-style redirect/token exchange flow in a later task.
 
+ADR-015 resolves this for v1: no seamless SSO. Sessions are per-host over the shared identity (one account, many independent sessions; cross-host token replay is refused). The UX contract and the OIDC/OAuth requirements that any future SSO must satisfy are recorded in ADR-015; implementation stays gated behind M11-005 product approval.
+
 ## Payment return URLs
 
 Do not trust arbitrary return URLs from the browser. Persist/resolve the originating site key and choose a configured allow-listed public base URL after payment verification.
