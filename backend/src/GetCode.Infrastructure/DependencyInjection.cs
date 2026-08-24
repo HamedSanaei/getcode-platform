@@ -9,6 +9,7 @@ using GetCode.Infrastructure.Observability.Logging;
 using GetCode.Infrastructure.Notifications.Sms.Kavenegar;
 using GetCode.Infrastructure.Providers.Fake;
 using GetCode.Infrastructure.Providers.FiveSim;
+using GetCode.Infrastructure.Providers.SecondVendor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -50,7 +51,22 @@ public static class DependencyInjection
                 .Services.AddSingleton<IVirtualNumberProvider>(sp => sp.GetRequiredService<FiveSimVirtualNumberProvider>());
         }
 
-        // M04-003: provider health/balance observation (latest snapshots).
+        // M04-007: second vendor adapter (abstraction proof) — opt-in.
+        var secondVendor = configuration.GetSection(SecondVendorOptions.SectionName).Get<SecondVendorOptions>() ?? new SecondVendorOptions();
+        if (secondVendor.Enabled)
+        {
+            services.AddSingleton(secondVendor);
+            services.AddHttpClient(SecondVendorVirtualNumberProvider.ProviderKeyValue, client =>
+                {
+                    client.BaseAddress = new Uri(secondVendor.BaseUrl);
+                    client.Timeout = TimeSpan.FromSeconds(Math.Clamp(secondVendor.TimeoutSeconds, 1, 120));
+                })
+                .AddTypedClient<SecondVendorVirtualNumberProvider>()
+                .Services.AddSingleton<IVirtualNumberProvider>(sp => sp.GetRequiredService<SecondVendorVirtualNumberProvider>());
+        }
+
+        // M04-003: provider health/balance observation (latest snapshots) + M04-007 registry.
+        services.AddSingleton<Application.Providers.IVirtualNumberProviderRegistry, Providers.VirtualNumberProviderRegistry>();
         services.AddSingleton<ProviderHealthService>();
 
         // M04-008: Kavenegar outbound user-SMS adapter — secret-driven, opt-in.
