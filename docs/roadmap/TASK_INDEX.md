@@ -8,7 +8,7 @@
 | [M00-002](../../docs/tasks/M00-002-enforce-clean-dependency-and-module-boundaries.md) | M00 | P0 | DONE | M00-001 | Enforce clean dependency and module boundaries |
 | [M00-003](../../docs/tasks/M00-003-establish-local-postgresql-redis-development-environment.md) | M00 | P0 | DONE | M00-001 | Establish local PostgreSQL/Redis development environment |
 | [M00-004](../../docs/tasks/M00-004-harden-ci-quality-gates.md) | M00 | P0 | DONE | M00-001, M00-002 | Harden CI quality gates |
-| [M00-005](../../docs/tasks/M00-005-build-integration-test-infrastructure.md) | M00 | P0 | TODO | M00-003 | Build integration-test infrastructure |
+| [M00-005](../../docs/tasks/M00-005-build-integration-test-infrastructure.md) | M00 | P0 | DONE | M00-003 | Build integration-test infrastructure |
 | [M00-006](../../docs/tasks/M00-006-define-durable-identifiers-and-database-migration-policy.md) | M00 | P0 | TODO | M00-005 | Define durable identifiers and database migration policy |
 | [M00-007](../../docs/tasks/M00-007-complete-structured-logging-and-archive-verification.md) | M00 | P0 | TODO | M00-001 | Complete structured logging and archive verification |
 | [M00-008](../../docs/tasks/M00-008-add-tracing-metrics-foundation.md) | M00 | P1 | TODO | M00-007 | Add tracing/metrics foundation |
