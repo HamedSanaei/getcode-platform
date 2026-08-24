@@ -25,6 +25,9 @@ public static class DependencyInjection
         services.AddScoped<GetCode.Application.Providers.IProviderMappingRepository, ProviderMappingRepository>();
         services.AddScoped<GetCode.Application.Authorization.IRoleRepository, Authorization.RoleRepository>();
         services.AddScoped<GetCode.Application.Authorization.IUserRoleRepository, Authorization.UserRoleRepository>();
+        services.AddScoped<GetCode.Application.Wallets.IWalletRepository, Wallets.WalletRepository>();
+        services.AddScoped<GetCode.Application.Wallets.ILedgerRepository, Wallets.LedgerRepository>();
+        services.AddScoped<GetCode.Application.Wallets.IWalletUnitOfWork, Wallets.WalletUnitOfWork>();
         services.AddScoped<IOutboxCollector, OutboxCollector>();
         services.AddScoped<ICatalogUnitOfWork, CatalogUnitOfWork>();
         return services;

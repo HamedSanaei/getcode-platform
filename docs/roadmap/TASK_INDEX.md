@@ -13,9 +13,9 @@
 | [M00-007](../../docs/tasks/M00-007-complete-structured-logging-and-archive-verification.md) | M00 | P0 | DONE | M00-001 | Complete structured logging and archive verification |
 | [M00-008](../../docs/tasks/M00-008-add-tracing-metrics-foundation.md) | M00 | P1 | DONE | M00-007 | Add tracing/metrics foundation |
 | [M00-009](../../docs/tasks/M00-009-agent-handoff-and-repository-governance-gate.md) | M00 | P1 | DONE | M00-004 | Agent handoff and repository governance gate |
-| [M01-001](../../docs/tasks/M01-001-define-ux-sitemap-and-critical-user-flows-in-penpot.md) | M01 | P0 | IN_PROGRESS | M00-009 | Define UX sitemap and critical user flows in Penpot |
-| [M01-002](../../docs/tasks/M01-002-create-penpot-foundations-and-token-taxonomy.md) | M01 | P0 | IN_PROGRESS | M01-001 | Create Penpot foundations and token taxonomy |
-| [M01-003](../../docs/tasks/M01-003-create-reusable-penpot-component-library.md) | M01 | P0 | IN_PROGRESS | M01-002 | Create reusable Penpot component library |
+| [M01-001](../../docs/tasks/M01-001-define-ux-sitemap-and-critical-user-flows-in-penpot.md) | M01 | P0 | DONE | M00-009 | Define UX sitemap and critical user flows in Penpot |
+| [M01-002](../../docs/tasks/M01-002-create-penpot-foundations-and-token-taxonomy.md) | M01 | P0 | DONE | M01-001 | Create Penpot foundations and token taxonomy |
+| [M01-003](../../docs/tasks/M01-003-create-reusable-penpot-component-library.md) | M01 | P0 | DONE | M01-002 | Create reusable Penpot component library |
 | [M01-004](../../docs/tasks/M01-004-implement-penpot-to-code-design-token-bridge.md) | M01 | P0 | TODO | M01-002, M00-001 | Implement Penpot-to-code design token bridge |
 | [M01-005](../../docs/tasks/M01-005-implement-shared-next-js-ui-primitives.md) | M01 | P0 | TODO | M01-003, M01-004 | Implement shared Next.js UI primitives |
 | [M01-006](../../docs/tasks/M01-006-implement-host-aware-application-shell-and-canonical-metadata.md) | M01 | P0 | TODO | M01-004 | Implement host-aware application shell and canonical metadata |
@@ -38,7 +38,7 @@
 | [M04-007](../../docs/tasks/M04-007-add-second-provider-to-prove-abstraction.md) | M04 | P1 | TODO | M04-006 | Add second provider to prove abstraction |
 | [M05-001](../../docs/tasks/M05-001-implement-pricing-rules-and-margin-model.md) | M05 | P0 | TODO | M03-002, M04-004 | Implement pricing rules and margin model |
 | [M05-002](../../docs/tasks/M05-002-implement-immutable-expiring-quote-snapshots.md) | M05 | P0 | TODO | M05-001 | Implement immutable expiring quote snapshots |
-| [M05-003](../../docs/tasks/M05-003-implement-wallet-and-immutable-ledger.md) | M05 | P0 | TODO | M00-006 | Implement wallet and immutable ledger |
+| [M05-003](../../docs/tasks/M05-003-implement-wallet-and-immutable-ledger.md) | M05 | P0 | DONE | M00-006 | Implement wallet and immutable ledger |
 | [M05-004](../../docs/tasks/M05-004-implement-idempotent-debit-credit-refund-primitives.md) | M05 | P0 | TODO | M05-003 | Implement idempotent debit/credit/refund primitives |
 | [M05-005](../../docs/tasks/M05-005-implement-exchange-rate-source-abstraction-if-required.md) | M05 | P2 | TODO | M05-001 | Implement exchange-rate source abstraction if required |
 | [M06-001](../../docs/tasks/M06-001-implement-order-aggregate-and-explicit-state-machine.md) | M06 | P0 | TODO | M05-002 | Implement Order aggregate and explicit state machine |

@@ -35,6 +35,8 @@ try
     // Authorization administration (M02-004): deny-by-default, privilege changes audited via outbox.
     builder.Services.AddScoped<GetCode.Application.Authorization.AuthorizationAdminService>();
     builder.Services.AddScoped<GetCode.Application.Authorization.IAuthorizationService, GetCode.Application.Authorization.EffectiveAuthorizationService>();
+    // Wallet use cases (M05-003): ledger-based, idempotent, optimistic-concurrency guarded money mutations.
+    builder.Services.AddScoped<GetCode.Application.Wallets.WalletService>();
 
     var app = builder.Build();
     app.UseMiddleware<CorrelationIdMiddleware>();

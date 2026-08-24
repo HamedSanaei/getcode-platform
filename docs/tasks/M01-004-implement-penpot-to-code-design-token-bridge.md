@@ -12,6 +12,7 @@ Implement Penpot-to-code design token bridge.
 ## Penpot implementation reference
 
 - Canonical file and token-set names are recorded in `design/penpot/README.md` and `design/handoff/PENPOT_PAGE_MAP.md`.
+- Initial bridge source is named Penpot version `GetCode Design System v1.1 — live HTML validation`, file revision `104`; record both in generated snapshot metadata.
 - Source sets are `GetCode/Core`, `GetCode/Brand/GetCode` and `GetCode/Brand/PlusPremium`.
 - The bridge must preserve semantic token names and generate/select a host brand without forking components.
 

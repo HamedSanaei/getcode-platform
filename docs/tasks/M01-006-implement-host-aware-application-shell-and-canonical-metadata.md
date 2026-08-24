@@ -9,6 +9,10 @@
 
 Implement host-aware application shell and canonical metadata.
 
+## Penpot implementation reference
+
+Implement the shell against `Header / GetCode / Navigation / Header Desktop`, `Bottom Nav / GetCode / Navigation / Bottom Mobile`, `Pattern · Authenticated App Shell` and the two-brand contract on `GetCode · 10 Responsive & States`. Exact page/board IDs and token-set names are recorded in `design/handoff/PENPOT_PAGE_MAP.md`. Host selection changes semantic brand tokens and canonical metadata, not component structure.
+
 ## Acceptance criteria
 
 - [ ] Both configured hosts render from one codebase with correct brand token context.

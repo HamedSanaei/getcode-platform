@@ -11,7 +11,7 @@ Implement shared Next.js UI primitives.
 
 ## Penpot implementation reference
 
-Implement against `GetCode · 02 Components`; exact variant axes and board IDs are in `design/handoff/PENPOT_PAGE_MAP.md`. Production components must cite their Penpot asset and variant mapping.
+Implement against named Penpot version `GetCode Design System v1.1 — live HTML validation`, especially `GetCode · 02 Components`; exact variant axes and board IDs are in `design/handoff/PENPOT_PAGE_MAP.md`. Production components must cite their Penpot asset and variant mapping and consume the M01-004 token bridge rather than copying Numberland CSS values directly.
 
 ## Acceptance criteria
 

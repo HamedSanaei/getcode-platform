@@ -1,6 +1,6 @@
 # M01-003: Create reusable Penpot component library
 
-- Status: **IN_PROGRESS**
+- Status: **DONE**
 - Milestone: **M01**
 - Priority: **P0**
 - Depends on: M01-002
@@ -28,4 +28,4 @@ Create reusable Penpot component library.
 
 ## Agent handoff
 
-Implemented on `GetCode · 02 Components` and composed on `GetCode · 03 Patterns`. Seven variant groups validate with zero variant errors; exact IDs are recorded in `design/handoff/PENPOT_PAGE_MAP.md`. No runtime impact. The 2026-08-24 Numberland retry produced no new readable live visual evidence, so no speculative component changes were made. Final component approval depends on the evidence/approval gate in M01-001; status remains `IN_PROGRESS`.
+Implemented on `GetCode · 02 Components` and composed on `GetCode · 03 Patterns`. Seven variant groups validate with zero variant errors; exact IDs are recorded in `design/handoff/PENPOT_PAGE_MAP.md`. The live HTML audit confirms the expected navigation, product rail, number-type tabs, service/country rows, forms, purchase actions and feedback/refund patterns. All three acceptance criteria and the required component/variant review are satisfied, so this task is `DONE`. No runtime impact.

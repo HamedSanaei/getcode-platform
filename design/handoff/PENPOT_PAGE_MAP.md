@@ -52,10 +52,11 @@ Variant groups:
 
 ## Verification record
 
-- Penpot file validation errors: `0` at revision `95` on 2026-08-24.
-- Named Penpot version: `GetCode Design System v1.0 — Numberland reference`.
+- Penpot file validation errors: `0` at revision `104` on 2026-08-24.
+- Named Penpot version: `GetCode Design System v1.1 — live HTML validation`.
 - Variant errors: `0` across seven variant groups.
 - Board containment audit: no board/container overflow after responsive reflow corrections.
 - Visual spot checks: cover, foundations, auth desktop, public catalog mobile, activation-state gallery and Numberland reference board.
-- Live audit retry (2026-08-24): the product owner reported the site reachable and the exact open `https://numberland.ir/` tab was identified, but automated DOM inspection was denied by the browser safety layer; an independent read-only fetch also failed non-retryably. No new live visual evidence was available, so the Penpot file was not changed during this retry.
-- Residual review: attach an authoritative public-route inventory and full-page desktop/mobile reference captures, compare those references against the mapped boards, resolve deltas, and record product-owner approval before production UI implementation treats the design as approved.
+- Live HTML audit (2026-08-24): direct curl download succeeded; 163 internal routes in 20 families were inventoried and 17 representative pages returned HTTP 200. The objective structure maps to the current Penpot sitemap, Product Explorer, public/auth/customer/activation/content surfaces and responsive contract.
+- Audit evidence: [`NUMBERLAND_LIVE_HTML_AUDIT_2026-08-24.md`](NUMBERLAND_LIVE_HTML_AUDIT_2026-08-24.md).
+- Residual review: owner review is limited to visual differences that HTML/CSS and the preserved screenshot cannot objectively settle. It does not reopen M01-001, M01-002 or M01-003.

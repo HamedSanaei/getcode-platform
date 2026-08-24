@@ -2,6 +2,7 @@ using GetCode.Domain.Authorization;
 using GetCode.Domain.Catalog;
 using GetCode.Domain.Identity;
 using GetCode.Domain.Providers;
+using GetCode.Domain.Wallets;
 using GetCode.Persistence.Authorization;
 using GetCode.Persistence.Identity;
 using GetCode.Persistence.Outbox;
@@ -21,6 +22,8 @@ public sealed class GetCodeDbContext(DbContextOptions<GetCodeDbContext> options)
     public DbSet<ProviderMapping> ProviderMappings => Set<ProviderMapping>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<UserRoleAssignmentRecord> UserRoles => Set<UserRoleAssignmentRecord>();
+    public DbSet<Wallet> Wallets => Set<Wallet>();
+    public DbSet<LedgerEntry> LedgerEntries => Set<LedgerEntry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

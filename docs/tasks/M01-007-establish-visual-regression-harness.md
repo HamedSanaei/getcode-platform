@@ -11,7 +11,7 @@ Establish visual regression harness.
 
 ## Penpot implementation reference
 
-Use the representative boards listed in `design/handoff/PENPOT_PAGE_MAP.md`. Minimum baselines are public catalog desktop/mobile, auth desktop, activation state gallery, customer dashboard and the two brand samples on `GetCode · 10 Responsive & States`.
+Use named Penpot version `GetCode Design System v1.1 — live HTML validation` and the representative boards listed in `design/handoff/PENPOT_PAGE_MAP.md`. Minimum baselines are public catalog desktop/mobile, auth desktop, activation state gallery, customer dashboard and the two brand samples on `GetCode · 10 Responsive & States`. The regression oracle is approved GetCode Penpot output—not the live Numberland site.
 
 ## Acceptance criteria
 
