@@ -83,6 +83,15 @@ public sealed class FulfillmentJobStore(GetCodeDbContext db) : IFulfillmentJobSt
         await db.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task MarkDeadLetteredAsync(Guid jobId, CancellationToken cancellationToken)
+    {
+        var record = await db.Set<FulfillmentRequestRecord>().SingleAsync(r => r.Id == jobId, cancellationToken);
+        record.State = FulfillmentJobState.DeadLettered;
+        record.LeaseOwner = null;
+        record.LeaseExpiresAtUtc = null;
+        await db.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task FailAsync(Guid jobId, DateTimeOffset now, CancellationToken cancellationToken)
     {
         var record = await db.Set<FulfillmentRequestRecord>().SingleAsync(r => r.Id == jobId, cancellationToken);

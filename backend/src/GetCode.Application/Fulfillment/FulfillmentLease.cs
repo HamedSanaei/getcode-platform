@@ -44,6 +44,9 @@ public interface IFulfillmentJobStore
 
     Task CompleteAsync(Guid jobId, CancellationToken cancellationToken);
 
+    /// <summary>M07-002: terminal manual-review state for ambiguous purchases (no retry).</summary>
+    Task MarkDeadLetteredAsync(Guid jobId, CancellationToken cancellationToken);
+
     /// <summary>Release a failed job for retry (or dead-letter when attempts exhausted).</summary>
     Task FailAsync(Guid jobId, DateTimeOffset now, CancellationToken cancellationToken);
 
