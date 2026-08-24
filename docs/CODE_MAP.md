@@ -22,3 +22,4 @@ Use this to avoid broad repository scans.
 | Design source/handoff | `design/` and Penpot link in `design/penpot/README.md` |
 | Deployment example | `compose.yaml`, `infrastructure/caddy/` |
 | GitHub roadmap creation | `scripts/github/` |
+| Governance / required checks | `docs/operations/GOVERNANCE.md` |

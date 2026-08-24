@@ -12,7 +12,7 @@
 | [M00-006](../../docs/tasks/M00-006-define-durable-identifiers-and-database-migration-policy.md) | M00 | P0 | DONE | M00-005 | Define durable identifiers and database migration policy |
 | [M00-007](../../docs/tasks/M00-007-complete-structured-logging-and-archive-verification.md) | M00 | P0 | DONE | M00-001 | Complete structured logging and archive verification |
 | [M00-008](../../docs/tasks/M00-008-add-tracing-metrics-foundation.md) | M00 | P1 | DONE | M00-007 | Add tracing/metrics foundation |
-| [M00-009](../../docs/tasks/M00-009-agent-handoff-and-repository-governance-gate.md) | M00 | P1 | TODO | M00-004 | Agent handoff and repository governance gate |
+| [M00-009](../../docs/tasks/M00-009-agent-handoff-and-repository-governance-gate.md) | M00 | P1 | DONE | M00-004 | Agent handoff and repository governance gate |
 | [M01-001](../../docs/tasks/M01-001-define-ux-sitemap-and-critical-user-flows-in-penpot.md) | M01 | P0 | IN_PROGRESS | M00-009 | Define UX sitemap and critical user flows in Penpot |
 | [M01-002](../../docs/tasks/M01-002-create-penpot-foundations-and-token-taxonomy.md) | M01 | P0 | IN_PROGRESS | M01-001 | Create Penpot foundations and token taxonomy |
 | [M01-003](../../docs/tasks/M01-003-create-reusable-penpot-component-library.md) | M01 | P0 | IN_PROGRESS | M01-002 | Create reusable Penpot component library |

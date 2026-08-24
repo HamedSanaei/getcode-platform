@@ -4,9 +4,11 @@ Last scaffold update: **2026-08-24**
 
 ## Current phase
 
-`M00 — Engineering Foundation`
+`M00 — Engineering Foundation: COMPLETE` → entering `M01/M02/M03` (design-gated + engineering tracks in parallel)
 
-The repository contains an architecture starter only. No real provider, payment gateway, wallet mutation, authentication or production UI is considered implemented.
+All nine M00 tasks are DONE and verified (toolchain baselines, IL-enforced boundaries, local PostgreSQL/Redis, hardened CI with deterministic lockfiles, Testcontainers integration infrastructure, UUIDv7/migration policy ADR-014, structured logging + redaction + archive verification, tracing/metrics foundation, governance gate). See `docs/roadmap/TASK_INDEX.md` for per-task handoffs.
+
+The repository no longer contains only an architecture starter: persistence migrations, integration-test infrastructure, enforced observability policies and deterministic CI gates exist and run green locally (52 backend tests). No real provider, payment gateway or wallet mutation is implemented yet — that work starts at M03/M05/M06.
 
 Design work was executed ahead of milestone order by explicit product-owner request. The Penpot design system and page models are implemented, but production UI code remains intentionally unimplemented and all engineering dependencies still apply.
 
@@ -19,7 +21,9 @@ Design work was executed ahead of milestone order by explicit product-owner requ
 
 ## Ready to start
 
-`M00-001` (toolchain baselines) is DONE: .NET SDK `10.0.302`, Node 24 LTS, npm lockfile committed, deterministic `npm ci`, zero dependency advisories — see `docs/architecture/TOOLCHAIN.md`. Next: `M00-002`/`M00-003`, then follow dependencies in `docs/roadmap/TASK_INDEX.md`.
+- `M02-001` (identity) and `M03-001` (canonical catalog) are unblocked by the completed M00 foundation.
+- `M01-004` (design token bridge), `M01-005` (UI primitives), `M01-006` (host-aware shell) are unblocked engineering tasks.
+- `M01-001..003` remain IN_PROGRESS pending the product-owner design approval evidence gate (live-reference parity pack or recorded side-by-side approval).
 
 ## Locked architecture decisions
 
