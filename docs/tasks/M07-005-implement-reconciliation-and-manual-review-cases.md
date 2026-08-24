@@ -1,6 +1,6 @@
 # M07-005: Implement reconciliation and Manual Review cases
 
-- Status: **TODO**
+- Status: **DONE**
 - Milestone: **M07**
 - Priority: **P0**
 - Depends on: M07-004
@@ -11,14 +11,14 @@ Implement reconciliation and Manual Review cases.
 
 ## Acceptance criteria
 
-- [ ] System can identify stuck/ambiguous payment/provider/fulfillment records by rule.
-- [ ] Manual Review stores evidence/reason/status without exposing secrets.
-- [ ] Admin action resolves through domain/application commands, not direct DB edits.
+-[x] System identifies stuck/ambiguous records BY RULE. (`ReconciliationRuleEngine` pure rules over `ReconciliationFacts`: unknown payment verification, dead-lettered fulfillment jobs, reservations expired without message; healthy systems yield zero findings)
+-[x] Manual Review stores evidence/reason/status without exposing secrets. (evidence is built from token grammar only — test pins that raw bodies/payloads never appear)
+[x] Admin action resolves through application commands, not direct DB edits. (`ManualReviewService.ResolveAsync` records actor/timestamp/note; double-resolve is rejected and the first resolution stands — audit-pinned)
 
 ## Required verification
 
-- [ ] reconciliation rule tests
-- [ ] manual resolution audit tests
+[x] reconciliation rule tests
+[x] manual resolution audit tests
 
 ## Engineering constraints
 
@@ -30,3 +30,9 @@ Implement reconciliation and Manual Review cases.
 ## Agent handoff
 
 Record: files changed, decisions/assumptions, commands/tests run, migration/config/operations impact, residual risk and next unblocked task.
+
+### Handoff (2026-08-24)
+
+- `Application/Reconciliation/ManualReview.cs`: ReviewCase record + IManualReviewStore port + ReconciliationRuleEngine (pure) + ManualReviewService (SweepAsync/ListOpenAsync/ResolveAsync). One open case per subject+reason; resolution is an audited command with actor, timestamp and note; re-resolution rejected.
+- Residual: Persistence EF implementation of IManualReviewStore (review_cases table + migration) and the periodic sweep host wiring land as infrastructure follow-ups; the contracts are pinned by unit tests.
+- Tests increased: backend 392 (+5 rule/dedupe/redaction/audit tests).
