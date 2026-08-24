@@ -25,7 +25,7 @@
 | [M02-003](../../docs/tasks/M02-003-implement-csrf-cors-and-trusted-redirect-policy.md) | M02 | P0 | TODO | M02-002 | Implement CSRF, CORS and trusted redirect policy |
 | [M02-004](../../docs/tasks/M02-004-implement-roles-permissions-and-admin-authorization.md) | M02 | P0 | TODO | M02-001 | Implement roles/permissions and admin authorization |
 | [M02-005](../../docs/tasks/M02-005-decide-and-document-cross-domain-sso-v1-scope.md) | M02 | P1 | TODO | M02-002 | Decide and document cross-domain SSO v1 scope |
-| [M03-001](../../docs/tasks/M03-001-implement-canonical-country-and-service-catalog.md) | M03 | P0 | TODO | M00-006 | Implement canonical Country and Service catalog |
+| [M03-001](../../docs/tasks/M03-001-implement-canonical-country-and-service-catalog.md) | M03 | P0 | DONE | M00-006 | Implement canonical Country and Service catalog |
 | [M03-002](../../docs/tasks/M03-002-implement-product-sku-model-for-virtual-number-offerings.md) | M03 | P0 | TODO | M03-001 | Implement Product/SKU model for virtual-number offerings |
 | [M03-003](../../docs/tasks/M03-003-implement-provider-registry-and-canonical-mappings.md) | M03 | P0 | TODO | M03-001 | Implement provider registry and canonical mappings |
 | [M03-004](../../docs/tasks/M03-004-implement-catalog-query-read-models.md) | M03 | P1 | TODO | M03-002, M03-003 | Implement catalog/query read models |

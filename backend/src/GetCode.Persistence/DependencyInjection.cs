@@ -1,4 +1,6 @@
+using GetCode.Application.Catalog;
 using GetCode.Application.Identity;
+using GetCode.Persistence.Catalog;
 using GetCode.Persistence.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +18,10 @@ public static class DependencyInjection
         services.AddDbContext<GetCodeDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IIdentityAuditTrail, IdentityAuditTrail>();
+        services.AddScoped<ICountryRepository, CountryRepository>();
+        services.AddScoped<IServiceRepository, ServiceRepository>();
+        services.AddScoped<IOutboxCollector, OutboxCollector>();
+        services.AddScoped<ICatalogUnitOfWork, CatalogUnitOfWork>();
         return services;
     }
 }
