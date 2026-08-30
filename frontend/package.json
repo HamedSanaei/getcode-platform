@@ -34,7 +34,7 @@
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.1.0",
     "eslint": "^9.0.0",
-    "eslint-config-next": "^16.3.0",
+    "eslint-config-next": "^16.3.3",
     "jest-axe": "^11.0.0",
     "jsdom": "^30.0.1",
     "typescript": "^5.9.0",
